@@ -1,3 +1,12 @@
+/**
+* -*- coding : utf-8 -*-
+* @FileName  : Directory.java
+* @Author    : Ruixiang JIANG (Songrise)
+* @Time      : 2020-11-15
+* @Github    ：https://github.com/songrise
+* @Descriptions: Directory class
+**/
+
 package src.hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import java.util.ArrayList;
@@ -79,14 +88,6 @@ public class Directory implements AbstractFile {
 
     /**
      * 
-     * @return the type of this file
-     */
-    public FileType getType() {
-
-    }
-
-    /**
-     * 
      * @return A AbstractFile reference, which is the newly created file.
      */
     public AbstractFile createFile() {
@@ -101,6 +102,23 @@ public class Directory implements AbstractFile {
     public void deleteFile() {
 
     }
-    
+
+    @Override
+    public boolean isDirectory() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public src.hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile getParentDirectory() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getFullPath() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

@@ -18,23 +18,7 @@ public class Document implements AbstractFile {
      * @return name of this file
      */
     public String getName() {
-
-    }
-
-    /**
-     * 
-     * @return the type of this file
-     */
-    public FileType getType() {
-
-    }
-
-    /**
-     * 
-     * @return A AbstractFile reference, which is the newly created file.
-     */
-    public AbstractFile createFile() {
-
+        return name;
     }
 
     /**
@@ -43,5 +27,29 @@ public class Document implements AbstractFile {
      */
     public void deleteFile() {
 
+    }
+
+    @Override
+    public boolean isDirectory() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public src.hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile getParentDirectory() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getFullPath() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public src.hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile createFile(String fileName) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
