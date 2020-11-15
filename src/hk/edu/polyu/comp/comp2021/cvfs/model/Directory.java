@@ -12,7 +12,9 @@ package hk.edu.polyu.comp.comp2021.cvfs.model;
 import java.io.Serializable;
 import java.util.*;
 
-public class Directory implements AbstractFile, Serializable{
+import hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile;
+
+public class Directory implements AbstractFile, Serializable {
 
     // -----------------field ----------------//
 
@@ -20,16 +22,14 @@ public class Directory implements AbstractFile, Serializable{
     private final FileType type; // type of directory cannot be modified.
     private String name;
     private Directory parentDir;
-    ArrayList<Directory> subDir;
-    ArrayList<Document> docs;
+    ArrayList<AbstractFile> files;
 
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
         this.setName("unnamed");
         this.type = FileType.initType("DIR");
         parentDir = null;
-        subDir = new ArrayList<Directory>();
-        docs = new ArrayList<Document>();
+        files = new ArrayList<AbstractFile>();
     }
 
     private Directory(String name) {
@@ -46,7 +46,7 @@ public class Directory implements AbstractFile, Serializable{
     public AbstractFile createFile(String fileName) {
         // TODO Auto-generated method stub
         Document newDoc = new Document();
-        this.docs.add(newDoc);
+        this.files.add(newDoc);
         return newDoc;
     }
 
@@ -56,7 +56,7 @@ public class Directory implements AbstractFile, Serializable{
     protected Directory createDirectory(String dirName) {
         // TODO Auto-generated method stub
         Directory newDir = new Directory(dirName, this);
-        this.subDir.add(newDir);
+        this.files.add(newDir);
         return newDir;
     }
 
@@ -65,6 +65,7 @@ public class Directory implements AbstractFile, Serializable{
         newDir.setName("");
         return newDir;
     }
+
     /**
      *
      * delete this file. Deletion of a directory will recursively delete all files
@@ -72,8 +73,8 @@ public class Directory implements AbstractFile, Serializable{
      */
     public void deleteFile() {
         Directory parent = parentDir;
-        if (parent.subDir.contains(this))
-            parent.subDir.remove(this);
+        if (parent.files.contains(this))
+            parent.files.remove(this);
     }
 
     /**
@@ -132,16 +133,31 @@ public class Directory implements AbstractFile, Serializable{
         return this.name + "/";
     }
 
-
-
     public void deleteFile(String toDelName) throws NoSuchElementException {
-        for(Directory d : subDir){
-            if(d.name == toDelName){
+        for (Directory d : files) {
+            if (d.name == toDelName) {
                 this.deleteFile(d);
                 return;
             }
         }
-        throw new NoSuchElementException("The file "+ toDelName+ "doesn't exist!");
+        throw new NoSuchElementException("The file " + toDelName + "doesn't exist!");
+    }
+
+    public ArrayList<AbstractFile> list() {
+        ArrayList<AbstractFile> result = new ArrayList<>();
+        for (AbstractFile document : files) {
+            result.add(document);
+        }
+        return result;
+    }
+
+    public ArrayList<String> rList() {
+        ArrayList<String> result = new ArrayList<>();
+        ArrayDeque<AbstractFile> stack = new ArrayDeque<>();
+        for (AbstractFile document : files) {
+            result.add(document.getName());
+        }
+        return result;
     }
 
     @Override
@@ -169,17 +185,18 @@ public class Directory implements AbstractFile, Serializable{
         return sb.toString();
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Directory otherDir = (Directory) o;
         return this.getFullName().equals(otherDir.getFullName()) && this.getFullPath().equals(otherDir.getFullPath());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, name, parentDir, subDir, docs);
+        return Objects.hash(type, name, parentDir);
     }
 }
