@@ -7,7 +7,7 @@
 * @Descriptions: type of file
 **/
 
-package src.hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 public class FileType {
 
@@ -34,7 +34,7 @@ public class FileType {
      * 
      * @return type id, 1~4 for documents, 5 is directory.
      */
-    public int getTypeID() {
+    protected int getTypeID() {
         return this.typeID;
     }
 

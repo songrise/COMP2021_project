@@ -1,4 +1,4 @@
-package src.hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile;
 
@@ -36,7 +36,7 @@ public class Document implements AbstractFile {
     }
 
     @Override
-    public src.hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile getParentDirectory() {
+    public AbstractFile getParentDirectory() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -48,7 +48,7 @@ public class Document implements AbstractFile {
     }
 
     @Override
-    public src.hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile createFile(String fileName) {
+    public AbstractFile createFile(String fileName) {
         // TODO Auto-generated method stub
         return null;
     }

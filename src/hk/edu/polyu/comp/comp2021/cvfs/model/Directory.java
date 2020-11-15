@@ -7,17 +7,16 @@
 * @Descriptions: Directory class
 **/
 
-package src.hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.*;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile;
+public class Directory implements AbstractFile, Serializable{
 
-public class Directory implements AbstractFile {
+    // -----------------field ----------------//
 
-    // -----------------Filed----------------//
-
+    private static final long serialVersionUID = 2021L;
     private final FileType type; // type of directory cannot be modified.
     private String name;
     private Directory parentDir;
@@ -25,19 +24,66 @@ public class Directory implements AbstractFile {
     ArrayList<Document> docs;
 
     // -----------------Constructor----------------//
-    Directory() {// when this constructor is called, this dir is the root dir
-        this.name = "unnamed";
+    private Directory() {// when this constructor is called, this dir is the root dir
+        this.setName("unnamed");
         this.type = FileType.initType("DIR");
         parentDir = null;
         subDir = new ArrayList<Directory>();
         docs = new ArrayList<Document>();
     }
 
-    Directory(Directory parent) {
+    private Directory(String name) {
         this();
+        this.setName(name);
+    }
+
+    private Directory(String name, Directory parent) {
+        this(name);
         parentDir = parent;
     }
 
+    @Override
+    public AbstractFile createFile(String fileName) {
+        // TODO Auto-generated method stub
+        Document newDoc = new Document();
+        this.docs.add(newDoc);
+        return newDoc;
+    }
+
+    // -----------------Private methods----------------//
+
+    // -----------------Protected methods----------------//
+    protected Directory createDirectory(String dirName) {
+        // TODO Auto-generated method stub
+        Directory newDir = new Directory(dirName, this);
+        this.subDir.add(newDir);
+        return newDir;
+    }
+
+    protected static Directory createRoot() {
+        Directory newDir = new Directory();
+        newDir.setName("");
+        return newDir;
+    }
+    /**
+     *
+     * delete this file. Deletion of a directory will recursively delete all files
+     * inside this dir.
+     */
+    public void deleteFile() {
+        Directory parent = parentDir;
+        if (parent.subDir.contains(this))
+            parent.subDir.remove(this);
+    }
+
+    /**
+     *
+     * delete the specified AbstractFile Object in current directory. Deletion of a
+     * directory will recursively delete all files inside this dir.
+     */
+    protected void deleteFile(AbstractFile toDel) {
+        toDel.deleteFile();
+    }
     // -----------------Public methods----------------//
 
     /**
@@ -52,6 +98,7 @@ public class Directory implements AbstractFile {
             throw new IllegalArgumentException("Name of file longer than 10");
         } else {
             HashSet<Character> allowedCH = new HashSet<Character>() {// initialize a valid character set.
+                private static final long serialVersionUID = 2021L;
                 {
                     for (char c = 'a', C = 'A'; c <= 'z'; c++, C++) {
                         add(c);
@@ -62,7 +109,6 @@ public class Directory implements AbstractFile {
                     }
                 }
             };
-
             for (char ch : nameStr.toCharArray()) {
                 if (!allowedCH.contains(ch)) {
                     throw new IllegalArgumentException("Illegal character in file name: " + ch);
@@ -86,39 +132,54 @@ public class Directory implements AbstractFile {
         return this.name + "/";
     }
 
-    /**
-     * 
-     * @return A AbstractFile reference, which is the newly created file.
-     */
-    public AbstractFile createFile() {
 
-    }
 
-    /**
-     * 
-     * delete this file. Deletion of a directory will recursively delete all files
-     * inside this dir.
-     */
-    public void deleteFile() {
-
+    public void deleteFile(String toDelName) throws NoSuchElementException {
+        for(Directory d : subDir){
+            if(d.name == toDelName){
+                this.deleteFile(d);
+                return;
+            }
+        }
+        throw new NoSuchElementException("The file "+ toDelName+ "doesn't exist!");
     }
 
     @Override
     public boolean isDirectory() {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     @Override
-    public src.hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile getParentDirectory() {
-        // TODO Auto-generated method stub
-        return null;
+    public AbstractFile getParentDirectory() {
+        return parentDir;
     }
 
     @Override
     public String getFullPath() {
-        // TODO Auto-generated method stub
-        return null;
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        Directory crtDir = this;
+        while (crtDir != null) {
+            stack.push(crtDir.getName());
+            crtDir = crtDir.parentDir;
+        }
+        StringBuilder sb = new StringBuilder("./");
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop() + "/");
+        }
+        return sb.toString();
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Directory otherDir = (Directory) o;
+        return this.getFullName().equals(otherDir.getFullName()) && this.getFullPath().equals(otherDir.getFullPath());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, name, parentDir, subDir, docs);
+    }
 }
