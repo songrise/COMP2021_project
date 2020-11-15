@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.Directory;
+
 
 public class Disk implements Serializable {
     private static final long serialVersionUID = 2021L;
     private final int size;
-    private Directory root;
+    private final Directory root;
     private Directory workingDir;
 
     Disk(int size) {
@@ -23,6 +23,8 @@ public class Disk implements Serializable {
     }
 
     // -----------------Private methods----------------//
+
+
     // -----------------Public methods----------------//
     public void makeDir(String dirName) {
         workingDir.createDirectory(dirName);
@@ -58,7 +60,6 @@ public class Disk implements Serializable {
     }
 
     public void changeDir(String newDirName) {
-        Directory newDir = (Directory) findFile(newDirName);
-        this.workingDir = newDir;
+        this.workingDir = (Directory) findFile(newDirName);
     }
 }

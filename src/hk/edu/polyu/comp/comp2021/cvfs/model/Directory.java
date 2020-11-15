@@ -118,7 +118,9 @@ public class Directory extends File {
 
     protected ArrayList<File> rList() {
         ArrayList<File> result = new ArrayList<>();
-
+        if (files.isEmpty()) {
+            return result;
+        }
         for (File f : files) {
             result.add(f);
             if (f.isDirectory()) {
