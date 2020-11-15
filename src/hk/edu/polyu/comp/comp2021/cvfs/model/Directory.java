@@ -12,9 +12,7 @@ package hk.edu.polyu.comp.comp2021.cvfs.model;
 import java.io.Serializable;
 import java.util.*;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile;
-
-public class Directory implements AbstractFile, Serializable {
+public class Directory extends File {
 
     // -----------------field ----------------//
 
@@ -22,14 +20,14 @@ public class Directory implements AbstractFile, Serializable {
     private final FileType type; // type of directory cannot be modified.
     private String name;
     private Directory parentDir;
-    ArrayList<AbstractFile> files;
+    ArrayList<File> files;
 
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
         this.setName("unnamed");
         this.type = FileType.initType("DIR");
         parentDir = null;
-        files = new ArrayList<AbstractFile>();
+        files = new ArrayList<File>();
     }
 
     private Directory(String name) {
@@ -42,19 +40,30 @@ public class Directory implements AbstractFile, Serializable {
         parentDir = parent;
     }
 
-    @Override
-    public AbstractFile createFile(String fileName) {
-        // TODO Auto-generated method stub
-        Document newDoc = new Document();
+    public File createDocument(String fileName, String typeStr, String content) throws IllegalArgumentException {
+        if (duplicateName(fileName)) {
+            throw new IllegalArgumentException("File: " + fileName + " already exist!");
+        }
+        Document newDoc = new Document(fileName, typeStr, content, this);
         this.files.add(newDoc);
         return newDoc;
     }
 
     // -----------------Private methods----------------//
+    private boolean duplicateName(String fileName) {
+        for (File f : files) {
+            if (f.getName() == fileName) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // -----------------Protected methods----------------//
-    protected Directory createDirectory(String dirName) {
-        // TODO Auto-generated method stub
+    protected Directory createDirectory(String dirName) throws IllegalArgumentException {
+        if (duplicateName(dirName)) {
+            throw new IllegalArgumentException("File: " + dirName + " already exist!");
+        }
         Directory newDir = new Directory(dirName, this);
         this.files.add(newDir);
         return newDir;
@@ -69,72 +78,28 @@ public class Directory implements AbstractFile, Serializable {
     /**
      *
      * delete this file. Deletion of a directory will recursively delete all files
-     * inside this dir.
+     * inside this dir. Avoid using this method
      */
-    public void deleteFile() {
+    protected void deleteFile() {
         Directory parent = parentDir;
-        if (parent.files.contains(this))
+        if (parent != null && parent.files.contains(this))// root dir cannot be deleted
             parent.files.remove(this);
     }
 
     /**
      *
-     * delete the specified AbstractFile Object in current directory. Deletion of a
+     * delete the specified File Object in current directory. Deletion of a
      * directory will recursively delete all files inside this dir.
      */
-    protected void deleteFile(AbstractFile toDel) {
-        toDel.deleteFile();
+    protected void deleteFile(File toDel) {
+        if (this.files.contains(toDel)) {
+            this.files.remove(toDel);
+        }
     }
     // -----------------Public methods----------------//
 
-    /**
-     * 
-     * @param nameStr
-     * @throws IllegalArgumentException
-     */
-    public void setName(String nameStr) throws IllegalArgumentException {
-        if (nameStr == null) {
-            throw new IllegalArgumentException();
-        } else if (nameStr.length() > 10) {
-            throw new IllegalArgumentException("Name of file longer than 10");
-        } else {
-            HashSet<Character> allowedCH = new HashSet<Character>() {// initialize a valid character set.
-                private static final long serialVersionUID = 2021L;
-                {
-                    for (char c = 'a', C = 'A'; c <= 'z'; c++, C++) {
-                        add(c);
-                        add(C);
-                    }
-                    for (int i = 0; i < 10; i++) {
-                        add(Integer.toString(i).charAt(0));
-                    }
-                }
-            };
-            for (char ch : nameStr.toCharArray()) {
-                if (!allowedCH.contains(ch)) {
-                    throw new IllegalArgumentException("Illegal character in file name: " + ch);
-                }
-            }
-        }
-
-        // when this line is reached, the file name is valid.
-        this.name = nameStr;
-    }
-
-    /**
-     * 
-     * @return name of this file
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    public String getFullName() {
-        return this.name + "/";
-    }
-
     public void deleteFile(String toDelName) throws NoSuchElementException {
-        for (Directory d : files) {
+        for (File d : files) {
             if (d.name == toDelName) {
                 this.deleteFile(d);
                 return;
@@ -143,19 +108,23 @@ public class Directory implements AbstractFile, Serializable {
         throw new NoSuchElementException("The file " + toDelName + "doesn't exist!");
     }
 
-    public ArrayList<AbstractFile> list() {
-        ArrayList<AbstractFile> result = new ArrayList<>();
-        for (AbstractFile document : files) {
-            result.add(document);
+    protected ArrayList<File> list() {
+        ArrayList<File> result = new ArrayList<>();
+        for (File f : files) {
+            result.add(f);
         }
         return result;
     }
 
-    public ArrayList<String> rList() {
-        ArrayList<String> result = new ArrayList<>();
-        ArrayDeque<AbstractFile> stack = new ArrayDeque<>();
-        for (AbstractFile document : files) {
-            result.add(document.getName());
+    protected ArrayList<File> rList() {
+        ArrayList<File> result = new ArrayList<>();
+
+        for (File f : files) {
+            result.add(f);
+            if (f.isDirectory()) {
+                Directory fd = (Directory) f;
+                result.addAll(fd.rList());
+            }
         }
         return result;
     }
@@ -163,26 +132,6 @@ public class Directory implements AbstractFile, Serializable {
     @Override
     public boolean isDirectory() {
         return true;
-    }
-
-    @Override
-    public AbstractFile getParentDirectory() {
-        return parentDir;
-    }
-
-    @Override
-    public String getFullPath() {
-        ArrayDeque<String> stack = new ArrayDeque<>();
-        Directory crtDir = this;
-        while (crtDir != null) {
-            stack.push(crtDir.getName());
-            crtDir = crtDir.parentDir;
-        }
-        StringBuilder sb = new StringBuilder("./");
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop() + "/");
-        }
-        return sb.toString();
     }
 
     @Override
@@ -199,4 +148,9 @@ public class Directory implements AbstractFile, Serializable {
     public int hashCode() {
         return Objects.hash(type, name, parentDir);
     }
+
+    public static void main(String[] args) {
+        // latter put it to test folder as Unit test;
+    }
+
 }

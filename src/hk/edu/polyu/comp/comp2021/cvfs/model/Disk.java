@@ -1,15 +1,16 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.AbstractFile;
 import hk.edu.polyu.comp.comp2021.cvfs.model.Directory;
 
 public class Disk implements Serializable {
     private static final long serialVersionUID = 2021L;
     private final int size;
     private Directory root;
-    private Directory crtDir;
+    private Directory workingDir;
 
     Disk(int size) {
         if (size < 0) {
@@ -18,28 +19,46 @@ public class Disk implements Serializable {
             this.size = size;
         }
         this.root = Directory.createRoot();
-        crtDir = root;
+        workingDir = root;
     }
 
     // -----------------Private methods----------------//
     // -----------------Public methods----------------//
     public void makeDir(String dirName) {
-        crtDir.createDirectory(dirName);
+        workingDir.createDirectory(dirName);
     }
 
     public void deleteFile(String fileName) {
-        crtDir.deleteFile(fileName);
+        workingDir.deleteFile(fileName);
     }
 
-    public void makeDocument(String docName) {
-
+    public void makeDocument(String docName, String typeStr, String content) {
+        workingDir.createDocument(docName, typeStr, content);
     }
 
-    public Directory getCurrentDir() {
-        return this.crtDir;
+    public File findFile(String fileName) throws NoSuchElementException {
+        for (File f : workingDir.files) {
+            if (f.name.equals(fileName)) {
+                return f;
+            }
+        }
+        throw new NoSuchElementException("No file named " + fileName + "in working directory!");
     }
 
-    public AbstractFile findFile(String fileName) {
-        this.crtDir.docs
+    public Directory getWorkingDir() {
+        return this.workingDir;
+    }
+
+    public ArrayList<File> list() {
+        return workingDir.list();
+    }
+
+    public ArrayList<File> rList() {
+        return workingDir.rList();
+    }
+
+    public void changeDir(String newDirName) {
+        Directory newDir = (Directory) findFile(newDirName);
+        this.workingDir = newDir;
     }
 }

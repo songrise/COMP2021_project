@@ -14,19 +14,21 @@ public class FileType {
     private int typeID; // this is not final, since file type could be modified
 
     private FileType(String typeStr) {
-        String t = typeStr.toUpperCase();
-        if (t.equals("TXT")) {
-            this.typeID = 1;
-        } else if (t.equals("JAVA")) {
-            this.typeID = 2;
-        } else if (t.equals("HTML")) {
-            this.typeID = 3;
-        } else if (t.equals("CSS")) {
-            this.typeID = 4;
-        } else if (t.equals("DIR")) {
-            this.typeID = 5;
-        } else {
-            throw new IllegalArgumentException("Invalid type name!");
+        if (typeStr != null) {
+            String t = typeStr.toUpperCase();
+            if (t.equals("TXT")) {
+                this.typeID = 1;
+            } else if (t.equals("JAVA")) {
+                this.typeID = 2;
+            } else if (t.equals("HTML")) {
+                this.typeID = 3;
+            } else if (t.equals("CSS")) {
+                this.typeID = 4;
+            } else if (t.equals("DIR")) {
+                this.typeID = 5;
+            } else {
+                throw new IllegalArgumentException("Invalid type name!");
+            }
         }
     }
 
@@ -81,7 +83,7 @@ public class FileType {
             case 4:
                 return "css";
             case 5:
-                return "dir";
+                return "directory";
             default:
                 return "errortype";
         }

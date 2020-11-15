@@ -1,35 +1,104 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-public class File {
+import java.io.Serializable;
+import java.util.ArrayDeque;
+import java.util.HashSet;
+
+public class File implements Serializable {
+    private static final long serialVersionUID = 2021L;
     protected String name;
+    private File parentDir;
+    private FileType type;
+
+    File() {
+
+    }
+
+    File(String name, String type, File parentDir) {
+        this.setName(name);
+        this.setType(type);
+        this.parentDir = parentDir;
+    }
 
     /**
      * 
      * @return name of this file
      */
-    public String getName();
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * 
+     * @return full name of this file e.g. test.txt
+     */
+    public String getFullName() {
+
+        return this.name + "." + this.type.toString();
+    }
 
     /**
      * 
      * @return true if this file is a directory.
      */
-    public boolean isDirectory();
+    public boolean isDirectory() {
+        return this.type.getTypeID() == 5;
+    }
 
-    public AbstractFile getParentDirectory();
+    public File getParentDirectory() {
+        return this.parentDir;
+    }
 
-    public String getFullPath();
-
-    public void setName(String fileName);
+    public String getFullPath() {
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        File crtDir = this;
+        while (crtDir != null) {
+            stack.push(crtDir.getName());
+            crtDir = crtDir.parentDir;
+        }
+        StringBuilder sb = new StringBuilder("./");
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop() + "/");
+        }
+        return sb.toString();
+    }
 
     /**
      * 
-     * @return A AbstractFile reference, which is the newly created file.
+     * @param nameStr
+     * @throws IllegalArgumentException
      */
-    public AbstractFile createFile(String fileName);
+    public void setName(String nameStr) throws IllegalArgumentException {
+        if (nameStr == null) {
+            throw new IllegalArgumentException();
+        } else if (nameStr.length() > 10) {
+            throw new IllegalArgumentException("Name of file longer than 10");
+        } else {
+            HashSet<Character> allowedCH = new HashSet<Character>() {// initialize a valid character set.
+                private static final long serialVersionUID = 2021L;
+                {
+                    for (char c = 'a', C = 'A'; c <= 'z'; c++, C++) {
+                        add(c);
+                        add(C);
+                    }
+                    for (int i = 0; i < 10; i++) {
+                        add(Integer.toString(i).charAt(0));
+                    }
+                }
+            };
+            for (char ch : nameStr.toCharArray()) {
+                if (!allowedCH.contains(ch)) {
+                    throw new IllegalArgumentException("Illegal character in file name: " + ch);
+                }
+            }
+        }
 
-    /**
-     * 
-     * delete this file.
-     */
-    public void deleteFile();
+        // when this line is reached, the file name is valid.
+        this.name = nameStr;
+    }
+
+    public void setType(String typeStr) {
+        this.type = FileType.initType(typeStr);
+    }
+
 }
