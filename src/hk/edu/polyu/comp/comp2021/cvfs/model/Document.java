@@ -1,7 +1,11 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+
+import hk.edu.polyu.comp.comp2021.cvfs.model.Directory;
 
 public class Document extends File {
 
@@ -11,13 +15,12 @@ public class Document extends File {
     private String content;
     private Directory directory;
 
-
     // -----------------Constructor----------------//
-    Document(Directory dir) {
+    protected Document(Directory dir) {
         this.directory = dir;
     }
 
-    Document(String fileName, String typeStr, String fileContent, Directory dir) {
+    protected Document(String fileName, String typeStr, String fileContent, Directory dir) {
         this.setName(fileName);
         this.setType(typeStr);
         this.setContent(fileContent);
@@ -34,11 +37,11 @@ public class Document extends File {
         return 40 + content.length() * 2;
     }
 
-    private void setContent(String content) {
+    // -----------------Public methods----------------//
+
+    public void setContent(String content) {
         this.content = content;
     }
-
-    // -----------------Public methods----------------//
 
     @Override
     public boolean isDirectory() {
@@ -46,19 +49,40 @@ public class Document extends File {
     }
 
     @Override
-    public String toString() {
-        return "Document{" +
-                ", name='" + name
-                ;
+    public String getFullPath() {
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        Directory crtDir = (Directory) this.getParentDirectory();
+        while (crtDir != null) {
+            stack.push(crtDir.getName());
+            try {
+                crtDir = (Directory) crtDir.getParentDirectory();
+            } catch (NoSuchElementException e) {
+                break;
+            }
+        }
+        StringBuilder sb = new StringBuilder(".");
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop() + "/");
+        }
+        return sb.toString();
     }
 
     @Override
-    public File getParentDirectory() {
+    public String toString() {
+        return "Document{" + "type=" + type + ", name='" + name + '\'' + ", content='" + content + '\'' + ", directory="
+                + directory + '}';
+    }
+
+    protected File getParentDirectory() {
+
+        if (this.directory == null) {
+            throw new NoSuchElementException("Now is at root directory!");
+        }
         return this.directory;
     }
 
     public static void main(String[] args) {
-         //latter put it to test folder as Unit test;
+        // latter put it to test folder as Unit test;
     }
 
 }

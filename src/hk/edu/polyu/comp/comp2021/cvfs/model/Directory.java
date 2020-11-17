@@ -40,7 +40,6 @@ public class Directory extends File {
         parentDir = parent;
     }
 
-
     // -----------------Private methods----------------//
     private boolean duplicateName(String fileName) {
         for (File f : files) {
@@ -50,7 +49,7 @@ public class Directory extends File {
         }
         return false;
     }
-    
+
     /**
      *
      * delete this file. Deletion of a directory will recursively delete all files
@@ -108,12 +107,11 @@ public class Directory extends File {
         throw new NoSuchElementException("The file " + toDelName + "doesn't exist!");
     }
 
-    // -----------------Public methods----------------//
-
-
-
-    @Override
     protected File getParentDirectory() {
+
+        if (this.parentDir == null) {
+            throw new NoSuchElementException("Now is at root directory!");
+        }
         return this.parentDir;
     }
 
@@ -140,10 +138,31 @@ public class Directory extends File {
         return result;
     }
 
+    // -----------------Public methods----------------//
+
+    @Override
+    public String getFullPath() {
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        Directory crtDir = this;
+        while (crtDir != null) {
+            stack.push(crtDir.getName());
+            try {
+                crtDir = (Directory) crtDir.getParentDirectory();
+            } catch (NoSuchElementException e) {
+                break;
+            }
+        }
+        StringBuilder sb = new StringBuilder(".");
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop() + "/");
+        }
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
-        return "Directory{" +
-                "name= " + name+"}" ;
+        return "Directory{" + "type=" + type + ", name='" + name + '\'' + ", parentDir=" + parentDir + ", files="
+                + files + '}';
     }
 
     @Override
@@ -151,20 +170,7 @@ public class Directory extends File {
         return true;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Directory otherDir = (Directory) o;
-        return this.getFullName().equals(otherDir.getFullName()) && this.getFullPath().equals(otherDir.getFullPath());
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, name, parentDir);
-    }
 
     public static void main(String[] args) {
         // latter put it to test folder as Unit test;

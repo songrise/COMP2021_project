@@ -19,7 +19,7 @@ public class File implements Serializable {
         this.setName(name);
         this.setType(type);
         this.parentDir = parentDir;
-        System.out.print("**"+parentDir);
+        System.out.print("**" + parentDir);
     }
 
     /**
@@ -53,13 +53,6 @@ public class File implements Serializable {
         return 0;
     }
 
-    protected File getParentDirectory() {
-
-        if (this.parentDir == null) {
-            throw new NoSuchElementException("Now is at root directory!");
-        }
-        return this.parentDir;
-    }
 
     public String getFullPath() {
         ArrayDeque<String> stack = new ArrayDeque<>();
@@ -74,6 +67,12 @@ public class File implements Serializable {
         }
         return sb.toString();
     }
+
+    public String getFullyQualifiedName() {
+        return this.getFullPath()+this.getFullName();
+    }
+
+    
 
     /**
      * 
@@ -116,6 +115,21 @@ public class File implements Serializable {
     @Override
     public String toString() {
         return "File{" +
-                "name='" + name;
+                "name='" + name + '\'' +
+                ", parentDir=" + parentDir +
+                ", type=" + type +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        File otherFile = (File) obj;
+        return this.getName() == otherFile.getName() && this.getFullPath() == otherFile.getFullPath();
     }
 }

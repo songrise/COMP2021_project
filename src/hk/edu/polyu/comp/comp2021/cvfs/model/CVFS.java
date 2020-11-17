@@ -31,7 +31,7 @@ public class CVFS {
     }
 
     // -----------------Private methods----------------//
-    private void writeSerializable() {// for save propose
+    private void writeSerializable() {// for store propose
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("disk.model"));
             oos.writeObject(crtDisk);
@@ -43,7 +43,7 @@ public class CVFS {
         }
     }
 
-    private void readSerializable() {// for read propose
+    private void readSerializable() {// for load propose
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("disk.model"));
             crtDisk = (Disk) ois.readObject();
@@ -159,7 +159,6 @@ public class CVFS {
      */
     public void rename(String oldName, String newName) {
         pushUndoStack();
-
         File f = crtDisk.findFile(oldName);
         f.setName(newName);
     }
@@ -170,20 +169,18 @@ public class CVFS {
      * directory.
      */
     public void changeDir(String dirName) {
+        pushUndoStack();
         crtDisk.changeDir(dirName);
     }
 
     // TODO incomplete method
     public ArrayList<File> list() {
-        pushUndoStack();
-
         ArrayList<File> fileList = crtDisk.list();
         return fileList;
     }
 
     // TODO incomplete method
     public ArrayList<File> rlist() {
-        pushUndoStack();
 
         ArrayList<File> fileList = crtDisk.rList();
         return fileList;
@@ -235,6 +232,8 @@ public class CVFS {
         for (File f : t.list()) {
             System.out.println(f.getFullName());
         }
+        System.out.println(t.crtDisk.findFile("TestTxt2").getFullyQualifiedName());
+
         // test changeDir
         System.out.println(t.crtDisk.getWorkingDirName());
         t.changeDir("..");
@@ -255,7 +254,6 @@ public class CVFS {
         }
 
         t.undo();
-        t.undo();//bug here, two undo is needed. I will figure it out later.
         System.out.println("After Undo");
         for (File f : t.list()) {
             System.out.println(f.getFullName());

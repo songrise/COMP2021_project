@@ -108,4 +108,12 @@ public class Disk implements Serializable {
         workingDir.deleteFile(fileName);
     }
 
+    @Override
+    public String toString() {
+        return "Disk{" +
+                "capacity=" + capacity +
+                ", root=" + root +
+                ", workingDir=" + workingDir +
+                '}';
+    }
 }
