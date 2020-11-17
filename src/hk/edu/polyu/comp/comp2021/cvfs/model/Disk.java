@@ -56,7 +56,7 @@ public class Disk implements Serializable {
             throw new IllegalArgumentException("Null file name");
         }
         for (File f : workingDir.files) {
-            if (f.name.equals(fileName)) {
+            if (f.getName().equals(fileName)) {
                 return f;
             }
         }

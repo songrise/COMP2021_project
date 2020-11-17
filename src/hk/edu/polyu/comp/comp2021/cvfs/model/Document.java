@@ -15,11 +15,11 @@ public class Document extends File {
     private final Directory directory;
 
     // -----------------Constructor----------------//
-    protected Document(Directory dir) {
+    private Document(Directory dir) {
         this.directory = dir;
     }
 
-    protected Document(String fileName, String typeStr, String fileContent, Directory dir) {
+    Document(String fileName, String typeStr, String fileContent, Directory dir) {
         this.setName(fileName);
         this.setType(typeStr);
         this.setContent(fileContent);

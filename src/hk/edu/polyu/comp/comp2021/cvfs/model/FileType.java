@@ -14,30 +14,28 @@ import java.io.Serializable;
 public class FileType implements Serializable {
 
     private static final long serialVersionUID = 2021L;
-    private int typeID; // this is not final, since file type could be modified
+    private final int typeID;
 
     private FileType(String typeStr) {
-        if (typeStr != null) {
-            String t = typeStr.toUpperCase();
-            switch (t) {
-                case "TXT":
-                    this.typeID = 1;
-                    break;
-                case "JAVA":
-                    this.typeID = 2;
-                    break;
-                case "HTML":
-                    this.typeID = 3;
-                    break;
-                case "CSS":
-                    this.typeID = 4;
-                    break;
-                case "DIR":
-                    this.typeID = 5;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid type name!");
-            }
+        String t = typeStr.toUpperCase();
+        switch (t) {
+            case "TXT":
+                this.typeID = 1;
+                break;
+            case "JAVA":
+                this.typeID = 2;
+                break;
+            case "HTML":
+                this.typeID = 3;
+                break;
+            case "CSS":
+                this.typeID = 4;
+                break;
+            case "DIR":
+                this.typeID = 5;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid type name!");
         }
     }
 
@@ -45,11 +43,12 @@ public class FileType implements Serializable {
      * 
      * @return type id, 1~4 for documents, 5 is directory.
      */
-    protected int getTypeID() {
+    int getTypeID() {
         return this.typeID;
     }
 
     /**
+     * A factory method
      * 
      * @param typeStr type name, String. valid
      *                argument:"txt","java","html","css","dir". case-insensitive
@@ -96,9 +95,5 @@ public class FileType implements Serializable {
             default:
                 return "errortype";
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }

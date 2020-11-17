@@ -9,16 +9,10 @@
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
+import java.io.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Objects;
 
 public class CVFS {
@@ -27,16 +21,79 @@ public class CVFS {
 
     private Disk crtDisk;
 
-    CVFS() {
+    public  CVFS() {
         sysUndoStack = new ArrayDeque<>(128);// for undo propose
         sysRedoStack = new ArrayDeque<>(128);// for redo propose
         this.newDisk(255);
     }
 
-    CVFS(int capacity) {// initialize with specified storage.
+    public CVFS(int capacity) {// initialize with specified storage.
         sysUndoStack = new ArrayDeque<>(128);// for undo propose
         sysRedoStack = new ArrayDeque<>(128);// for redo propose
         this.newDisk(capacity);
+    }
+
+    public static void main(String[] args) {
+        // latter put this to unit test.
+        CVFS t = new CVFS();
+        t.newDisk(1024);
+        t.newDoc("TestTxt", "TXT", "TESTING");
+        t.newDoc("TestHtml", "htMl", "TESTING,Html");
+        System.out.println(t.isDocument("TestTxt"));
+        t.newDir("TFolder1");
+        if (t.isDocument("TFolder1")) {
+            System.out.println("ERROR");
+        }
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+        t.changeDir("TFolder1");
+        t.newDoc("TestTxt2", "TXT", "TESTING");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+        System.out.println(t.crtDisk.findFile("TestTxt2").getFullyQualifiedName());
+
+        // test changeDir
+        System.out.println(t.crtDisk.getWorkingDirName());
+        t.changeDir("..");
+
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        System.out.println("Before Deletion");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        t.delFile("TestTxt");
+        System.out.println("After Deletion");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        t.undo();
+        System.out.println("After Undo");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        t.redo();
+        System.out.println("After Redo");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        //test save
+        t.store();
+        CVFS t2= new CVFS();
+        t2.load();
+        System.out.println("After load");
+        for (File f : t2.list()) {
+            System.out.println(f.getFullName());
+        }
+
     }
 
     // -----------------Private methods----------------//
@@ -61,7 +118,7 @@ public class CVFS {
     }
 
     /**
-     * 
+     *
      * @return a deep copy of the current disk object
      */
     private Object deepCopy() {
@@ -98,6 +155,8 @@ public class CVFS {
         sysRedoStack.push(Objects.requireNonNull(crtDiskCopy));
     }
 
+    // -----------------Public methods----------------//
+
     private Disk popRedoStack() {
         if (sysRedoStack.isEmpty()) {
             throw new EmptyStackException();
@@ -107,7 +166,6 @@ public class CVFS {
         }
     }
 
-    // -----------------Public methods----------------//
     /**
      * create a new disk of specified size, and change current disk to it
      *
@@ -206,69 +264,6 @@ public class CVFS {
      */
     public void redo() {
         this.crtDisk = popRedoStack();
-    }
-
-    public static void main(String[] args) {
-        // latter put this to unit test.
-        CVFS t = new CVFS();
-        t.newDisk(1024);
-        t.newDoc("TestTxt", "TXT", "TESTING");
-        t.newDoc("TestHtml", "htMl", "TESTING,Html");
-        System.out.println(t.isDocument("TestTxt"));
-        t.newDir("TFolder1");
-        if (t.isDocument("TFolder1")) {
-            System.out.println("ERROR");
-        }
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-        t.changeDir("TFolder1");
-        t.newDoc("TestTxt2", "TXT", "TESTING");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-        System.out.println(t.crtDisk.findFile("TestTxt2").getFullyQualifiedName());
-
-        // test changeDir
-        System.out.println(t.crtDisk.getWorkingDirName());
-        t.changeDir("..");
-
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        System.out.println("Before Deletion");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        t.delFile("TestTxt");
-        System.out.println("After Deletion");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        t.undo();
-        System.out.println("After Undo");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        t.redo();
-        System.out.println("After Redo");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        //test save
-        t.store();
-        CVFS t2= new CVFS();
-        t2.load();
-        System.out.println("After load");
-        for (File f : t2.list()) {
-            System.out.println(f.getFullName());
-        }
-
     }
 
 }

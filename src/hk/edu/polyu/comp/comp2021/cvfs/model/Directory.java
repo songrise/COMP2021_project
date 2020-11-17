@@ -20,7 +20,7 @@ public class Directory extends File {
     private final FileType type; // type of directory cannot be modified.
     private String name;
     private Directory parentDir;
-    private final ArrayList<File> files;
+    protected final ArrayList<File> files;
 
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
@@ -114,8 +114,7 @@ public class Directory extends File {
     }
 
     protected ArrayList<File> list() {
-        ArrayList<File> result = new ArrayList<>(files);
-        return result;
+        return new ArrayList<>(files);
     }
 
     protected ArrayList<File> rList() {
