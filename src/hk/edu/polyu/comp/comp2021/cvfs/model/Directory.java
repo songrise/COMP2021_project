@@ -132,6 +132,15 @@ public class Directory extends File {
     }
 
     @Override
+    public String toString() {
+        return "Directory{" +
+                ", name='" + name + '\'' +
+                ", parentDir=" + parentDir +
+                ", files=" + files +
+                '}';
+    }
+
+    @Override
     public boolean isDirectory() {
         return true;
     }

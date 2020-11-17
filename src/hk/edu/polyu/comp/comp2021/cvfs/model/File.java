@@ -3,6 +3,7 @@ package hk.edu.polyu.comp.comp2021.cvfs.model;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 
 public class File implements Serializable {
     private static final long serialVersionUID = 2021L;
@@ -33,8 +34,10 @@ public class File implements Serializable {
      * @return full name of this file e.g. test.txt
      */
     public String getFullName() {
-
-        return this.name + "." + this.type.toString();
+        if (this.isDirectory())
+            return this.name + "/";
+        else
+            return this.name + "." + this.type.toString();
     }
 
     /**
@@ -46,6 +49,9 @@ public class File implements Serializable {
     }
 
     public File getParentDirectory() {
+        if (this.parentDir == null) {
+            throw new NoSuchElementException("Now is at root directory!");
+        }
         return this.parentDir;
     }
 
