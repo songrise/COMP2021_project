@@ -4,7 +4,7 @@
 * @Author    : Ruixiang JIANG (Songrise)
 * @Time      : 2020-11-14
 * @Github    ：https://github.com/songrise
-* @Descriptions: type of file
+* @Descriptions: type of file, may use a enum class to replace.
 **/
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;

@@ -5,7 +5,6 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.Directory;
 
 public class Document extends File {
 

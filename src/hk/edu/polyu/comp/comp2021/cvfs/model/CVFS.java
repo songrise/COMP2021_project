@@ -1,3 +1,12 @@
+/**
+* -*- coding : utf-8 -*-
+* @FileName  : CVFS.java
+* @Author    : Ruixiang JIANG (Songrise)
+* @Time      : 2020-11-17
+* @Github    ：https://github.com/songrise
+* @Descriptions: CVFS encapsulation
+**/
+
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import java.util.ArrayDeque;

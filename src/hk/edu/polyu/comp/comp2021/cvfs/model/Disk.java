@@ -1,3 +1,12 @@
+/**
+* -*- coding : utf-8 -*-
+* @FileName  : Disk.java
+* @Author    : Ruixiang JIANG (Songrise)
+* @Time      : 2020-11-17
+* @Github    ：https://github.com/songrise
+* @Descriptions: encapsulation of root dir, working dir, and capacity.
+**/
+
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import java.io.Serializable;
@@ -110,10 +119,6 @@ public class Disk implements Serializable {
 
     @Override
     public String toString() {
-        return "Disk{" +
-                "capacity=" + capacity +
-                ", root=" + root +
-                ", workingDir=" + workingDir +
-                '}';
+        return "Disk{" + "capacity=" + capacity + ", root=" + root + ", workingDir=" + workingDir + '}';
     }
 }
