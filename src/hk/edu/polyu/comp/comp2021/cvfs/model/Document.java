@@ -9,10 +9,10 @@ import java.util.NoSuchElementException;
 public class Document extends File {
 
     private static final long serialVersionUID = 2021L;
+    private final Directory directory;
     private FileType type;
     private String name;
     private String content;
-    private final Directory directory;
 
     // -----------------Constructor----------------//
     private Document(Directory dir) {
@@ -32,14 +32,14 @@ public class Document extends File {
         return this.content;
     }
 
-    public int getSize() {
-        return 40 + content.length() * 2;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     // -----------------Public methods----------------//
 
-    public void setContent(String content) {
-        this.content = content;
+    public int getSize() {
+        return 40 + content.length() * 2;
     }
 
     @Override
@@ -47,7 +47,6 @@ public class Document extends File {
         return false;
     }
 
-    @Override
     public String getFullPath() {
         ArrayDeque<String> stack = new ArrayDeque<>();
         Directory crtDir = (Directory) this.getParentDirectory();
@@ -78,10 +77,6 @@ public class Document extends File {
             throw new NoSuchElementException("Now is at root directory!");
         }
         return this.directory;
-    }
-
-    public static void main(String[] args) {
-        // latter put it to test folder as Unit test;
     }
 
 }

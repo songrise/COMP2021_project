@@ -40,16 +40,8 @@ public class FileType implements Serializable {
     }
 
     /**
-     * 
-     * @return type id, 1~4 for documents, 5 is directory.
-     */
-    int getTypeID() {
-        return this.typeID;
-    }
-
-    /**
      * A factory method
-     * 
+     *
      * @param typeStr type name, String. valid
      *                argument:"txt","java","html","css","dir". case-insensitive
      * @return reference to newly created FileType object.
@@ -61,6 +53,14 @@ public class FileType implements Serializable {
         } else {
             throw new IllegalArgumentException("Null type name!");
         }
+    }
+
+    /**
+     *
+     * @return type id, 1~4 for documents, 5 is directory.
+     */
+    int getTypeID() {
+        return this.typeID;
     }
 
     @Override

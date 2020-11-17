@@ -1,11 +1,12 @@
 /**
-* -*- coding : utf-8 -*-
-* @FileName  : CVFS.java
-* @Author    : Ruixiang JIANG (Songrise)
-* @Time      : 2020-11-17
-* @Github    ：https://github.com/songrise
-* @Descriptions: CVFS encapsulation
-**/
+ * -*- coding : utf-8 -*-
+ *
+ * @FileName : CVFS.java
+ * @Author : Ruixiang JIANG (Songrise)
+ * @Time : 2020-11-17
+ * @Github ：https://github.com/songrise
+ * @Descriptions: CVFS encapsulation
+ **/
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
@@ -21,7 +22,7 @@ public class CVFS {
 
     private Disk crtDisk;
 
-    public  CVFS() {
+    public CVFS() {
         sysUndoStack = new ArrayDeque<>(128);// for undo propose
         sysRedoStack = new ArrayDeque<>(128);// for redo propose
         this.newDisk(255);
@@ -33,68 +34,6 @@ public class CVFS {
         this.newDisk(capacity);
     }
 
-    public static void main(String[] args) {
-        // latter put this to unit test.
-        CVFS t = new CVFS();
-        t.newDisk(1024);
-        t.newDoc("TestTxt", "TXT", "TESTING");
-        t.newDoc("TestHtml", "htMl", "TESTING,Html");
-        System.out.println(t.isDocument("TestTxt"));
-        t.newDir("TFolder1");
-        if (t.isDocument("TFolder1")) {
-            System.out.println("ERROR");
-        }
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-        t.changeDir("TFolder1");
-        t.newDoc("TestTxt2", "TXT", "TESTING");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-        System.out.println(t.crtDisk.findFile("TestTxt2").getFullyQualifiedName());
-
-        // test changeDir
-        System.out.println(t.crtDisk.getWorkingDirName());
-        t.changeDir("..");
-
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        System.out.println("Before Deletion");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        t.delFile("TestTxt");
-        System.out.println("After Deletion");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        t.undo();
-        System.out.println("After Undo");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        t.redo();
-        System.out.println("After Redo");
-        for (File f : t.list()) {
-            System.out.println(f.getFullName());
-        }
-
-        //test save
-        t.store();
-        CVFS t2= new CVFS();
-        t2.load();
-        System.out.println("After load");
-        for (File f : t2.list()) {
-            System.out.println(f.getFullName());
-        }
-
-    }
 
     // -----------------Private methods----------------//
     private void writeSerializable() {// for store propose
@@ -122,6 +61,7 @@ public class CVFS {
      * @return a deep copy of the current disk object
      */
     private Object deepCopy() {
+        //Note: this method reference https://www.cnblogs.com/mengdd/archive/2013/02/20/2917971.html
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -138,7 +78,7 @@ public class CVFS {
 
     private void pushUndoStack() {
         Disk crtDiskCopy = (Disk) deepCopy();
-        sysUndoStack.push(crtDiskCopy);
+        sysUndoStack.push(Objects.requireNonNull(crtDiskCopy));
     }
 
     private Disk popUndoStack() {
@@ -172,7 +112,7 @@ public class CVFS {
      * @param size
      */
     public void newDisk(int size) {
-        if(crtDisk != null)
+        if (crtDisk != null)
             pushUndoStack();
         this.crtDisk = new Disk(size);
     }

@@ -1,11 +1,12 @@
 /**
-* -*- coding : utf-8 -*-
-* @FileName  : Disk.java
-* @Author    : Ruixiang JIANG (Songrise)
-* @Time      : 2020-11-17
-* @Github    ：https://github.com/songrise
-* @Descriptions: encapsulation of root dir, working dir, and capacity.
-**/
+ * -*- coding : utf-8 -*-
+ *
+ * @FileName : Disk.java
+ * @Author : Ruixiang JIANG (Songrise)
+ * @Time : 2020-11-17
+ * @Github ：https://github.com/songrise
+ * @Descriptions: encapsulation of root dir, working dir, and capacity.
+ **/
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
@@ -39,23 +40,23 @@ public class Disk implements Serializable {
         return size;
     }
 
-    // -----------------Protected methods----------------//
 
-    protected void makeDocument(String docName, String typeStr, String content) {
-        // storage will only full when creating new file, so lazy evaluation here.
+    void makeDocument(String docName, String typeStr, String content) {
+        // storage will only full when creating new file, so lazy evaluation of size.
         int size = this.calStorage();
-        if (content.length() * 2 + 40 + size > this.capacity) {
-            throw new OutOfMemoryError("Insufficient storage!" + (content.length() * 2 + 40) + " required, "
+        final int newFileSize = content.length() * 2 + 40;
+        if (newFileSize + size > this.capacity) {
+            throw new OutOfMemoryError("Insufficient storage!" + (newFileSize) + " required, "
                     + (this.capacity - size) + " left.");
         }
         workingDir.createDocument(docName, typeStr, content);
     }
 
-    protected File findFile(String fileName) throws NoSuchElementException {
+    File findFile(String fileName) throws NoSuchElementException {
         if (fileName == null) {
             throw new IllegalArgumentException("Null file name");
         }
-        for (File f : workingDir.files) {
+        for (File f : workingDir.list()) {
             if (f.getName().equals(fileName)) {
                 return f;
             }
@@ -63,15 +64,15 @@ public class Disk implements Serializable {
         throw new NoSuchElementException("No file named " + fileName + " in working directory!");
     }
 
-    protected ArrayList<File> list() {
+    ArrayList<File> list() {
         return workingDir.list();
     }
 
-    protected ArrayList<File> rList() {
+    ArrayList<File> rList() {
         return workingDir.rList();
     }
 
-    protected void changeDir(String newDirName) {
+    void changeDir(String newDirName) {
         if (newDirName == null) {
             throw new IllegalArgumentException("Null file name");
         } else if (newDirName.equals("..")) {
@@ -95,7 +96,7 @@ public class Disk implements Serializable {
         }
     }
 
-    protected Directory getWorkingDir() {
+    Directory getWorkingDir() {
         return this.workingDir;
     }
 

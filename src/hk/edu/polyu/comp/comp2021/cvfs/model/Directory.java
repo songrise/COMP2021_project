@@ -20,7 +20,7 @@ public class Directory extends File {
     private final FileType type; // type of directory cannot be modified.
     private String name;
     private Directory parentDir;
-    protected final ArrayList<File> files;
+    private final ArrayList<File> files;
 
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
@@ -97,7 +97,7 @@ public class Directory extends File {
 
     protected void deleteFile(String toDelName) throws NoSuchElementException {
         for (File d : files) {
-            if (d.name.equals(toDelName)) {
+            if (d.getName().equals(toDelName)) {
                 this.deleteFile(d);
                 return;
             }
@@ -134,7 +134,6 @@ public class Directory extends File {
 
     // -----------------Public methods----------------//
 
-    @Override
     public String getFullPath() {
         ArrayDeque<String> stack = new ArrayDeque<>();
         Directory crtDir = this;
