@@ -40,14 +40,6 @@ public class Directory extends File {
         parentDir = parent;
     }
 
-    public File createDocument(String fileName, String typeStr, String content) throws IllegalArgumentException {
-        if (duplicateName(fileName)) {
-            throw new IllegalArgumentException("File: " + fileName + " already exist!");
-        }
-        Document newDoc = new Document(fileName, typeStr, content, this);
-        this.files.add(newDoc);
-        return newDoc;
-    }
 
     // -----------------Private methods----------------//
     private boolean duplicateName(String fileName) {
@@ -58,8 +50,39 @@ public class Directory extends File {
         }
         return false;
     }
+    
+    /**
+     *
+     * delete this file. Deletion of a directory will recursively delete all files
+     * inside this dir. Avoid using this method
+     */
+    private void deleteFile() {
+        Directory parent = parentDir;
+        if (parent != null && parent.files.contains(this))// root dir cannot be deleted
+            parent.files.remove(this);
+    }
+
+    /**
+     *
+     * delete the specified File Object in current directory. Deletion of a
+     * directory will recursively delete all files inside this dir.
+     */
+    private void deleteFile(File toDel) {
+        if (this.files.contains(toDel)) {
+            this.files.remove(toDel);
+        }
+    }
 
     // -----------------Protected methods----------------//
+    protected File createDocument(String fileName, String typeStr, String content) throws IllegalArgumentException {
+        if (duplicateName(fileName)) {
+            throw new IllegalArgumentException("File: " + fileName + " already exist!");
+        }
+        Document newDoc = new Document(fileName, typeStr, content, this);
+        this.files.add(newDoc);
+        return newDoc;
+    }
+
     protected Directory createDirectory(String dirName) throws IllegalArgumentException {
         if (duplicateName(dirName)) {
             throw new IllegalArgumentException("File: " + dirName + " already exist!");
@@ -75,30 +98,7 @@ public class Directory extends File {
         return newDir;
     }
 
-    /**
-     *
-     * delete this file. Deletion of a directory will recursively delete all files
-     * inside this dir. Avoid using this method
-     */
-    protected void deleteFile() {
-        Directory parent = parentDir;
-        if (parent != null && parent.files.contains(this))// root dir cannot be deleted
-            parent.files.remove(this);
-    }
-
-    /**
-     *
-     * delete the specified File Object in current directory. Deletion of a
-     * directory will recursively delete all files inside this dir.
-     */
-    protected void deleteFile(File toDel) {
-        if (this.files.contains(toDel)) {
-            this.files.remove(toDel);
-        }
-    }
-    // -----------------Public methods----------------//
-
-    public void deleteFile(String toDelName) throws NoSuchElementException {
+    protected void deleteFile(String toDelName) throws NoSuchElementException {
         for (File d : files) {
             if (d.name == toDelName) {
                 this.deleteFile(d);
@@ -106,6 +106,15 @@ public class Directory extends File {
             }
         }
         throw new NoSuchElementException("The file " + toDelName + "doesn't exist!");
+    }
+
+    // -----------------Public methods----------------//
+
+
+
+    @Override
+    protected File getParentDirectory() {
+        return this.parentDir;
     }
 
     protected ArrayList<File> list() {
@@ -134,10 +143,7 @@ public class Directory extends File {
     @Override
     public String toString() {
         return "Directory{" +
-                ", name='" + name + '\'' +
-                ", parentDir=" + parentDir +
-                ", files=" + files +
-                '}';
+                "name= " + name+"}" ;
     }
 
     @Override

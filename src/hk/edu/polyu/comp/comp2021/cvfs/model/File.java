@@ -19,6 +19,7 @@ public class File implements Serializable {
         this.setName(name);
         this.setType(type);
         this.parentDir = parentDir;
+        System.out.print("**"+parentDir);
     }
 
     /**
@@ -48,7 +49,12 @@ public class File implements Serializable {
         return this.type.getTypeID() == 5;
     }
 
-    public File getParentDirectory() {
+    public int getSize() {
+        return 0;
+    }
+
+    protected File getParentDirectory() {
+
         if (this.parentDir == null) {
             throw new NoSuchElementException("Now is at root directory!");
         }
@@ -74,9 +80,9 @@ public class File implements Serializable {
      * @param nameStr
      * @throws IllegalArgumentException
      */
-    public void setName(String nameStr) throws IllegalArgumentException {
+    protected void setName(String nameStr) throws IllegalArgumentException {
         if (nameStr == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Name of file cannot be empty");
         } else if (nameStr.length() > 10) {
             throw new IllegalArgumentException("Name of file longer than 10");
         } else {
@@ -107,4 +113,9 @@ public class File implements Serializable {
         this.type = FileType.initType(typeStr);
     }
 
+    @Override
+    public String toString() {
+        return "File{" +
+                "name='" + name;
+    }
 }

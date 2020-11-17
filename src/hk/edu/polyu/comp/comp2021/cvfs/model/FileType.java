@@ -9,8 +9,11 @@
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-public class FileType {
+import java.io.Serializable;
 
+public class FileType implements Serializable {
+
+    private static final long serialVersionUID = 2021L;
     private int typeID; // this is not final, since file type could be modified
 
     private FileType(String typeStr) {

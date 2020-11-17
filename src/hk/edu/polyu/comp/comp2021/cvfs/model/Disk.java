@@ -4,19 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import sun.nio.ch.DirectBuffer;
-
 public class Disk implements Serializable {
     private static final long serialVersionUID = 2021L;
-    private final int size;
+    private final int capacity;
     private final Directory root;
     private Directory workingDir;
 
-    Disk(int size) {
-        if (size < 0) {
+    Disk(int capacity) {
+        if (capacity < 0) {
             throw new IllegalArgumentException("Disk size cannot < 0");
         } else {
-            this.size = size;
+            this.capacity = capacity;
         }
         this.root = Directory.createRoot();
         workingDir = root;
@@ -24,20 +22,27 @@ public class Disk implements Serializable {
 
     // -----------------Private methods----------------//
 
-    // -----------------Public methods----------------//
-    public void makeDir(String dirName) {
-        workingDir.createDirectory(dirName);
+    private int calStorage() {
+        int size = 0;
+        for (File f : root.rList()) {
+            size += f.getSize();
+        }
+        return size;
     }
 
-    public void deleteFile(String fileName) {
-        workingDir.deleteFile(fileName);
-    }
+    // -----------------Protected methods----------------//
 
-    public void makeDocument(String docName, String typeStr, String content) {
+    protected void makeDocument(String docName, String typeStr, String content) {
+        // storage will only full when creating new file, so lazy evaluation here.
+        int size = this.calStorage();
+        if (content.length() * 2 + 40 + size > this.capacity) {
+            throw new OutOfMemoryError("Insufficient storage!" + (content.length() * 2 + 40) + " required, "
+                    + (this.capacity - size) + " left.");
+        }
         workingDir.createDocument(docName, typeStr, content);
     }
 
-    public File findFile(String fileName) throws NoSuchElementException {
+    protected File findFile(String fileName) throws NoSuchElementException {
         if (fileName == null) {
             throw new IllegalArgumentException("Null file name");
         }
@@ -49,23 +54,23 @@ public class Disk implements Serializable {
         throw new NoSuchElementException("No file named " + fileName + " in working directory!");
     }
 
-    public Directory getWorkingDir() {
-        return this.workingDir;
-    }
-
-    public ArrayList<File> list() {
+    protected ArrayList<File> list() {
         return workingDir.list();
     }
 
-    public ArrayList<File> rList() {
+    protected ArrayList<File> rList() {
         return workingDir.rList();
     }
 
-    public void changeDir(String newDirName) {
+    protected void changeDir(String newDirName) {
         if (newDirName == null) {
             throw new IllegalArgumentException("Null file name");
         } else if (newDirName.equals("..")) {
-            this.workingDir = (Directory) workingDir.getParentDirectory();
+            try {
+                this.workingDir = (Directory) workingDir.getParentDirectory();
+            } catch (NoSuchElementException e) {
+                e.printStackTrace();
+            }
         } else {
             try {
                 File f = findFile(newDirName);
@@ -80,4 +85,27 @@ public class Disk implements Serializable {
 
         }
     }
+
+    protected Directory getWorkingDir() {
+        return (Directory) this.workingDir;
+    }
+
+    // -----------------Public methods----------------//
+
+    public String getWorkingDirName() {
+        return this.workingDir.getName();
+    }
+
+    public int getCapacity() {
+        return this.capacity;
+    }
+
+    public void makeDir(String dirName) {
+        workingDir.createDirectory(dirName);
+    }
+
+    public void deleteFile(String fileName) {
+        workingDir.deleteFile(fileName);
+    }
+
 }

@@ -19,13 +19,19 @@ public class CVFS {
     private Disk crtDisk;
 
     CVFS() {
-        sysUndoStack = new ArrayDeque<>(128);
-        sysRedoStack = new ArrayDeque<>(128);
+        sysUndoStack = new ArrayDeque<>(128);// for undo propose
+        sysRedoStack = new ArrayDeque<>(128);// for redo propose
         this.newDisk(255);
     }
 
+    CVFS(int capacity) {// initialize with specified storage.
+        sysUndoStack = new ArrayDeque<>(128);// for undo propose
+        sysRedoStack = new ArrayDeque<>(128);// for redo propose
+        this.newDisk(capacity);
+    }
+
     // -----------------Private methods----------------//
-    private void writeSerializable() {
+    private void writeSerializable() {// for save propose
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("disk.model"));
             oos.writeObject(crtDisk);
@@ -37,7 +43,7 @@ public class CVFS {
         }
     }
 
-    private void readSerializable() {
+    private void readSerializable() {// for read propose
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("disk.model"));
             crtDisk = (Disk) ois.readObject();
@@ -79,7 +85,7 @@ public class CVFS {
         if (sysUndoStack.isEmpty()) {
             throw new EmptyStackException();
         } else {
-            sysRedoStack.push((Disk) deepCopy());
+            pushRedoStack();
             Disk d = sysUndoStack.pop();
             return d;
         }
@@ -107,7 +113,8 @@ public class CVFS {
      * @param size
      */
     public void newDisk(int size) {
-        // pushUndoStack();
+        if(crtDisk != null)
+            pushUndoStack();
         this.crtDisk = new Disk(size);
     }
 
@@ -119,7 +126,7 @@ public class CVFS {
      * @param content
      */
     public void newDoc(String docName, String typeStr, String content) {
-        // pushUndoStack();
+        pushUndoStack();
         this.crtDisk.makeDocument(docName, typeStr, content);
     }
 
@@ -129,7 +136,7 @@ public class CVFS {
      * @param docName
      */
     public void newDir(String dirName) {
-        // pushUndoStack();
+        pushUndoStack();
         crtDisk.makeDir(dirName);
     }
 
@@ -142,7 +149,7 @@ public class CVFS {
      * @param content
      */
     public void delFile(String fileName) {
-        // pushUndoStack();
+        pushUndoStack();
         crtDisk.deleteFile(fileName);
     }
 
@@ -151,7 +158,7 @@ public class CVFS {
      *
      */
     public void rename(String oldName, String newName) {
-        // pushUndoStack();
+        pushUndoStack();
 
         File f = crtDisk.findFile(oldName);
         f.setName(newName);
@@ -168,7 +175,7 @@ public class CVFS {
 
     // TODO incomplete method
     public ArrayList<File> list() {
-        // pushUndoStack();
+        pushUndoStack();
 
         ArrayList<File> fileList = crtDisk.list();
         return fileList;
@@ -176,7 +183,7 @@ public class CVFS {
 
     // TODO incomplete method
     public ArrayList<File> rlist() {
-        // pushUndoStack();
+        pushUndoStack();
 
         ArrayList<File> fileList = crtDisk.rList();
         return fileList;
@@ -190,42 +197,85 @@ public class CVFS {
         writeSerializable();
     }
 
-    public void read() {
-        // pushUndoStack();
+    public void load() {
+        pushUndoStack();
         readSerializable();
     }
 
+    /**
+     * undo previous operation
+     */
     public void undo() {
         this.crtDisk = popUndoStack();
     }
 
+    /**
+     * redo previous operation
+     */
     public void redo() {
         this.crtDisk = popRedoStack();
     }
 
     public static void main(String[] args) {
-        //latter put this to unit test.
+        // latter put this to unit test.
         CVFS t = new CVFS();
-        t.newDisk(127);
-        t.newDoc("TestTxt","TXT","TESTING");
-        t.newDoc("TestHtml","htMl","TESTING,Html");
+        t.newDisk(1024);
+        t.newDoc("TestTxt", "TXT", "TESTING");
+        t.newDoc("TestHtml", "htMl", "TESTING,Html");
         System.out.println(t.isDocument("TestTxt"));
         t.newDir("TFolder1");
-        if(t.isDocument("TFolder1")){
+        if (t.isDocument("TFolder1")) {
             System.out.println("ERROR");
         }
-        for (File f :t.list()){
+        for (File f : t.list()) {
             System.out.println(f.getFullName());
         }
         t.changeDir("TFolder1");
-        t.newDoc("TestTxt2","TXT","TESTING");
-        for (File f :t.list()){
+        t.newDoc("TestTxt2", "TXT", "TESTING");
+        for (File f : t.list()) {
             System.out.println(f.getFullName());
         }
-//        t.changeDir(".."); buggy
-//        for (File f :t.list()){
-//            System.out.println(f.getFullName());
-//        }
+        // test changeDir
+        System.out.println(t.crtDisk.getWorkingDirName());
+        t.changeDir("..");
+
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        System.out.println("Before Deletion");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        t.delFile("TestTxt");
+        System.out.println("After Deletion");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        t.undo();
+        t.undo();//bug here, two undo is needed. I will figure it out later.
+        System.out.println("After Undo");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        t.redo();
+        System.out.println("After Redo");
+        for (File f : t.list()) {
+            System.out.println(f.getFullName());
+        }
+
+        //test save
+        t.store();
+        CVFS t2= new CVFS();
+        t2.load();
+        System.out.println("After load");
+        for (File f : t2.list()) {
+            System.out.println(f.getFullName());
+        }
+
     }
 
 }

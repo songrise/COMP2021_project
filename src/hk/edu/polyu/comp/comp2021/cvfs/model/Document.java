@@ -11,6 +11,7 @@ public class Document extends File {
     private String content;
     private Directory directory;
 
+
     // -----------------Constructor----------------//
     Document(Directory dir) {
         this.directory = dir;
@@ -42,6 +43,18 @@ public class Document extends File {
     @Override
     public boolean isDirectory() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                ", name='" + name
+                ;
+    }
+
+    @Override
+    public File getParentDirectory() {
+        return this.directory;
     }
 
     public static void main(String[] args) {
