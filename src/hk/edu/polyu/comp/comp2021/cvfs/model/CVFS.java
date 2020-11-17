@@ -15,15 +15,15 @@ import java.util.EmptyStackException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 public class CVFS {
-    private ArrayDeque<Disk> sysUndoStack;
-    private ArrayDeque<Disk> sysRedoStack;
+    private final ArrayDeque<Disk> sysUndoStack;
+    private final ArrayDeque<Disk> sysRedoStack;
 
     private Disk crtDisk;
 
@@ -45,8 +45,6 @@ public class CVFS {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("disk.model"));
             oos.writeObject(crtDisk);
             oos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,11 +55,7 @@ public class CVFS {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("disk.model"));
             crtDisk = (Disk) ois.readObject();
             ois.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -95,23 +89,21 @@ public class CVFS {
             throw new EmptyStackException();
         } else {
             pushRedoStack();
-            Disk d = sysUndoStack.pop();
-            return d;
+            return sysUndoStack.pop();
         }
     }
 
     private void pushRedoStack() {
         Disk crtDiskCopy = (Disk) deepCopy();
-        sysRedoStack.push(crtDiskCopy);
+        sysRedoStack.push(Objects.requireNonNull(crtDiskCopy));
     }
 
     private Disk popRedoStack() {
         if (sysRedoStack.isEmpty()) {
             throw new EmptyStackException();
         } else {
-            sysUndoStack.push((Disk) deepCopy());
-            Disk d = sysRedoStack.pop();
-            return d;
+            sysUndoStack.push((Disk) Objects.requireNonNull(deepCopy()));
+            return sysRedoStack.pop();
         }
     }
 
@@ -142,7 +134,6 @@ public class CVFS {
     /**
      * create a new dir in working directory, the name must be distinct
      *
-     * @param docName
      */
     public void newDir(String dirName) {
         pushUndoStack();
@@ -153,9 +144,6 @@ public class CVFS {
      * delete the specified file in working directory.Deletion of directory is
      * recursive.
      *
-     * @param docName
-     * @param typeStr
-     * @param content
      */
     public void delFile(String fileName) {
         pushUndoStack();
@@ -184,15 +172,13 @@ public class CVFS {
 
     // TODO incomplete method
     public ArrayList<File> list() {
-        ArrayList<File> fileList = crtDisk.list();
-        return fileList;
+        return crtDisk.list();
     }
 
     // TODO incomplete method
     public ArrayList<File> rlist() {
 
-        ArrayList<File> fileList = crtDisk.rList();
-        return fileList;
+        return crtDisk.rList();
     }
 
     public boolean isDocument(String fileName) {

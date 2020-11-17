@@ -3,7 +3,7 @@ package hk.edu.polyu.comp.comp2021.cvfs.model;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
+
 
 public class File implements Serializable {
     private static final long serialVersionUID = 2021L;
@@ -63,7 +63,7 @@ public class File implements Serializable {
         }
         StringBuilder sb = new StringBuilder("./");
         while (!stack.isEmpty()) {
-            sb.append(stack.pop() + "/");
+            sb.append(stack.pop()).append("/");
         }
         return sb.toString();
     }
@@ -130,6 +130,6 @@ public class File implements Serializable {
             return false;
         }
         File otherFile = (File) obj;
-        return this.getName() == otherFile.getName() && this.getFullPath() == otherFile.getFullPath();
+        return this.getName().equals(otherFile.getName()) && this.getFullPath().equals(otherFile.getFullPath());
     }
 }

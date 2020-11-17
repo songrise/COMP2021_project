@@ -9,7 +9,7 @@
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-import java.io.Serializable;
+
 import java.util.*;
 
 public class Directory extends File {
@@ -20,14 +20,14 @@ public class Directory extends File {
     private final FileType type; // type of directory cannot be modified.
     private String name;
     private Directory parentDir;
-    ArrayList<File> files;
+    private final ArrayList<File> files;
 
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
         this.setName("unnamed");
         this.type = FileType.initType("DIR");
         parentDir = null;
-        files = new ArrayList<File>();
+        files = new ArrayList<>();
     }
 
     private Directory(String name) {
@@ -43,7 +43,7 @@ public class Directory extends File {
     // -----------------Private methods----------------//
     private boolean duplicateName(String fileName) {
         for (File f : files) {
-            if (f.getName() == fileName) {
+            if (f.getName().equals(fileName)) {
                 return true;
             }
         }
@@ -57,7 +57,7 @@ public class Directory extends File {
      */
     private void deleteFile() {
         Directory parent = parentDir;
-        if (parent != null && parent.files.contains(this))// root dir cannot be deleted
+        if (parent != null)// root dir cannot be deleted
             parent.files.remove(this);
     }
 
@@ -67,9 +67,7 @@ public class Directory extends File {
      * directory will recursively delete all files inside this dir.
      */
     private void deleteFile(File toDel) {
-        if (this.files.contains(toDel)) {
-            this.files.remove(toDel);
-        }
+        this.files.remove(toDel);
     }
 
     // -----------------Protected methods----------------//
@@ -99,7 +97,7 @@ public class Directory extends File {
 
     protected void deleteFile(String toDelName) throws NoSuchElementException {
         for (File d : files) {
-            if (d.name == toDelName) {
+            if (d.name.equals(toDelName)) {
                 this.deleteFile(d);
                 return;
             }
@@ -116,10 +114,7 @@ public class Directory extends File {
     }
 
     protected ArrayList<File> list() {
-        ArrayList<File> result = new ArrayList<>();
-        for (File f : files) {
-            result.add(f);
-        }
+        ArrayList<File> result = new ArrayList<>(files);
         return result;
     }
 
@@ -154,7 +149,7 @@ public class Directory extends File {
         }
         StringBuilder sb = new StringBuilder(".");
         while (!stack.isEmpty()) {
-            sb.append(stack.pop() + "/");
+            sb.append(stack.pop()).append("/");
         }
         return sb.toString();
     }

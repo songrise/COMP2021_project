@@ -19,18 +19,24 @@ public class FileType implements Serializable {
     private FileType(String typeStr) {
         if (typeStr != null) {
             String t = typeStr.toUpperCase();
-            if (t.equals("TXT")) {
-                this.typeID = 1;
-            } else if (t.equals("JAVA")) {
-                this.typeID = 2;
-            } else if (t.equals("HTML")) {
-                this.typeID = 3;
-            } else if (t.equals("CSS")) {
-                this.typeID = 4;
-            } else if (t.equals("DIR")) {
-                this.typeID = 5;
-            } else {
-                throw new IllegalArgumentException("Invalid type name!");
+            switch (t) {
+                case "TXT":
+                    this.typeID = 1;
+                    break;
+                case "JAVA":
+                    this.typeID = 2;
+                    break;
+                case "HTML":
+                    this.typeID = 3;
+                    break;
+                case "CSS":
+                    this.typeID = 4;
+                    break;
+                case "DIR":
+                    this.typeID = 5;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid type name!");
             }
         }
     }

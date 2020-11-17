@@ -96,7 +96,7 @@ public class Disk implements Serializable {
     }
 
     protected Directory getWorkingDir() {
-        return (Directory) this.workingDir;
+        return this.workingDir;
     }
 
     // -----------------Public methods----------------//

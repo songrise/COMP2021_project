@@ -1,8 +1,8 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-import java.io.Serializable;
+
 import java.util.ArrayDeque;
-import java.util.HashSet;
+
 import java.util.NoSuchElementException;
 
 
@@ -12,7 +12,7 @@ public class Document extends File {
     private FileType type;
     private String name;
     private String content;
-    private Directory directory;
+    private final Directory directory;
 
     // -----------------Constructor----------------//
     protected Document(Directory dir) {
@@ -61,7 +61,7 @@ public class Document extends File {
         }
         StringBuilder sb = new StringBuilder(".");
         while (!stack.isEmpty()) {
-            sb.append(stack.pop() + "/");
+            sb.append(stack.pop()).append("/");
         }
         return sb.toString();
     }
