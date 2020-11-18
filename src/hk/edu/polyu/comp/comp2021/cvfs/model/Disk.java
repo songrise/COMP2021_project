@@ -51,6 +51,10 @@ public class Disk implements Serializable {
         return true;
     }
 
+    File findFile(String name) {
+        return this.workingDir.findFile(name);
+    }
+
     // -----------------Public methods----------------//
     public void makeDocument(String docName, String typeStr, String content) {
         if (this.canStore(content))

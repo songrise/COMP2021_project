@@ -1,7 +1,6 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
 
 public class File implements Serializable {
     private static final long serialVersionUID = 2021L;

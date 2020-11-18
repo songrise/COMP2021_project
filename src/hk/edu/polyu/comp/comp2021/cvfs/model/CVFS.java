@@ -5,7 +5,7 @@
  * @Author : Ruixiang JIANG (Songrise)
  * @Time : 2020-11-17
  * @Github ：https://github.com/songrise
- * @Descriptions: CVFS encapsulation
+ * @Descriptions: CVFS encapsulation. THIS SHALL BE RENAMED OR PUT OUTSIDE OF model
  **/
 
 package hk.edu.polyu.comp.comp2021.cvfs.model;
@@ -15,6 +15,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Objects;
+
+import hk.edu.polyu.comp.comp2021.cvfs.controller.Criterion;
+
 
 public class CVFS {
     private final ArrayDeque<Disk> sysUndoStack;
@@ -172,14 +175,14 @@ public class CVFS {
         return crtDisk.list();
     }
 
-    // TODO incomplete method
+    // TODO incomplete method, a wrapper is needed for indentation
     public ArrayList<File> rlist() {
 
         return crtDisk.rList();
     }
 
-    public boolean isDocument(String fileName) {
-        return !this.crtDisk.getWorkingDir().findFile(fileName).isDirectory();
+    public boolean isDocument(String fileName) {// latter wrap it as criterion
+        return !this.crtDisk.findFile(fileName).isDirectory();
     }
 
     /**
@@ -211,5 +214,16 @@ public class CVFS {
     public void redo() {
         this.crtDisk = popRedoStack();
     }
+    //temp method
+    public boolean meetCriterion(Criterion cri, String fileName) {
+        File f = this.crtDisk.findFile(fileName);
+        return  cri.eval(f);
+    }
+
+    // public File searchByCriterion(File f){
+    // }
+
+    // public File rSearchByCriterion(File f){
+    // }
 
 }
