@@ -3,12 +3,12 @@ package hk.edu.polyu.comp.comp2021.cvfs.model;
 import java.io.Serializable;
 import java.util.HashSet;
 
-
 public class File implements Serializable {
     private static final long serialVersionUID = 2021L;
     private String name;
     private FileType type;
 
+    // -----------------Constructor----------------//
     File() {
     }
 
@@ -17,6 +17,28 @@ public class File implements Serializable {
         this.setType(type);
     }
 
+    // -----------------Private methods----------------//
+    private boolean isAllowedInName(char ch) {
+        return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ('1' <= ch && ch <= '9');
+    }
+
+    private boolean isValidName(String nameStr) {
+        final int MAX_LEN = 10;
+        if (nameStr == null) {
+            throw new IllegalArgumentException("Name of file cannot be empty");
+        } else if (nameStr.length() > MAX_LEN) {
+            throw new IllegalArgumentException("Name of file cannot longer than 10");
+        } else {
+            for (char ch : nameStr.toCharArray()) {
+                if (!isAllowedInName(ch)) {
+                    throw new IllegalArgumentException("Illegal character found in file name: " + ch);
+                }
+            }
+        }
+        return true;
+    }
+
+    // -----------------Public methods----------------//
     /**
      * @return name of this file
      */
@@ -24,39 +46,12 @@ public class File implements Serializable {
         return this.name;
     }
 
-    /**
-     * @param nameStr
-     * @throws IllegalArgumentException
-     */
-    protected void setName(String nameStr) throws IllegalArgumentException {
-        final int MAXLEN = 10;
-        if (nameStr == null) {
-            throw new IllegalArgumentException("Name of file cannot be empty");
-        } else if (nameStr.length() > 10) {
-            throw new IllegalArgumentException("Name of file longer than 10");
-        } else {
-            HashSet<Character> allowedCH = new HashSet<Character>() {// initialize a valid character set.
-                private static final long serialVersionUID = 2021L;
+    public FileType getType() {
+        return this.type;
+    }
 
-                {
-                    for (char c = 'a', C = 'A'; c <= 'z'; c++, C++) {
-                        add(c);
-                        add(C);
-                    }
-                    for (int i = 0; i < MAXLEN; i++) {
-                        add(Integer.toString(i).charAt(0));
-                    }
-                }
-            };
-            for (char ch : nameStr.toCharArray()) {
-                if (!allowedCH.contains(ch)) {
-                    throw new IllegalArgumentException("Illegal character in file name: " + ch);
-                }
-            }
-        }
-
-        // when this line is reached, the file name is valid.
-        this.name = nameStr;
+    public int getSize() {
+        return 0;
     }
 
     /**
@@ -70,26 +65,28 @@ public class File implements Serializable {
     }
 
     /**
-     * @return true if this file is a directory.
+     * @param nameStr
+     * @throws IllegalArgumentException
      */
-    public boolean isDirectory() {
-        return this.type.getTypeID() == 5;
-    }
-
-    public int getSize() {
-        return 0;
+    public void setName(String nameStr) throws IllegalArgumentException {
+        if (isValidName(nameStr))
+            this.name = nameStr;
     }
 
     public void setType(String typeStr) {
         this.type = FileType.initType(typeStr);
     }
 
+    /**
+     * @return true if this file is a directory.
+     */
+    public boolean isDirectory() {
+        return this.type.isDirectory();
+    }
+
     @Override
     public String toString() {
-        return "File{" +
-                "name='" + name + '\'' +
-                ", type=" + type +
-                '}';
+        return "File{" + "name='" + name + '\'' + ", type=" + type + '}';
     }
 
     @Override

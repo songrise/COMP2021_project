@@ -17,6 +17,9 @@ public class FileType implements Serializable {
     private final int typeID;
 
     private FileType(String typeStr) {
+        if (typeStr == null) {
+            throw new IllegalArgumentException("Invalid type name!");
+        }
         String t = typeStr.toUpperCase();
         switch (t) {
             case "TXT":
@@ -48,11 +51,7 @@ public class FileType implements Serializable {
      * @throws IllegalArgumentException
      */
     public static FileType initType(String typeStr) throws IllegalArgumentException {
-        if (typeStr != null) {
-            return new FileType(typeStr);
-        } else {
-            throw new IllegalArgumentException("Null type name!");
-        }
+        return new FileType(typeStr);
     }
 
     /**
@@ -61,6 +60,10 @@ public class FileType implements Serializable {
      */
     int getTypeID() {
         return this.typeID;
+    }
+
+    public boolean isDirectory() {
+        return this.typeID == 5;
     }
 
     @Override

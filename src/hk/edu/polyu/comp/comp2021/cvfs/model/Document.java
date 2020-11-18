@@ -1,50 +1,41 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-
 import java.util.ArrayDeque;
 
 import java.util.NoSuchElementException;
 
-
 public class Document extends File {
 
     private static final long serialVersionUID = 2021L;
-    private final Directory directory;
-    private FileType type;
-    private String name;
+    private final Directory parentDir;
     private String content;
 
     // -----------------Constructor----------------//
-    private Document(Directory dir) {
-        this.directory = dir;
-    }
 
     Document(String fileName, String typeStr, String fileContent, Directory dir) {
-        this.setName(fileName);
-        this.setType(typeStr);
+        super(fileName, typeStr);
         this.setContent(fileContent);
-        this.directory = dir;
+        this.parentDir = dir;
     }
 
     // -----------------Private methods----------------//
 
-    private String getContent() {
+    // -----------------Public methods----------------//
+    public String getContent() {
         return this.content;
     }
 
     public void setContent(String content) {
+        // content cannot be null, but it can be empty.
+        if (content == null) {
+            throw new IllegalArgumentException("Content cannot be null!");
+        }
         this.content = content;
     }
 
-    // -----------------Public methods----------------//
-
+    @Override
     public int getSize() {
         return 40 + content.length() * 2;
-    }
-
-    @Override
-    public boolean isDirectory() {
-        return false;
     }
 
     public String getFullPath() {
@@ -65,18 +56,17 @@ public class Document extends File {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        return "Document{" + "type=" + type + ", name='" + name + '\'' + ", content='" + content + '\'' + ", directory="
-                + directory + '}';
-    }
-
     protected File getParentDirectory() {
 
-        if (this.directory == null) {
+        if (this.parentDir == null) {
             throw new NoSuchElementException("Now is at root directory!");
         }
-        return this.directory;
+        return this.parentDir;
     }
 
+    @Override
+    public String toString() {
+        return "Document{" + "type=" + this.getType() + ", name='" + this.getName() + '\'' + ", content='" + content
+                + '\'' + ", directory=" + parentDir + '}';
+    }
 }

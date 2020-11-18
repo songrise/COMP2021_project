@@ -37,7 +37,8 @@ public class CVFSTest {
 
     @Before
     public void before(){
-        t1 =  new CVFS(512);
+        t1 =  new CVFS();
+        t1.newDisk(512);
     }
 
     @Test

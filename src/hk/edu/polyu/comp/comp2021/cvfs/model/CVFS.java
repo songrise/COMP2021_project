@@ -23,22 +23,20 @@ public class CVFS {
     private Disk crtDisk;
 
     public CVFS() {
-        sysUndoStack = new ArrayDeque<>(128);// for undo propose
-        sysRedoStack = new ArrayDeque<>(128);// for redo propose
+        sysUndoStack = new ArrayDeque<>(64);// for undo propose
+        sysRedoStack = new ArrayDeque<>(64);// for redo propose
         this.newDisk(255);
     }
 
     public CVFS(int capacity) {// initialize with specified storage.
-        sysUndoStack = new ArrayDeque<>(128);// for undo propose
-        sysRedoStack = new ArrayDeque<>(128);// for redo propose
+        this();
         this.newDisk(capacity);
     }
 
-
     // -----------------Private methods----------------//
-    private void writeSerializable() {// for store propose
+    private void writeSerializable(String fileName) {// for store propose
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("disk.model"));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName));
             oos.writeObject(crtDisk);
             oos.close();
         } catch (IOException e) {
@@ -46,9 +44,9 @@ public class CVFS {
         }
     }
 
-    private void readSerializable() {// for load propose
+    private void readSerializable(String fileName) {// for load propose
         try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("disk.model"));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
             crtDisk = (Disk) ois.readObject();
             ois.close();
         } catch (ClassNotFoundException | IOException e) {
@@ -61,7 +59,9 @@ public class CVFS {
      * @return a deep copy of the current disk object
      */
     private Object deepCopy() {
-        //Note: this method reference https://www.cnblogs.com/mengdd/archive/2013/02/20/2917971.html
+        // Note: this method reference
+        // https://www.cnblogs.com/mengdd/archive/2013/02/20/2917971.html
+
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -95,16 +95,16 @@ public class CVFS {
         sysRedoStack.push(Objects.requireNonNull(crtDiskCopy));
     }
 
-    // -----------------Public methods----------------//
-
     private Disk popRedoStack() {
         if (sysRedoStack.isEmpty()) {
-            throw new EmptyStackException();
+            throw new EmptyStackException(); // nothing to redo
         } else {
             sysUndoStack.push((Disk) Objects.requireNonNull(deepCopy()));
             return sysRedoStack.pop();
         }
     }
+
+    // -----------------Public methods----------------//
 
     /**
      * create a new disk of specified size, and change current disk to it
@@ -154,8 +154,7 @@ public class CVFS {
      */
     public void rename(String oldName, String newName) {
         pushUndoStack();
-        File f = crtDisk.findFile(oldName);
-        f.setName(newName);
+        crtDisk.rename(oldName, newName);
     }
 
     /**
@@ -180,16 +179,23 @@ public class CVFS {
     }
 
     public boolean isDocument(String fileName) {
-        return !this.crtDisk.findFile(fileName).isDirectory();
+        return !this.crtDisk.getWorkingDir().findFile(fileName).isDirectory();
     }
 
+    /**
+     * Store the disk to local file system, the output is binary encoded.
+     */
     public void store() {
-        writeSerializable();
+        writeSerializable("storedCVFS.CVFS");
     }
+
+    /**
+     * Load the disk from local file system, the output is binary encoded.
+     */
 
     public void load() {
         pushUndoStack();
-        readSerializable();
+        readSerializable("storedCVFS.CVFS");
     }
 
     /**
