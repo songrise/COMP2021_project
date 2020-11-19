@@ -92,8 +92,7 @@ public class Directory extends File {
      * @return
      */
     protected static Directory createRoot() {
-        Directory rootDir = new Directory();
-        return rootDir;
+        return new Directory();
     }
 
     void deleteFile(String toDelName) throws NoSuchElementException {
