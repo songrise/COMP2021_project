@@ -7,7 +7,7 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SimpleCriterion extends Criterion {
+public class SimpleCriterion extends ConcreteCriterion {
 
     // separation of data and logic, good design for reusability and maintenance
     private static final HashMap<String, ArrayList<String>> attrOp;// attribute and their corresponding operations
@@ -15,6 +15,7 @@ public class SimpleCriterion extends Criterion {
     private String attrName;
     private String opName;
     private String val;
+    private Operation op;
     static {
         attrOp = new HashMap<String, ArrayList<String>>() {
             {

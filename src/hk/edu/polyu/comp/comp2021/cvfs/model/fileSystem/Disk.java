@@ -6,7 +6,8 @@
  * @Time : 2020-11-17
  * @Github ：https://github.com/songrise
  * @Descriptions: An encapsulation of root dir, working dir, and capacity.
- * Generally, it is just a delegate class. But we still believe this encapsulation is necessary.
+ * Generally, it is just a delegate class for Directory. But we still believe
+ * this encapsulation is necessary to provide some kind of separation .
  **/
 
 package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
@@ -21,7 +22,7 @@ public class Disk implements Serializable {
     private final Directory root;
     private Directory workingDir;
 
-    Disk(int capacity) {
+    public Disk(int capacity) {
         if (capacity < 0) {
             throw new IllegalArgumentException("Disk size cannot < 0");
         } else {
@@ -50,7 +51,6 @@ public class Disk implements Serializable {
         }
         return true;
     }
-
 
 
     // -----------------Public methods----------------//

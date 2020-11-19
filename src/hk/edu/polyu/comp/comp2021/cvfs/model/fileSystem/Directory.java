@@ -11,7 +11,7 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
 
 import java.util.*;
 
-public class Directory extends File {
+public class Directory extends ConcreteFile {
 
     // -----------------field ----------------//
 
@@ -46,17 +46,6 @@ public class Directory extends File {
             }
         }
         return false;
-    }
-
-    /**
-     *
-     * delete this file. Deletion of a directory will recursively delete all files
-     * inside this dir. Avoid using this method
-     */
-    private void deleteFile() {
-        Directory parent = parentDir;
-        if (parent != null)// root dir cannot be deleted
-            parent.files.remove(this);
     }
 
     /**
@@ -163,6 +152,11 @@ public class Directory extends File {
             sb.append(stack.pop()).append("/");
         }
         return sb.toString();
+    }
+
+    @Override
+    public String getFullName() {
+        return this.getName()+"/";
     }
 
     @Override

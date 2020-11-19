@@ -183,4 +183,20 @@ public class CVFSTest {
         t1.newBinaryCri("CC","AB","BB","||");
         t1.printAllCriteria();
     }
+
+    @Test
+    public void criTest(){
+        t1.newDoc("small","txt","small");
+        t1.newDoc("huge","txt","This is a huge file, please be careful!!!");
+        show(t1);
+        t1.newSimpleCri("AA","size","<","70");
+        t1.newNegation("AB","AA");
+
+        for (File f :t1.searchByCriterion("AA")){
+            System.out.println(f.getFullName());
+        }
+        for (File f :t1.searchByCriterion("AB")){
+            System.out.println(f.getFullName());
+        }
+    }
 }

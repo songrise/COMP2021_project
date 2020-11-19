@@ -10,9 +10,8 @@
 package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
-import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.FileType;
 
-class NameContainsOperation extends Operation {
+class NameContainsOperation extends ConcreteOperation {
     NameContainsOperation() {
         super("contains");
     }
@@ -29,7 +28,7 @@ class NameContainsOperation extends Operation {
     }
 }
 
-class TypeEqualsOperation extends Operation {
+class TypeEqualsOperation extends ConcreteOperation {
     TypeEqualsOperation() {
         super("equals");
     }
@@ -42,11 +41,11 @@ class TypeEqualsOperation extends Operation {
     public boolean eval(Object operand1, Object operand2) {
         File fileA = (File) operand1;
         String strB = (String) operand2;
-        return fileA.getType().equals(FileType.initType(strB));
+        return fileA.getType().equals(strB.toLowerCase());
     }
 }
 
-class SizeLargerOperation extends Operation {
+class SizeLargerOperation extends ConcreteOperation {
     SizeLargerOperation() {
         super(">");
     }
@@ -59,7 +58,7 @@ class SizeLargerOperation extends Operation {
     }
 }
 
-class SizeLessOperation extends Operation {
+class SizeLessOperation extends ConcreteOperation {
     SizeLessOperation() {
         super("<");
     }
@@ -72,7 +71,7 @@ class SizeLessOperation extends Operation {
     }
 }
 
-class SizeLargerEqualOperation extends Operation {
+class SizeLargerEqualOperation extends ConcreteOperation {
     SizeLargerEqualOperation() {
         super(">=");
     }
@@ -85,7 +84,7 @@ class SizeLargerEqualOperation extends Operation {
     }
 }
 
-class SizeLessEqualOperation extends Operation {
+class SizeLessEqualOperation extends ConcreteOperation {
     SizeLessEqualOperation() {
         super("<=");
     }
@@ -98,7 +97,7 @@ class SizeLessEqualOperation extends Operation {
     }
 }
 
-class SizeNotEqualOperation extends Operation {
+class SizeNotEqualOperation extends ConcreteOperation {
     SizeNotEqualOperation() {
         super("!=");
     }
@@ -111,7 +110,7 @@ class SizeNotEqualOperation extends Operation {
     }
 }
 
-class SizeEqualOperation extends Operation {
+class SizeEqualOperation extends ConcreteOperation {
     SizeEqualOperation() {
         super("!=");
     }

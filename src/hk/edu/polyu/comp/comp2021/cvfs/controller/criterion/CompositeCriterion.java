@@ -4,11 +4,11 @@ import hk.edu.polyu.comp.comp2021.cvfs.controller.operation.LogicOpsFactory;
 import hk.edu.polyu.comp.comp2021.cvfs.controller.operation.Operation;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
-public class CompositeCriterion extends Criterion {
+public class CompositeCriterion extends ConcreteCriterion {
 
-    final Criterion criterionA;
-    final Criterion criterionB;
-    final String logicOpName;
+    private final Criterion criterionA;
+    private final Criterion criterionB;
+    private final String logicOpName;
 
     public CompositeCriterion(String criName, String logicOp, Criterion criterionA, Criterion criterionB) {
         super(criName);
@@ -17,10 +17,7 @@ public class CompositeCriterion extends Criterion {
         this.logicOpName = logicOp;
     }
 
-    // -----------------Private methods----------------//
-    private boolean isCompositeCriterion(Criterion cri) {
-        return cri.getClass() == this.getClass();
-    }
+
 
     @Override
     public boolean eval(File f) {

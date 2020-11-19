@@ -9,7 +9,7 @@
 
 package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
 
-class LogicAndOperation extends Operation {
+class LogicAndOperation extends ConcreteOperation {
     LogicAndOperation() {
         super("&&");
     }
@@ -22,7 +22,7 @@ class LogicAndOperation extends Operation {
     }
 }
 
-class LogicOrOperation extends Operation {
+class LogicOrOperation extends ConcreteOperation {
     LogicOrOperation() {
         super("||");
     }
@@ -35,7 +35,7 @@ class LogicOrOperation extends Operation {
     }
 }
 
-class LogicNotOperation extends Operation {
+class LogicNotOperation extends ConcreteOperation {
     LogicNotOperation() {
         super("!");
     }

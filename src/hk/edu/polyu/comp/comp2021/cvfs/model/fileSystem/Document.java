@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 
 import java.util.NoSuchElementException;
 
-public class Document extends File {
+public class Document extends ConcreteFile {
 
     private static final long serialVersionUID = 2021L;
     private final Directory parentDir;
@@ -19,6 +19,15 @@ public class Document extends File {
     }
 
     // -----------------Private methods----------------//
+
+    File getParentDirectory() {
+
+        if (this.parentDir == null) {
+            throw new NoSuchElementException("Now is at root directory!");
+        }
+        return this.parentDir;
+    }
+
 
     // -----------------Public methods----------------//
     public String getContent() {
@@ -54,14 +63,6 @@ public class Document extends File {
             sb.append(stack.pop()).append("/");
         }
         return sb.toString();
-    }
-
-    protected File getParentDirectory() {
-
-        if (this.parentDir == null) {
-            throw new NoSuchElementException("Now is at root directory!");
-        }
-        return this.parentDir;
     }
 
     @Override
