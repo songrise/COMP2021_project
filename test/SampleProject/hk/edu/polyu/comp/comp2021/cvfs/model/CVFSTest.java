@@ -174,4 +174,13 @@ public class CVFSTest {
         t2.load();
         assertEquals(show(t2), "TestTXT.txt,TestHtml.html");
     }
+
+    @Test
+    public void newCriTest(){
+        t1.newSimpleCri("AA","size",">","100");
+        t1.newSimpleCri("BB","name","contains","File");
+        t1.newCompositeCri("AB","AA","BB","&&");
+        t1.newCompositeCri("CC","AB","BB","||");
+        t1.printAllCriteria();
+    }
 }

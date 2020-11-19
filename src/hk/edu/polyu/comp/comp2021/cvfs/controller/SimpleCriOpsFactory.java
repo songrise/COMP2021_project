@@ -148,6 +148,6 @@ public class SimpleCriOpsFactory {
                 return new SizeNotEqualOperation();
         }
 
-        throw new UnsupportedOperationException("Invalid Operation name: "+opName);
+        throw new UnsupportedOperationException("Invalid Operation name: " + opName);
     }
 }

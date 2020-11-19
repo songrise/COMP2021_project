@@ -118,4 +118,9 @@ public class SimpleCriterion extends Criterion {
         Operation op = SimpleCriOpsFactory.createOperation(opName);
         return op.eval(f, val);
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+" "+attrName+" "+opName+" "+val;
+    }
 }

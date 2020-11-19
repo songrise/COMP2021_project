@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import hk.edu.polyu.comp.comp2021.cvfs.controller.CompositeCriterion;
 import hk.edu.polyu.comp.comp2021.cvfs.controller.Criterion;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.IsDocumentCriterion;
 import hk.edu.polyu.comp.comp2021.cvfs.controller.SimpleCriterion;
 
 
@@ -32,6 +33,8 @@ public class CVFS {
         sysUndoStack = new ArrayDeque<>(64);// for undo propose
         sysRedoStack = new ArrayDeque<>(64);// for redo propose
         this.newDisk(255);
+        this.criList = new ArrayList<>(64);
+        this.criList.add(IsDocumentCriterion.getCriterion());
     }
 
     public CVFS(int capacity) {// initialize with specified storage.
@@ -195,11 +198,7 @@ public class CVFS {
 
         return crtDisk.rList();
     }
-
-    public boolean isDocument(String fileName) {// latter wrap it as criterion
-        return !this.crtDisk.findFile(fileName).isDirectory();
-    }
-
+    
     /**
      * Store the disk to local file system, the output is binary encoded.
      */
@@ -234,6 +233,13 @@ public class CVFS {
         SimpleCriterion cri = new SimpleCriterion(criName,attrName,opName,val);
         criList.add(cri);
     }
+
+    public void printAllCriteria(){
+        for(Criterion cri : criList){
+            System.out.println(cri.toString());
+        }
+    }
+
 
 
     public boolean meetCriterion(String criName, String fileName) {

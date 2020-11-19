@@ -6,3 +6,5 @@ polyu comp2021
 - method注释文档缺失
 - File 和子类耦合高，有点混乱
 - 文件名不应为空
+  CVFS 类过长 需要重构
+  critria duplicate name

@@ -47,4 +47,9 @@ public class Criterion {
     public boolean eval(File f) {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return ""+criName;
+    }
 }
