@@ -1,9 +1,8 @@
 package hk.edu.polyu.comp.comp2021.cvfs.controller;
 
-import hk.edu.polyu.comp.comp2021.cvfs.controller.Operation;
-import hk.edu.polyu.comp.comp2021.cvfs.controller.SimpleCriOpsFactory;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.operation.Operation;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.operation.SimpleCriOpsFactory;
 import hk.edu.polyu.comp.comp2021.cvfs.model.File;
-import hk.edu.polyu.comp.comp2021.cvfs.model.FileType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
