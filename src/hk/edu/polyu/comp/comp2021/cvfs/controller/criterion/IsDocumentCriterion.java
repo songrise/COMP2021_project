@@ -7,12 +7,12 @@
  * @Descriptions: isDocument criteria, singleton pattern.
  */
 
-package hk.edu.polyu.comp.comp2021.cvfs.controller;
+package hk.edu.polyu.comp.comp2021.cvfs.controller.criterion;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.File;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 public class IsDocumentCriterion extends Criterion {
-    private String name;
+    private final String name;
 
     private IsDocumentCriterion() {
         this.name = "isDocument";

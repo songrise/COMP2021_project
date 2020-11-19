@@ -7,7 +7,7 @@
 * @Descriptions: type of file, may use a enum class to replace.
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
 
 import java.io.Serializable;
 

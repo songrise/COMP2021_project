@@ -1,6 +1,6 @@
 package SampleProject.hk.edu.polyu.comp.comp2021.cvfs.model;
 import hk.edu.polyu.comp.comp2021.cvfs.model.CVFS;
-import hk.edu.polyu.comp.comp2021.cvfs.model.File;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -179,8 +179,8 @@ public class CVFSTest {
     public void newCriTest(){
         t1.newSimpleCri("AA","size",">","100");
         t1.newSimpleCri("BB","name","contains","File");
-        t1.newCompositeCri("AB","AA","BB","&&");
-        t1.newCompositeCri("CC","AB","BB","||");
+        t1.newBinaryCri("AB","AA","BB","&&");
+        t1.newBinaryCri("CC","AB","BB","||");
         t1.printAllCriteria();
     }
 }

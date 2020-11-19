@@ -1,8 +1,8 @@
-package hk.edu.polyu.comp.comp2021.cvfs.controller;
+package hk.edu.polyu.comp.comp2021.cvfs.controller.criterion;
 
 import hk.edu.polyu.comp.comp2021.cvfs.controller.operation.LogicOpsFactory;
 import hk.edu.polyu.comp.comp2021.cvfs.controller.operation.Operation;
-import hk.edu.polyu.comp.comp2021.cvfs.model.File;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 public class CompositeCriterion extends Criterion {
 

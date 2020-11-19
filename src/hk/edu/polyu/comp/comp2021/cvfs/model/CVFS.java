@@ -16,11 +16,12 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Objects;
 
-import hk.edu.polyu.comp.comp2021.cvfs.controller.CompositeCriterion;
-import hk.edu.polyu.comp.comp2021.cvfs.controller.Criterion;
-import hk.edu.polyu.comp.comp2021.cvfs.controller.IsDocumentCriterion;
-import hk.edu.polyu.comp.comp2021.cvfs.controller.SimpleCriterion;
-
+import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.CompositeCriterion;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.Criterion;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.IsDocumentCriterion;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.SimpleCriterion;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.Disk;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 public class CVFS {
     private final ArrayDeque<Disk> sysUndoStack;
@@ -113,12 +114,12 @@ public class CVFS {
         }
     }
 
-    private Criterion findCriterion(String criName){
+    private Criterion findCriterion(String criName) {
         if (criName == null) {
-            throw  new IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
-        for (Criterion c : criList){
-            if(c.getName().equals(criName)){
+        for (Criterion c : criList) {
+            if (c.getName().equals(criName)) {
                 return c;
             }
         }
@@ -189,16 +190,16 @@ public class CVFS {
     }
 
     // TODO incomplete method
-    public ArrayList<File> list() {
+    public ArrayList<hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File> list() {
         return crtDisk.list();
     }
 
     // TODO incomplete method, a wrapper is needed for indentation
-    public ArrayList<File> rlist() {
+    public ArrayList<hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File> rlist() {
 
         return crtDisk.rList();
     }
-    
+
     /**
      * Store the disk to local file system, the output is binary encoded.
      */
@@ -229,48 +230,46 @@ public class CVFS {
         this.crtDisk = popRedoStack();
     }
 
-    public void newSimpleCri(String criName,String attrName,String opName,String val){
-        SimpleCriterion cri = new SimpleCriterion(criName,attrName,opName,val);
+    public void newSimpleCri(String criName, String attrName, String opName, String val) {
+        SimpleCriterion cri = new SimpleCriterion(criName, attrName, opName, val);
         criList.add(cri);
     }
 
-    public void printAllCriteria(){
-        for(Criterion cri : criList){
+    public void printAllCriteria() {
+        for (Criterion cri : criList) {
             System.out.println(cri.toString());
         }
     }
 
-
-
     public boolean meetCriterion(String criName, String fileName) {
         Criterion cri = findCriterion(criName);
-        File f = this.crtDisk.findFile(fileName);
-        return  cri.eval(f);
+        hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File f = this.crtDisk.findFile(fileName);
+        return cri.eval(f);
     }
 
-    public void newCompositeCri(String thisCriName,String criNameA,String criNameB,String logicOp){
+    public void newBinaryCri(String thisCriName, String criNameA, String criNameB, String logicOp) {
         Criterion criA = findCriterion(criNameA);
         Criterion criB = findCriterion(criNameB);
-        Criterion newCri = new CompositeCriterion(thisCriName,logicOp,criA,criB);
+        Criterion newCri = new CompositeCriterion(thisCriName, logicOp, criA, criB);
         this.criList.add(newCri);
     }
 
-    public ArrayList<File> searchByCriterion(String criName){
+    public ArrayList<hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File> searchByCriterion(String criName) {
         Criterion cri = findCriterion(criName);
-        ArrayList<File> matched = new ArrayList<>();
-        for (File f : this.list()){
-            if (cri.eval(f)){
+        ArrayList<hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File> matched = new ArrayList<>();
+        for (hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File f : this.list()) {
+            if (cri.eval(f)) {
                 matched.add(f);
             }
         }
         return matched;
     }
 
-    public ArrayList<File> rSearchByCriterion(String criName){
+    public ArrayList<hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File> rSearchByCriterion(String criName) {
         Criterion cri = findCriterion(criName);
-        ArrayList<File> matched = new ArrayList<>();
-        for (File f : this.rlist()){
-            if (cri.eval(f)){
+        ArrayList<hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File> matched = new ArrayList<>();
+        for (File f : this.rlist()) {
+            if (cri.eval(f)) {
                 matched.add(f);
             }
         }

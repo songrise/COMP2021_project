@@ -7,12 +7,10 @@
 * @Descriptions: Strategy pattern for operations
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.controller;
+package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.File;
-import hk.edu.polyu.comp.comp2021.cvfs.model.FileType;
-
-import java.lang.reflect.Field;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.FileType;
 
 class NameContainsOperation extends Operation {
     NameContainsOperation() {

@@ -9,7 +9,7 @@
  * Generally, it is just a delegate class. But we still believe this encapsulation is necessary.
  **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class Disk implements Serializable {
     public File findFile(String name) {
         return this.workingDir.findFile(name);
     }
-    
+
     public void makeDocument(String docName, String typeStr, String content) {
         if (this.canStore(content))
             workingDir.createDocument(docName, typeStr, content);

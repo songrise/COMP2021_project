@@ -1,7 +1,16 @@
-package hk.edu.polyu.comp.comp2021.cvfs.controller;
+/**
+* -*- coding : utf-8 -*-
+* @FileName  : LogicOpsFactory.java
+* @Author    : Ruixiang JIANG (Songrise)
+* @Time      : 2020-11-19
+* @Github    ：https://github.com/songrise
+* @Descriptions: Logic operations and their simple factory. https://medium.com/nestedif/java-simple-factory-pattern-9c2538dd0265
+**/
 
-class LogicAndOperation extends Operation{
-    LogicAndOperation(){
+package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
+
+class LogicAndOperation extends Operation {
+    LogicAndOperation() {
         super("&&");
     }
 
@@ -13,8 +22,8 @@ class LogicAndOperation extends Operation{
     }
 }
 
-class LogicOrOperation extends Operation{
-    LogicOrOperation(){
+class LogicOrOperation extends Operation {
+    LogicOrOperation() {
         super("||");
     }
 
@@ -25,31 +34,30 @@ class LogicOrOperation extends Operation{
         return criA || criB;
     }
 }
-class LogicNotOperation extends Operation{
-    LogicNotOperation(){
+
+class LogicNotOperation extends Operation {
+    LogicNotOperation() {
         super("!");
     }
 
     @Override
     public boolean eval(Object operand1, Object operand2) {
-        //in this case, operand2 are ommited since not is unary.
+        // in this case, operand2 are ommited since not is unary.
         Boolean criA = (Boolean) operand1;
         return !criA;
     }
 }
 
-
-
 public class LogicOpsFactory {
-    public static Operation createOperation(String opName){
-        switch (opName){
+    public static Operation createOperation(String opName) {
+        switch (opName) {
             case "&&":
                 return new LogicAndOperation();
-            case"||":
+            case "||":
                 return new LogicOrOperation();
             case "!":
                 return new LogicNotOperation();
         }
-        throw new UnsupportedOperationException("Invalid Operation name: "+opName);
+        throw new UnsupportedOperationException("Invalid Operation name: " + opName);
     }
 }
