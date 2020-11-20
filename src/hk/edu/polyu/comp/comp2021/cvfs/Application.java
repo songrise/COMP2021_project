@@ -13,7 +13,7 @@ public class Application {
             }
             catch (IllegalArgumentException e){
                 e.printStackTrace();
-                continue;
+                break;
             }
         }
     }

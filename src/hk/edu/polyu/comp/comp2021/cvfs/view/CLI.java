@@ -1,7 +1,11 @@
 package hk.edu.polyu.comp.comp2021.cvfs.view;
 
 import hk.edu.polyu.comp.comp2021.cvfs.controller.CVFS;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
+
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.IllegalFormatException;
 import java.util.Scanner;
 
@@ -24,14 +28,14 @@ class Command {
         }
         String inputAfterTrim = input.trim();
 
-        if (inputAfterTrim.length() ==0){
+        if (inputAfterTrim.length() == 0){
             throw new IllegalArgumentException("Empty input!");
         }
-        String [] inputAfterSplit = inputAfterTrim.split(" ",1);
+        String [] inputAfterSplit = inputAfterTrim.split(" ");
 
         this.command = CommandType.valueOf(inputAfterSplit[0]);
         if (inputAfterSplit.length > 1){
-            this.parameters = inputAfterSplit[1].split(" ");
+            this.parameters = Arrays.copyOfRange(inputAfterSplit,1,inputAfterSplit.length);
         }
     }
 }
@@ -40,21 +44,22 @@ public class CLI {
     private String userInput;
     CVFS system;
     Command command;
+    Scanner scanner;
 
     public CLI(){
         this.system = new CVFS();
+        this.scanner = new Scanner(System.in);
     }
 
     public void scanInput() {
-        Scanner scan = new Scanner(System.in);
         String input = null;
 
         System.out.print("D:IdeaProjects\\MyCode>");
-        if (scan.hasNextLine()) {
-            input = scan.nextLine();
+        if (scanner.hasNextLine()) {
+            input = scanner.nextLine();
 //            System.out.println(input);
         }
-        scan.close();
+
         assert input != null;
         this.command = new Command(input);
     }
@@ -80,7 +85,10 @@ public class CLI {
                 system.changeDir(command.parameters[0]);
                 break;
             case list:
-                system.list();
+                for (File f:system.list()){
+                    System.out.println(f.getFullName());
+                }
+
                 break;
             case rList:
                 system.rlist();
