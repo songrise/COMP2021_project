@@ -10,12 +10,13 @@ import java.util.HashMap;
 public class SimpleCriterion extends ConcreteCriterion {
 
     // separation of data and logic, good design for reusability and maintenance
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final HashMap<String, ArrayList<String>> attrOp;// attribute and their corresponding operations
     // ? This may use a wrapper class?
     private String attrName;
     private String opName;
     private String val;
-    private Operation op;
+
     static {
         attrOp = new HashMap<String, ArrayList<String>>() {
             {
@@ -121,6 +122,6 @@ public class SimpleCriterion extends ConcreteCriterion {
 
     @Override
     public String toString() {
-        return super.toString()+" "+attrName+" "+opName+" "+val;
+        return attrName+" "+opName+" "+val;
     }
 }

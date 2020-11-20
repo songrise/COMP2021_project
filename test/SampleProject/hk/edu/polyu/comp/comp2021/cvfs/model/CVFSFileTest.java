@@ -1,6 +1,5 @@
 package SampleProject.hk.edu.polyu.comp.comp2021.cvfs.model;
 
-import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.Criterion;
 import hk.edu.polyu.comp.comp2021.cvfs.model.CVFS;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 import org.junit.Before;
@@ -10,7 +9,7 @@ import java.util.EmptyStackException;
 
 import static org.junit.Assert.*;
 
-public class CVFSTest {
+public class CVFSFileTest {
     CVFS t1;
 
     private String show(CVFS t) {
@@ -47,11 +46,19 @@ public class CVFSTest {
         return sb.toString();
     }
 
+    private void init(){
+        t1.newDoc("java","java","This is java file");
+        t1.newDoc("html","html","Web");
+        t1.newDoc("txt","txt","txtFile");
+        t1.newDir("Folder1");
+    }
+
     @Before
     public void before() {
         t1 = new CVFS();
         t1.newDisk(512);
     }
+
 
     @Test
     public void createDiskTest() {
@@ -178,12 +185,11 @@ public class CVFSTest {
 
     @Test
     public void testSaveLoad() {
-        t1.newDoc("TestTXT", "TXT", "TESTING");
-        t1.newDoc("TestHtml", "Html", "TESTING");
+        init();
         t1.store();
         CVFS t2 = new CVFS();
         t2.load();
-        assertEquals(show(t2), "TestTXT.txt,TestHtml.html");
+        assertEquals(show(t2), "java.java,html.html,txt.txt,Folder1/");
     }
 
     @Test
@@ -222,11 +228,37 @@ public class CVFSTest {
 
     @Test
     public void typeEqualsCriTest(){
-        t1.newDoc("hello","html","ABCDEFGH");
-        t1.newDoc("what","java","ABCDEFGH");
+        init();
         t1.newSimpleCri("AA","type","equals","HtMl");
-        assertEquals(showByCriterion(t1,"AA"),"hello.html");
+        assertEquals(showByCriterion(t1,"AA"),"html.html");
         t1.newNegation("AB","AA");
-        assertEquals(showByCriterion(t1,"AB"),"what.java");
+        assertEquals("java.java,txt.txt,Folder1/",showByCriterion(t1,"AB"));
+    }
+
+    @Test
+    public void typeBinaryCriTest1(){
+        init();
+        t1.newSimpleCri("AA","type","equals","HtMl");
+        t1.newSimpleCri("BB","name","contains","ml");
+        t1.newBinaryCri("AB","AA","BB","&&");
+        assertEquals("name contains ml\n" +
+                "(type equals HtMl) && (name contains ml)\n" +
+                "type equals HtMl\n" +
+                "isDocument\n",t1.printAllCriteria());
+        assertEquals("html.html",showByCriterion(t1,"AB"));
+
+    }
+    @Test
+    public void typeBinaryCriTest2(){
+        init();
+        t1.newSimpleCri("AA","type","equals","HtMl");
+        t1.newSimpleCri("BB","name","contains","java");
+        t1.newBinaryCri("AB","AA","BB","||");
+        assertEquals("name contains java\n" +
+                "(type equals HtMl) || (name contains java)\n" +
+                "type equals HtMl\n" +
+                "isDocument\n",t1.printAllCriteria());
+        assertEquals("java.java,html.html",showByCriterion(t1,"AB"));
+
     }
 }

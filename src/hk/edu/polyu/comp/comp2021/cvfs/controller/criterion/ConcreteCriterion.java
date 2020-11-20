@@ -2,7 +2,10 @@ package hk.edu.polyu.comp.comp2021.cvfs.controller.criterion;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
-public class ConcreteCriterion implements Criterion {
+import java.io.Serializable;
+
+public class ConcreteCriterion implements Criterion, Serializable {
+    private static final long serialVersionUID = 2021L;
     private final String criName;
 
     ConcreteCriterion() {
@@ -52,6 +55,8 @@ public class ConcreteCriterion implements Criterion {
 
     @Override
     public String toString() {
-        return ""+criName;
+        return criName;
     }
+
+
 }

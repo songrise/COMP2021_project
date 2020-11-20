@@ -21,7 +21,7 @@ public class Directory extends ConcreteFile {
 
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
-        super("", "DIR");
+        super("DIR");
         parentDir = null;
         files = new ArrayList<>();
     }
@@ -58,7 +58,7 @@ public class Directory extends ConcreteFile {
     }
 
     // -----------------Protected methods----------------//
-    protected File createDocument(String fileName, String typeStr, String content) throws IllegalArgumentException {
+    protected void createDocument(String fileName, String typeStr, String content) throws IllegalArgumentException {
         if (nameAlreadyExists(fileName)) {
             throw new IllegalArgumentException("File: " + fileName + " already exist!");
         }
@@ -80,9 +80,7 @@ public class Directory extends ConcreteFile {
      * 
      * @return
      */
-    protected static Directory createRoot() {
-        return new Directory();
-    }
+
 
     void deleteFile(String toDelName) throws NoSuchElementException {
         File fileToDel = this.findFile(toDelName);
@@ -136,6 +134,10 @@ public class Directory extends ConcreteFile {
     }
 
     // -----------------Public methods----------------//
+    public static Directory createRoot() {
+        return new Directory();
+    }
+
     public String getFullPath() {// TODO refactor to base class
         ArrayDeque<String> stack = new ArrayDeque<>();
         Directory crtDir = this;
@@ -161,8 +163,7 @@ public class Directory extends ConcreteFile {
 
     @Override
     public String toString() {
-        return "Directory{" + "type=" + this.getType() + ", name='" + this.getName() + '\'' + ", parentDir=" + parentDir
-                + ", files=" + files + '}';
+        return "Directory{"  + "name=" + this.getFullName()+"}";
     }
 
     public static void main(String[] args) {

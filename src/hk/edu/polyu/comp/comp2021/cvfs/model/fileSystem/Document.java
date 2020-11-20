@@ -67,7 +67,6 @@ public class Document extends ConcreteFile {
 
     @Override
     public String toString() {
-        return "Document{" + "type=" + this.getType() + ", name='" + this.getName() + '\'' + ", content='" + content
-                + '\'' + ", directory=" + parentDir + '}';
+        return "Document{" + "name=" + this.getFullName()+"}";
     }
 }

@@ -10,7 +10,10 @@ referring to strategy pattern https://en.wikipedia.org/wiki/Strategy_pattern and
 
 package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
 
-public class ConcreteOperation implements Operation {
+import java.io.Serializable;
+
+public class ConcreteOperation implements Operation, Serializable {
+    private static final long serialVersionUID = 2021L;
     private final String name;
 
     ConcreteOperation(String name) {

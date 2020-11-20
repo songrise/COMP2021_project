@@ -22,7 +22,10 @@ public class CompositeCriterion extends ConcreteCriterion {
     @Override
     public boolean eval(File f) {
         Operation logicOp = LogicOpsFactory.createOperation(logicOpName);
-        return logicOp.eval(this.criterionA.eval(f), this.criterionB.eval(f));
+        if (criterionB != null) {
+            return logicOp.eval(this.criterionA.eval(f), this.criterionB.eval(f));
+        }
+        return logicOp.eval(this.criterionA.eval(f), null);
     }
 
     @Override

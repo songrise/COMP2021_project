@@ -8,6 +8,10 @@ public class ConcreteFile implements File, Serializable {
     private FileType type;
 
     // -----------------Constructor----------------//
+    ConcreteFile(String type){
+        this.name = null;
+        this.setType(type);
+    }
 
 
     ConcreteFile(String name, String type) {
@@ -22,7 +26,7 @@ public class ConcreteFile implements File, Serializable {
 
     private boolean isValidName(String nameStr) {
         final int MAXLEN = 10;
-        if (nameStr == null) {
+        if (nameStr == null||nameStr.length() == 0) {
             throw new IllegalArgumentException("Name of file cannot be empty");
         } else if (nameStr.length() > MAXLEN) {
             throw new IllegalArgumentException("Name of file cannot longer than 10");

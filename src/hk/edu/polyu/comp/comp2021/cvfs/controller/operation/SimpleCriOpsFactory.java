@@ -23,7 +23,7 @@ class NameContainsOperation extends ConcreteOperation {
     @Override
     public boolean eval(Object operand1, Object operand2) {
         File fileA = (File) operand1;
-        String strB = (String) operand1;
+        String strB = (String) operand2;
         return fileA.getName().contains(strB);
     }
 }
@@ -40,6 +40,9 @@ class TypeEqualsOperation extends ConcreteOperation {
     @Override
     public boolean eval(Object operand1, Object operand2) {
         File fileA = (File) operand1;
+        if (fileA.isDirectory())
+            return false;
+
         String strB = (String) operand2;
         return fileA.getType().equals(strB.toLowerCase());
     }

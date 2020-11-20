@@ -17,8 +17,8 @@ public class FileType implements Serializable {
     private final int typeID;
 
     private FileType(String typeStr) {
-        if (typeStr == null) {
-            throw new IllegalArgumentException("Invalid type name!");
+        if (typeStr == null || typeStr.length()==0) {
+            throw new IllegalArgumentException("type name cannot be empty!");
         }
         String t = typeStr.toUpperCase();
         switch (t) {
