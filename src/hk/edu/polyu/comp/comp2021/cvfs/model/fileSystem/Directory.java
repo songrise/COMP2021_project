@@ -64,7 +64,7 @@ public class Directory extends ConcreteFile {
         }
         Document newDoc = new Document(fileName, typeStr, content, this);
         this.files.add(newDoc);
-        return newDoc;
+
     }
 
     protected void createDirectory(String dirName) throws IllegalArgumentException {
