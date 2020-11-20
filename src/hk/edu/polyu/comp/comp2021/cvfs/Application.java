@@ -1,11 +1,20 @@
-//package hk.edu.polyu.comp.comp2021.cvfs;
-//
-//import hk.edu.polyu.comp.comp2021.cvfs.controller.CVFS;
-//
-//public class Application {
-//
-//    public static void main(String[] args) {
-//        CVFS cvfs = new CVFS();
-//        // Initialize and utilize the system
-//    }
-//}
+package hk.edu.polyu.comp.comp2021.cvfs;
+
+import hk.edu.polyu.comp.comp2021.cvfs.view.CLI;
+
+public class Application {
+
+    public static void main(String[] args) {
+        CLI app = new CLI();
+        while (true){
+            try{
+                app.scanInput();
+                app.manageCommand();
+            }
+            catch (IllegalArgumentException e){
+                e.printStackTrace();
+                continue;
+            }
+        }
+    }
+}

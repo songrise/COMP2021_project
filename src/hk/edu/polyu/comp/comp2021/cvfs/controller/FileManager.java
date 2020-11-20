@@ -55,27 +55,6 @@ public class FileManager implements Serializable {
         }
     }
 
-    /**
-     *
-     * @return a deep copy of the current disk object
-     */
-    private Object deepCopy() {
-        // Note: this method reference
-        // https://www.cnblogs.com/mengdd/archive/2013/02/20/2917971.html
-
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bos);
-
-            oos.writeObject(crtDisk);
-            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-            ObjectInputStream ois = new ObjectInputStream(bis);
-            return ois.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     // -----------------Public methods----------------//
 
