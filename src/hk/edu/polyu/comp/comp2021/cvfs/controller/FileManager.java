@@ -1,19 +1,19 @@
-/**
+/* Encapsulation of criteria and disk, support for undo and redo
  * -*- coding : utf-8 -*-
  *
  * @FileName : FileManager.java
  * @Author : Ruixiang JIANG (Songrise)
  * @Time : 2020-11-17
  * @Github ：https://github.com/songrise
- * @Descriptions: Encapsulation of criteria and disk.
+ * 
  **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.controller;
 
 import java.io.*;
 import java.util.ArrayList;
 
-import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.*;
+import hk.edu.polyu.comp.comp2021.cvfs.model.criterion.*;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.ConcreteDisk;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.Disk;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
@@ -35,9 +35,9 @@ public class FileManager implements Serializable {
     }
 
     // -----------------Private methods----------------//
-    private void writeSerializable(String fileName) {// for store propose
+    private void writeSerializable() {// for store propose
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("storedCVFS.CVFS"));
             oos.writeObject(crtDisk);
             oos.close();
         } catch (IOException e) {
@@ -45,9 +45,9 @@ public class FileManager implements Serializable {
         }
     }
 
-    private void readSerializable(String fileName) {// for load propose
+    private void readSerializable() {// for load propose
         try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("storedCVFS.CVFS"));
             crtDisk = (Disk) ois.readObject();
             ois.close();
         } catch (ClassNotFoundException | IOException e) {
@@ -152,7 +152,7 @@ public class FileManager implements Serializable {
      * Store the disk to local file system, the output is binary encoded.
      */
     public void store() {
-        writeSerializable("storedCVFS.CVFS");
+        writeSerializable();
     }
 
     /**
@@ -161,10 +161,8 @@ public class FileManager implements Serializable {
 
     public void load() {
 
-        readSerializable("storedCVFS.CVFS");
+        readSerializable();
     }
-
-
 
     public void newSimpleCri(String criName, String attrName, String opName, String val) {
         Criterion cri = new SimpleCriterion(criName, attrName, opName, val);

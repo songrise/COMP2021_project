@@ -1,4 +1,4 @@
-package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
 public interface Operation {
     String getName();

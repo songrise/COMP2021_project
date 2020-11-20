@@ -1,6 +1,6 @@
-package SampleProject.hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.CVFS;
+import hk.edu.polyu.comp.comp2021.cvfs.controller.CVFS;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,27 +69,31 @@ public class CVFSTest {
     public void newDocTest1() {
         t1.newDoc("TestTXT", "TXT", "TESTING");
         t1.newDoc("TestHtml", "Html", "TESTING");
-        boolean f = false;
+        boolean errored = false;
         try { // test invalid name
-            t1.newDoc("@!#!", "Txt", "Testing");
-            f = true;
+            t1.newDoc("A@!#!", "Txt", "Testing");
+
         } catch (Exception e) {
-            e.printStackTrace();
+            errored = true;
         }
-        assertFalse(f);
+        assertTrue(errored);
         assertEquals(show(t1), "TestTXT.txt,TestHtml.html");
     }
 
     @Test
     public void newDocTest2() {
         // try write some thing very long
+        boolean errored = false;
         try {
             t1.newDoc("Test", "TXT",
                     "TESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTING");
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            errored = true;
         }
+        assertTrue(errored);
     }
+
+
 
     @Test
     public void newDirTest1() {
@@ -100,11 +104,13 @@ public class CVFSTest {
     @Test
     public void newDirTest2() {
         t1.newDir("Folder1");
+        boolean errored = false;
         try {
             t1.newDir("Folder1");
         } catch (Exception e) {
-            e.printStackTrace();
+            errored =true;
         }
+        assertTrue(errored);
 
     }
 
@@ -150,11 +156,13 @@ public class CVFSTest {
         assertEquals(show(t1), "TestTXT.txt");
         t1.undo();
         assertEquals(show(t1), "");
+        boolean errored = false;
         try {
             t1.undo();
         } catch (EmptyStackException e) {
-            e.printStackTrace();
+           errored = true;
         }
+        assertTrue(errored);
     }
 
     @Test
@@ -236,6 +244,15 @@ public class CVFSTest {
     }
 
     @Test
+    public void voidSizeEqualsTest(){
+        init();
+        t1.newSimpleCri("AA","size","==","46");
+        t1.newSimpleCri("AB","size","!=","46");
+        assertEquals("html.html",showByCriterion(t1,"AA"));
+        assertEquals("java.java,txt.txt,Folder1/",showByCriterion(t1,"AB"));
+    }
+
+    @Test
     public void typeBinaryCriTest1(){
         init();
         t1.newSimpleCri("AA","type","equals","HtMl");
@@ -259,6 +276,7 @@ public class CVFSTest {
 //                "type equals HtMl\n" +
 //                "isDocument\n",t1.printAllCriteria());
         assertEquals("java.java,html.html",showByCriterion(t1,"AB"));
-
     }
+
+
 }

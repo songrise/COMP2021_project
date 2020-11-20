@@ -7,7 +7,7 @@
  * @Descriptions: isDocument criteria, singleton pattern.
  */
 
-package hk.edu.polyu.comp.comp2021.cvfs.controller.criterion;
+package hk.edu.polyu.comp.comp2021.cvfs.model.criterion;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 

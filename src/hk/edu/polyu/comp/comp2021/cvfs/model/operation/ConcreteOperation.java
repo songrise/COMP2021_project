@@ -8,7 +8,7 @@
 referring to strategy pattern https://en.wikipedia.org/wiki/Strategy_pattern and simple factory methods.
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
 import java.io.Serializable;
 

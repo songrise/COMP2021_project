@@ -24,6 +24,7 @@ public class ConcreteFile implements File, Serializable {
         return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ('1' <= ch && ch <= '9');
     }
 
+    @SuppressWarnings("SameReturnValue")
     private boolean isValidName(String nameStr) {
         final int MAXLEN = 10;
         if (nameStr == null||nameStr.length() == 0) {
@@ -72,7 +73,7 @@ public class ConcreteFile implements File, Serializable {
     }
 
     /**
-     * @param nameStr
+     * @param nameStr name Of file, excluding extension name
      * @throws IllegalArgumentException
      */
     @Override

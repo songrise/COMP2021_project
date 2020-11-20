@@ -46,8 +46,7 @@ public class ConcreteDisk implements Serializable, Disk {
         int size = this.calStorage();
         final int newFileSize = contentToStore.length() * 2 + 40;
         if (newFileSize + size > this.capacity) {
-            throw new OutOfMemoryError(
-                    "Insufficient storage!" + (newFileSize) + " required, " + (this.capacity - size) + " left.");
+            return false;
         }
         return true;
     }
@@ -63,6 +62,8 @@ public class ConcreteDisk implements Serializable, Disk {
     public void makeDocument(String docName, String typeStr, String content) {
         if (this.canStore(content))
             workingDir.createDocument(docName, typeStr, content);
+        else
+            throw new IllegalStateException("Insufficient storage in current disk!");
     }
 
     @Override

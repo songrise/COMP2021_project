@@ -1,6 +1,5 @@
-package hk.edu.polyu.comp.comp2021.cvfs.model;
+package hk.edu.polyu.comp.comp2021.cvfs.controller;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.FileManager;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 import java.io.ByteArrayInputStream;
@@ -15,7 +14,7 @@ import java.util.Objects;
 public class CVFS {
     private final ArrayDeque<FileManager> sysUndoStack;
     private final ArrayDeque<FileManager> sysRedoStack;
-    FileManager fm;
+    private FileManager fm;
     public CVFS(){
         this.sysUndoStack = new ArrayDeque<>(64);
         this.sysRedoStack = new ArrayDeque<>(64);
@@ -74,7 +73,7 @@ public class CVFS {
     /**
      * create a new disk of specified size, and change current disk to it
      *
-     * @param size
+     * @param size: size of disk
      */
     public void newDisk(int size) {
         this.fm.newDisk(size);

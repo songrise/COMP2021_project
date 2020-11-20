@@ -7,7 +7,7 @@
 * @Descriptions: Logic operations and their simple factory. https://medium.com/nestedif/java-simple-factory-pattern-9c2538dd0265
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
 class LogicAndOperation extends ConcreteOperation {
     LogicAndOperation() {

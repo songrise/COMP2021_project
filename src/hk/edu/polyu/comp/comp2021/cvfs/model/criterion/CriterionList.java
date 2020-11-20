@@ -1,4 +1,4 @@
-package hk.edu.polyu.comp.comp2021.cvfs.controller.criterion;
+package hk.edu.polyu.comp.comp2021.cvfs.model.criterion;
 //!Bugs
 import java.io.Serializable;
 import java.util.HashSet;

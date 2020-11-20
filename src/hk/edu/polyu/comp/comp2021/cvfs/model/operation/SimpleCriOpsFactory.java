@@ -7,7 +7,7 @@
 * @Descriptions: Strategy pattern for operations
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.controller.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
