@@ -17,6 +17,7 @@ import java.util.EmptyStackException;
 import java.util.Objects;
 
 import hk.edu.polyu.comp.comp2021.cvfs.controller.criterion.*;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.ConcreteDisk;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.Disk;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
@@ -121,7 +122,7 @@ public class CVFS {
     public void newDisk(int size) {
         if (crtDisk != null)
             pushUndoStack();
-        this.crtDisk = new Disk(size);
+        this.crtDisk = new ConcreteDisk(size);
     }
 
     /**
@@ -229,7 +230,7 @@ public class CVFS {
 
     public void newNegation(String thisCriName,String otherCriName){
         Criterion cri = criteria.findCriterion(otherCriName);
-        Criterion negate = new CompositeCriterion(thisCriName,"!",cri,null);
+        Criterion negate = new NegationCriterion(thisCriName,cri);
         criteria.addCriterion(negate);
     }
 
