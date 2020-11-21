@@ -9,7 +9,7 @@ public class ConcreteFile implements File, Serializable {
 
     // -----------------Constructor----------------//
     ConcreteFile(String type){
-        this.name = null;
+        this.name = ".";
         this.setType(type);
     }
 

@@ -1,3 +1,12 @@
+/**
+* -*- coding : utf-8 -*-
+* @FileName  : CVFS.java
+* @Author    : Ruixiang JIANG (Songrise)
+* @Time      : 2020-11-20
+* @Github    ：https://github.com/songrise
+* @Descriptions: Delegate class, encapsulation of model.
+**/
+
 package hk.edu.polyu.comp.comp2021.cvfs.controller;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
@@ -15,12 +24,12 @@ public class CVFS {
     private final ArrayDeque<FileManager> sysUndoStack;
     private final ArrayDeque<FileManager> sysRedoStack;
     private FileManager fm;
-    public CVFS(){
+
+    public CVFS() {
         this.sysUndoStack = new ArrayDeque<>(64);
         this.sysRedoStack = new ArrayDeque<>(64);
         this.fm = new FileManager();
     }
-
 
     //
     private Object deepCopy() {
@@ -156,7 +165,6 @@ public class CVFS {
         return fm.getAllCriteria();
     }
 
-
     public ArrayList<File> searchByCriterion(String criName) {
         return fm.searchByCriterion(criName);
     }
@@ -193,5 +201,9 @@ public class CVFS {
      */
     public void redo() {
         this.fm = popRedoStack();
+    }
+
+    public String getPath(){
+        return fm.getPath();
     }
 }

@@ -278,5 +278,11 @@ public class CVFSTest {
         assertEquals("java.java,html.html",showByCriterion(t1,"AB"));
     }
 
+    @Test
+    public void pathTest(){
+        init();
+        t1.changeDir("Folder1");
+        System.out.println(t1.getPath());
+    }
 
 }

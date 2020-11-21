@@ -87,7 +87,7 @@ public class Directory extends ConcreteFile {
         this.deleteFile(fileToDel);
     }
 
-    File getParentDirectory() {
+    Directory getParentDirectory() {
         if (this.parentDir == null) {
             throw new NoSuchElementException("Now is at root directory!");
         }
@@ -144,12 +144,12 @@ public class Directory extends ConcreteFile {
         while (crtDir != null) {
             stack.push(crtDir.getName());
             try {
-                crtDir = (Directory) crtDir.getParentDirectory();
+                crtDir = crtDir.getParentDirectory();
             } catch (NoSuchElementException e) {
                 break;
             }
         }
-        StringBuilder sb = new StringBuilder(".");
+        StringBuilder sb = new StringBuilder();
         while (!stack.isEmpty()) {
             sb.append(stack.pop()).append("/");
         }

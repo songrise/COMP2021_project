@@ -193,4 +193,9 @@ public class FileManager implements Serializable {
         return matched;
     }
 
+    // -----------------Auxiliary Public methods----------------//
+    public String getPath(){
+        return crtDisk.getWorkingDir().getFullPath();
+    }
+
 }
