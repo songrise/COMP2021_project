@@ -153,8 +153,8 @@ public class CVFS {
         fm.newSimpleCri(criName, attrName, opName, val);
     }
 
-    public void newBinaryCri(String thisCriName, String criNameA, String criNameB, String logicOp) {
-        fm.newBinaryCri(thisCriName, criNameA, criNameB, logicOp);
+    public void newBinaryCri(String thisCriName, String criNameA, String logicOp, String criNameB) {
+        fm.newBinaryCri(thisCriName, criNameA, logicOp, criNameB);
     }
 
     public void newNegation(String thisCriName, String otherCriName) {

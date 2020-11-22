@@ -132,7 +132,7 @@ public class CVFSTest {
         t1.newDir("Folder1");
         t1.changeDir("Folder1");
         t1.newDoc("TestTXT", "TXT", "TESTING");
-        t1.newDoc("TestTXT2", "TXT", "TESTING");
+/        t1.newDoc("TestTXT2", "TXT", "TESTING");
         assertEquals(show(t1), "TestTXT.txt,TestTXT2.txt");
         t1.changeDir("..");
         assertNotEquals(rshow(t1), "");
@@ -203,9 +203,9 @@ public class CVFSTest {
     @Test
     public void newCriTest() {
         t1.newSimpleCri("AA", "size", ">", "100");
-        t1.newSimpleCri("BB", "name", "contains", "File");
-        t1.newBinaryCri("AB", "AA", "BB", "&&");
-        t1.newBinaryCri("CC", "AB", "BB", "||");
+        t1.newSimpleCri("BB", "name", "contains", "\"File\"");
+        t1.newBinaryCri("AB", "AA", "&&", "BB");
+        t1.newBinaryCri("CC", "AB", "||", "BB");
         t1.printAllCriteria();
     }
 
@@ -227,8 +227,8 @@ public class CVFSTest {
 
     @Test
     public void simpleNameContainsCriTest(){
-        t1.newDoc("ABCD","html","ABCDEFGH");
-        t1.newSimpleCri("AA","name","contains","BC");
+        t1.newDoc("ABCD","html","\"ABCDEFGH\"");
+        t1.newSimpleCri("AA","name","contains","\"BC\"");
         assertEquals(showByCriterion(t1,"AA"),"ABCD.html");
         t1.newNegation("AB","AA");
         assertEquals(showByCriterion(t1,"AB"),"");
@@ -237,7 +237,7 @@ public class CVFSTest {
     @Test
     public void typeEqualsCriTest(){
         init();
-        t1.newSimpleCri("AA","type","equals","HtMl");
+        t1.newSimpleCri("AA","type","equals","\"HtMl\"");
         assertEquals(showByCriterion(t1,"AA"),"html.html");
         t1.newNegation("AB","AA");
         assertEquals("java.java,txt.txt,Folder1/",showByCriterion(t1,"AB"));
@@ -255,34 +255,35 @@ public class CVFSTest {
     @Test
     public void typeBinaryCriTest1(){
         init();
-        t1.newSimpleCri("AA","type","equals","HtMl");
-        t1.newSimpleCri("BB","name","contains","ml");
-        t1.newBinaryCri("AB","AA","BB","&&");
-//        assertEquals("name contains ml\n" +
-//                "(type equals HtMl) && (name contains ml)\n" +
-//                "type equals HtMl\n" +
-//                "isDocument\n",t1.printAllCriteria());
+        t1.newSimpleCri("AA","type","equals","\"HtMl\"");
+        t1.newSimpleCri("BB","name","contains","\"ml\"");
+        t1.newBinaryCri("AB","AA", "&&", "BB");
+        assertEquals("isDocument\n" +
+                "type equals HtMl\n" +
+                "name contains ml\n" +
+                "(type equals HtMl) && (name contains ml)\n",t1.printAllCriteria());
         assertEquals("html.html",showByCriterion(t1,"AB"));
 
     }
     @Test
     public void typeBinaryCriTest2(){
         init();
-        t1.newSimpleCri("AA","type","equals","HtMl");
-        t1.newSimpleCri("BB","name","contains","java");
-        t1.newBinaryCri("AB","AA","BB","||");
-//        assertEquals("name contains java\n" +
-//                "(type equals HtMl) || (name contains java)\n" +
-//                "type equals HtMl\n" +
-//                "isDocument\n",t1.printAllCriteria());
+        t1.newSimpleCri("AA","type","equals","\"HtMl\"");
+        t1.newSimpleCri("BB","name","contains","\"java\"");
+        t1.newBinaryCri("AB","AA", "||", "BB");
+        assertEquals("isDocument\n" +
+                "type equals HtMl\n" +
+                "name contains java\n" +
+                "(type equals HtMl) || (name contains java)\n",t1.printAllCriteria());
         assertEquals("java.java,html.html",showByCriterion(t1,"AB"));
     }
 
     @Test
     public void pathTest(){
         init();
+        assertEquals("./",t1.getPath());
         t1.changeDir("Folder1");
-        System.out.println(t1.getPath());
+        assertEquals("./Folder1/",t1.getPath());
     }
 
 }

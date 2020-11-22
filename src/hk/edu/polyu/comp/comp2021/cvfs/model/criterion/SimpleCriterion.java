@@ -84,7 +84,14 @@ public class SimpleCriterion extends ConcreteCriterion {
                 return false;
             }
         }
+        else if(this.attrName.equals("type")||this.attrName.equals(("name"))){
+            if (val.length()<=1||val.charAt(0)!='"'||val.charAt((val.length()-1))!='"'){
+                throw new IllegalArgumentException("Illegal val operand, must be embraced in double quote!");
+            }
+        }
         return true;
+
+
     }
 
     private void setAttrName(String attrName) {
@@ -98,14 +105,17 @@ public class SimpleCriterion extends ConcreteCriterion {
     private void setOpName(String opStr) {
         if (isValidOp(opStr)) {
             this.opName = opStr;
-        } else {
+        } else if(this.attrName.equals("type")||this.attrName.equals(("name"))){
             throw new IllegalArgumentException("Invalid operation " + opStr + " for " + attrName + "!");
         }
     }
 
     private void setVal(String val) {
         if (isValidVal(val)) {
+            if (this.attrName.equals("size"))
             this.val = val;
+            else
+                this.val = val.substring(1,val.length()-1);//remove double quote
         } else {
             throw new IllegalArgumentException("Invalid value " + val + " for " + attrName + "!");
         }

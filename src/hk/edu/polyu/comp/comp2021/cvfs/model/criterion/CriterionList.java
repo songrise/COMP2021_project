@@ -1,15 +1,16 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model.criterion;
 //!Bugs
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
 public class CriterionList implements Serializable {
     private static final long serialVersionUID = 2021L;
-    private final HashSet<Criterion> criteria;
+    private final ArrayList<Criterion> criteria;
 
     public CriterionList(){
-        this.criteria = new HashSet<>(16);
+        this.criteria = new ArrayList<>(16);
         criteria.add(IsDocumentCriterion.getCriterion());
     }
     // -----------------Private methods----------------//

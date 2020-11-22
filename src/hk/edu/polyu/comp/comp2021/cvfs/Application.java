@@ -6,15 +6,7 @@ public class Application {
 
     public static void main(String[] args) {
         CLI app = new CLI();
-        while (true){
-            try{
-                app.scanInput();
-                app.manageCommand();
-            }
-            catch (IllegalArgumentException e){
-                e.printStackTrace();
-                break;
-            }
+        app.run();
         }
-    }
 }
+

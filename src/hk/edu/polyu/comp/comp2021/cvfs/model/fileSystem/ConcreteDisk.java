@@ -45,10 +45,7 @@ public class ConcreteDisk implements Serializable, Disk {
     private boolean canStore(String contentToStore) {
         int size = this.calStorage();
         final int newFileSize = contentToStore.length() * 2 + 40;
-        if (newFileSize + size > this.capacity) {
-            return false;
-        }
-        return true;
+        return newFileSize + size <= this.capacity;
     }
 
 
@@ -83,11 +80,10 @@ public class ConcreteDisk implements Serializable, Disk {
             if (f.isDirectory()) {
                 workingDir = (Directory) f;
             } else {
-                throw new IllegalArgumentException(newDirName + "is not name of a directory!");
+                throw new IllegalArgumentException(newDirName + " is not name of a directory!");
             }
         } catch (NoSuchElementException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException(newDirName + "not found in current directory!");
+            throw new IllegalArgumentException(newDirName + " not found in current directory!");
         }
     }
 

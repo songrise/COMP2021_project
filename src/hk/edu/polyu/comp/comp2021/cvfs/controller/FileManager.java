@@ -148,10 +148,10 @@ public class FileManager implements Serializable {
         criteria.addCriterion(cri);
     }
 
-    public void newBinaryCri(String thisCriName, String criNameA, String criNameB, String logicOp) {
+    public void newBinaryCri(String thisCriName, String criNameA, String logicOp, String criNameB) {
         Criterion criA = criteria.findCriterion(criNameA);
         Criterion criB = criteria.findCriterion(criNameB);
-        Criterion newCri = new CompositeCriterion(thisCriName, logicOp, criA, criB);
+        Criterion newCri = new CompositeCriterion(thisCriName, criA, logicOp, criB);
         this.criteria.addCriterion(newCri);
     }
 

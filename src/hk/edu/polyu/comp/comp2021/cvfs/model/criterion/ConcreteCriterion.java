@@ -16,7 +16,7 @@ public class ConcreteCriterion implements Criterion, Serializable {
         if (isValidName(name))
             this.criName = name;
         else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal criterion name: "+ name);
         }
     }
 

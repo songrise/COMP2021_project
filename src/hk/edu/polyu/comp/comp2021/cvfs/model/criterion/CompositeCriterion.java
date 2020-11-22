@@ -10,7 +10,7 @@ public class CompositeCriterion extends ConcreteCriterion {
     private final Criterion criterionB;
     private final String logicOpName;
 
-    public CompositeCriterion(String criName, String logicOp, Criterion criterionA, Criterion criterionB) {
+    public CompositeCriterion(String criName, Criterion criterionA, String logicOp, Criterion criterionB) {
         super(criName);
         this.criterionA = criterionA;
         this.criterionB = criterionB;
