@@ -11,7 +11,14 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
+/**
+ *
+ */
 class NameContainsOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     NameContainsOperation() {
         super("contains");
     }
@@ -28,7 +35,14 @@ class NameContainsOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class TypeEqualsOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     TypeEqualsOperation() {
         super("equals");
     }
@@ -39,6 +53,7 @@ class TypeEqualsOperation extends ConcreteOperation {
      */
     @Override
     public boolean eval(Object operand1, Object operand2) {
+
         File fileA = (File) operand1;
         if (fileA.isDirectory())
             return false;
@@ -48,7 +63,14 @@ class TypeEqualsOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class SizeLargerOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     SizeLargerOperation() {
         super(">");
     }
@@ -61,7 +83,15 @@ class SizeLargerOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ *
+ */
 class SizeLessOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     SizeLessOperation() {
         super("<");
     }
@@ -74,7 +104,14 @@ class SizeLessOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class SizeLargerEqualOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     SizeLargerEqualOperation() {
         super(">=");
     }
@@ -87,7 +124,14 @@ class SizeLargerEqualOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class SizeLessEqualOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     SizeLessEqualOperation() {
         super("<=");
     }
@@ -100,7 +144,14 @@ class SizeLessEqualOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class SizeNotEqualOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     SizeNotEqualOperation() {
         super("!=");
     }
@@ -113,7 +164,14 @@ class SizeNotEqualOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class SizeEqualOperation extends ConcreteOperation {
+    private static final long serialVersionUID = 2021L;
+    /**
+     *
+     */
     SizeEqualOperation() {
         super("!=");
     }
@@ -126,8 +184,16 @@ class SizeEqualOperation extends ConcreteOperation {
     }
 }
 
+/**
+ * A simple factory class for operations of simple criteria.
+ */
 public class SimpleCriOpsFactory {
 
+
+    /**
+     * @param opName name of the criterion
+     * @return dispathed Operation object.
+     */
     public static Operation createOperation(String opName) {
         switch (opName) {
             case "contains":

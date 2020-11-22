@@ -12,10 +12,16 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
 import java.io.Serializable;
 
+/**
+ * This class implementes Operation.
+ */
 public class ConcreteOperation implements Operation, Serializable {
     private static final long serialVersionUID = 2021L;
     private final String name;
 
+    /**
+     * @param name name of the operation
+     */
     ConcreteOperation(String name) {
         this.name = name;
     }

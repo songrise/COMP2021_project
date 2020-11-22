@@ -1,7 +1,9 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
 import hk.edu.polyu.comp.comp2021.cvfs.controller.CVFS;
-import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
+import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.*;
+import hk.edu.polyu.comp.comp2021.cvfs.model.operation.ConcreteOperation;
+import hk.edu.polyu.comp.comp2021.cvfs.model.operation.Operation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,7 +65,15 @@ public class CVFSTest {
     @Test
     public void createDiskTest() {
         t1.newDisk(2048);
+        Disk d = new ConcreteDisk(2048);
+        assertEquals(2048,d.getCapacity());
+        assertEquals(".",d.getWorkingDirName());
+        d.makeDir("Folder1");
+        d.changeDir("Folder1");
+        assertEquals(d.getWorkingDirName(),"Folder1");
+        assertEquals(d.toString(),"Disk{capacity=2048, root=Directory{name=./}, workingDir=Directory{name=Folder1/}}");
     }
+
 
     @Test
     public void newDocTest1() {
@@ -80,6 +90,7 @@ public class CVFSTest {
         assertEquals(show(t1), "TestTXT.txt,TestHtml.html");
     }
 
+
     @Test
     public void newDocTest2() {
         // try write some thing very long
@@ -87,6 +98,57 @@ public class CVFSTest {
         try {
             t1.newDoc("Test", "TXT",
                     "TESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTING");
+        } catch (Exception e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+
+    @Test
+    public void newDocTest3() {
+
+        boolean errored = false;
+        try { // test invalid name
+            t1.newDoc("aaaaaaaaaaaaaaaaaa", "Txt", "Testing");
+
+        } catch (Exception e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+
+
+    @Test
+    public void newDocTest4() {
+
+        boolean errored = false;
+        try { // test invalid name
+            t1.newDoc("", "Txt", "Testing");
+
+        } catch (Exception e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+    @Test
+    public void fileTypeTest1() {
+        FileType a =FileType.initType("txt");
+        FileType b = FileType.initType("hTml");
+        FileType c = FileType.initType("tXT");
+        FileType d = FileType.initType("java");
+        FileType f = FileType.initType("css");
+        assertEquals(a,c);
+        assertEquals(a,a);
+        assertNotEquals(a,new CVFS());
+        assertNotEquals(a,null);
+        assertEquals(b.toString(),"html");
+        assertEquals(c.toString(),"txt");
+        assertEquals(d.toString(),"java");
+        assertEquals(f.toString(),"css");
+
+        boolean errored = false;
+        try {
+            FileType e = FileType.initType("cpp");
         } catch (Exception e) {
             errored = true;
         }
@@ -113,6 +175,20 @@ public class CVFSTest {
         assertTrue(errored);
 
     }
+    @Test
+    public void cdTest(){
+        init();
+        assertEquals(t1.getPath(),"./");
+        t1.changeDir("Folder1");
+        assertEquals(t1.getPath(),"./Folder1/");
+        boolean errored = false;
+        try {
+            t1.changeDir("dsaf");
+        } catch (Exception e) {
+            errored =true;
+        }
+        assertTrue(errored);
+    }
 
     @Test
     public void delFileTest1() {
@@ -132,7 +208,7 @@ public class CVFSTest {
         t1.newDir("Folder1");
         t1.changeDir("Folder1");
         t1.newDoc("TestTXT", "TXT", "TESTING");
-/        t1.newDoc("TestTXT2", "TXT", "TESTING");
+        t1.newDoc("TestTXT2", "TXT", "TESTING");
         assertEquals(show(t1), "TestTXT.txt,TestTXT2.txt");
         t1.changeDir("..");
         assertNotEquals(rshow(t1), "");
@@ -200,6 +276,8 @@ public class CVFSTest {
         assertEquals(show(t2), "java.java,html.html,txt.txt,Folder1/");
     }
 
+
+
     @Test
     public void newCriTest() {
         t1.newSimpleCri("AA", "size", ">", "100");
@@ -208,6 +286,110 @@ public class CVFSTest {
         t1.newBinaryCri("CC", "AB", "||", "BB");
         t1.printAllCriteria();
     }
+    @Test
+    public void criNameTest1() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("a","size","==","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+    @Test
+    public void criNameTest2() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri(null,"size","==","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+    @Test
+    public void criNameTest3() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("*!","size","==","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+
+
+    @Test
+    public void criOpTest1() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("AA","error","==","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+    @Test
+    public void criValTest1() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("AA","name","==","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+
+    @Test
+    public void criValTest2() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("AA","size","==","123dsfafew");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+
+    @Test
+    public void criAttrTest1() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("AA",null,"==","123dsfafew");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+    @Test
+    public void criOpTest3() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("AA","name","contains","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+    @Test
+    public void criOpTest4() {
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri(null,"name","contains","10");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+    }
+
 
     @Test
     public void simpleNegationCriTest() {
@@ -244,14 +426,38 @@ public class CVFSTest {
     }
 
     @Test
-    public void voidSizeEqualsTest(){
+    public void sizelargerEqualsCriTest(){
+        init();
+        t1.newSimpleCri("AA","size",">=","46");
+        assertEquals("java.java,html.html,txt.txt",showByCriterion(t1,"AA"));
+        t1.newNegation("AB","AA");
+        assertEquals("Folder1/",showByCriterion(t1,"AB"));
+    }
+
+    @Test
+    public void sizelargerCriTest(){
+        init();
+        t1.newSimpleCri("AA","size",">","46");
+        assertEquals("java.java,txt.txt",showByCriterion(t1,"AA"));
+        t1.newNegation("AB","AA");
+        assertEquals("html.html,Folder1/",showByCriterion(t1,"AB"));
+    }
+
+    @Test
+    public void sizeEqualsTest(){
         init();
         t1.newSimpleCri("AA","size","==","46");
         t1.newSimpleCri("AB","size","!=","46");
         assertEquals("html.html",showByCriterion(t1,"AA"));
         assertEquals("java.java,txt.txt,Folder1/",showByCriterion(t1,"AB"));
     }
+    @Test
+    public void sizeLessEqualsTest(){
+        init();
+        t1.newSimpleCri("AA","size","<=","46");
+        assertEquals("html.html,Folder1/",showByCriterion(t1,"AA"));
 
+    }
     @Test
     public void typeBinaryCriTest1(){
         init();
@@ -277,7 +483,25 @@ public class CVFSTest {
                 "(type equals HtMl) || (name contains java)\n",t1.printAllCriteria());
         assertEquals("java.java,html.html",showByCriterion(t1,"AB"));
     }
+    @Test
+    public void isDocumentTest2(){
+        init();
+        assertEquals("java.java,html.html,txt.txt",showByCriterion(t1,"isDocument"));
+    }
 
+    @Test
+    public void duplicateCriTest(){
+        t1.newSimpleCri("AA","type","equals","\"HtMl\"");
+        boolean errored = false;
+        try { // test invalid name
+            t1.newSimpleCri("AA","type","equals","\"HtMl\"");
+
+        } catch (IllegalArgumentException e) {
+            errored = true;
+        }
+        assertTrue(errored);
+
+    }
     @Test
     public void pathTest(){
         init();

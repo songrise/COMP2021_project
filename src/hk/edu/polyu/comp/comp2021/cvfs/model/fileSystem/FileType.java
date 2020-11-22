@@ -11,12 +11,15 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
 
 import java.io.Serializable;
 
-public class FileType implements Serializable {
+/**
+ * Type of file. It may be wiser to implement us enum.
+ */
+public final class FileType implements Serializable {
 
     private static final long serialVersionUID = 2021L;
     private final int typeID;
 
-    private FileType(String typeStr) {
+    private FileType(String typeStr) throws IllegalArgumentException{
         if (typeStr == null || typeStr.length()==0) {
             throw new IllegalArgumentException("type name cannot be empty!");
         }
@@ -48,7 +51,7 @@ public class FileType implements Serializable {
      * @param typeStr type name, String. valid
      *                argument:"txt","java","html","css","dir". case-insensitive
      * @return reference to newly created FileType object.
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if the typeStr is invalid
      */
     public static FileType initType(String typeStr) throws IllegalArgumentException {
         return new FileType(typeStr);
@@ -62,8 +65,11 @@ public class FileType implements Serializable {
         return this.typeID;
     }
 
+    /**
+     * @return True if this FileType object is type directory
+     */
     public boolean isDirectory() {
-        return this.typeID == 5;
+        return this.getTypeID() == 5;
     }
 
     @Override
@@ -79,12 +85,12 @@ public class FileType implements Serializable {
 
         FileType otherType = (FileType) obj;
 
-        return this.typeID == otherType.typeID;
+        return this.getTypeID() == otherType.getTypeID();
     }
 
     @Override
     public String toString() {
-        switch (this.typeID) {
+        switch (this.getTypeID()) {
             case 1:
                 return "txt";
             case 2:

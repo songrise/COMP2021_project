@@ -16,13 +16,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/**
+ * Impletents Disk interface, encapsulates Directory and capacity.
+ */
 public class ConcreteDisk implements Serializable, Disk {
     private static final long serialVersionUID = 2021L;
     private final int capacity;
     private final Directory root;
     private Directory workingDir;
 
-    public ConcreteDisk(int capacity) {
+    /**
+     * @param capacity size of Disk
+     * @throws IllegalArgumentException if capacity<0
+     */
+    public ConcreteDisk(int capacity) throws IllegalArgumentException{
         if (capacity < 0) {
             throw new IllegalArgumentException("Disk size cannot < 0");
         } else {

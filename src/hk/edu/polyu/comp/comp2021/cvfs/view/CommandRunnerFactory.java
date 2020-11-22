@@ -4,10 +4,15 @@ import hk.edu.polyu.comp.comp2021.cvfs.controller.CVFS;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.Document;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
+/**
+ *
+ */
 class newDiskRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     newDiskRunner(){
         super(CommandType.newDisk);
     }
@@ -32,7 +37,13 @@ class newDiskRunner extends ConcreteCommandRunner {
     }
 }
 
+/**
+ *
+ */
 class newDirRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     newDirRunner(){
         super(CommandType.newDir);
     }
@@ -57,7 +68,13 @@ class newDirRunner extends ConcreteCommandRunner {
     }
 }
 
+/**
+ *
+ */
     class newDocRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         newDocRunner(){
             super(CommandType.newDoc);
         }
@@ -82,7 +99,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class deleteRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         deleteRunner(){
             super(CommandType.delete);
         }
@@ -107,7 +130,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class renameRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         renameRunner(){
             super(CommandType.rename);
         }
@@ -132,7 +161,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class changeDirRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         changeDirRunner(){
             super(CommandType.changeDir);
         }
@@ -157,7 +192,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class listRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     listRunner(){
         super(CommandType.list);
     }
@@ -182,8 +223,14 @@ class newDirRunner extends ConcreteCommandRunner {
 
     }
 
+/**
+ *
+ */
     // ! TODO to be finished
     class rListRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     rListRunner(){
         super(CommandType.rList);
     }
@@ -207,7 +254,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class newSimpleCriRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         newSimpleCriRunner(){
             super(CommandType.newSimpleCri);
         }
@@ -232,7 +285,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class newNegationRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         newNegationRunner(){
             super(CommandType.newNegation);
         }
@@ -257,7 +316,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class newBinaryCriRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
         newBinaryCriRunner(){
             super(CommandType.newBinaryCri);
         }
@@ -282,7 +347,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class printAllCriRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     printAllCriRunner(){
         super(CommandType.printAllCriteria);
     }
@@ -298,8 +369,14 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class searchRunner extends ConcreteCommandRunner {
 
+    /**
+     *
+     */
     searchRunner(){
         super(CommandType.search);
     }
@@ -318,7 +395,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class rSearchRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     rSearchRunner(){
         super(CommandType.rSearch);
     }
@@ -337,7 +420,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class storeRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     storeRunner(){
         super(CommandType.store);
     }
@@ -349,6 +438,7 @@ class newDirRunner extends ConcreteCommandRunner {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
+            echo(null);
             return true;
         }
 
@@ -358,7 +448,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class loadRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     loadRunner(){
         super(CommandType.load);
     }
@@ -370,6 +466,7 @@ class newDirRunner extends ConcreteCommandRunner {
                 System.out.println("Command failed because of an exception " + e.getCause());
                 return false;
             }
+            echo(null);
             return true;
         }
 
@@ -379,7 +476,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class undoRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     undoRunner(){
         super(CommandType.undo);
     }
@@ -391,6 +494,7 @@ class newDirRunner extends ConcreteCommandRunner {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
+            echo(null);
             return true;
         }
 
@@ -400,7 +504,13 @@ class newDirRunner extends ConcreteCommandRunner {
         }
     }
 
+/**
+ *
+ */
     class redoRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     redoRunner(){
         super(CommandType.redo);
     }
@@ -412,6 +522,7 @@ class newDirRunner extends ConcreteCommandRunner {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
+            echo(null);
             return true;
         }
 
@@ -420,7 +531,14 @@ class newDirRunner extends ConcreteCommandRunner {
             System.out.println("successfully redo previous operation");
         }
     }
+
+/**
+ *
+ */
 class quitRunner extends ConcreteCommandRunner {
+    /**
+     *
+     */
     quitRunner(){
         super(CommandType.quit);
     }
@@ -431,8 +549,16 @@ class quitRunner extends ConcreteCommandRunner {
     }
 
 }
+
+/**
+ * A simple factory for command runner.
+ */
     public class CommandRunnerFactory {
 
+    /**
+     * @param t type of command
+     * @return a dispatched command runner object.
+     */
         public static CommandRunner getRunner(CommandType t) {
             switch (t) {
                 case newDisk:

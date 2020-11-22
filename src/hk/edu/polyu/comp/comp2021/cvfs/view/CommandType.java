@@ -1,5 +1,6 @@
 package hk.edu.polyu.comp.comp2021.cvfs.view;
 
+@SuppressWarnings("ALL") //the semantics of this enum is clear enough, added javaDoc will be very redundent.
 enum CommandType {
     newDisk(1), newDoc(3), newDir(1), delete(1),
     rename(2), changeDir(1), list(0), rList(0),

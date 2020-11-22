@@ -4,6 +4,9 @@ import java.util.ArrayDeque;
 
 import java.util.NoSuchElementException;
 
+/**
+ * class for documents
+ */
 public class Document extends ConcreteFile {
 
     private static final long serialVersionUID = 2021L;
@@ -12,29 +15,42 @@ public class Document extends ConcreteFile {
 
     // -----------------Constructor----------------//
 
-    Document(String fileName, String typeStr, String fileContent, Directory dir) {
-        super(fileName, typeStr);
+    /**
+     * This constructer should only be used by a Directory object.
+     * @param docName name of Document
+     * @param typeStr name of type
+     * @param fileContent content of doc
+     * @param dir Parent directory of this file
+     */
+    Document(String docName, String typeStr, String fileContent, Directory dir) {
+        super(docName, typeStr);
         this.setContent(fileContent);
         this.parentDir = dir;
     }
 
-    // -----------------Private methods----------------//
 
-    File getParentDirectory() {
 
-        if (this.parentDir == null) {
-            throw new NoSuchElementException("Now is at root directory!");
-        }
+    /**
+     * @return parentDirectory of this Document. A document must have its parent dir.
+     */
+    Directory getParentDirectory() {
         return this.parentDir;
     }
 
 
+    /**
+     * @return content in this file
+     */
     // -----------------Public methods----------------//
     public String getContent() {
         return this.content;
     }
 
-    public void setContent(String content) {
+    /**
+     * @param content content
+     * @throws IllegalArgumentException if content is null
+     */
+    public void setContent(String content) throws IllegalArgumentException{
         // content cannot be null, but it can be empty.
         if (content == null) {
             throw new IllegalArgumentException("Content cannot be null!");
@@ -44,26 +60,10 @@ public class Document extends ConcreteFile {
 
     @Override
     public int getSize() {
-        return 40 + content.length() * 2;
+        final int fileHeaderSize = 40;
+        return fileHeaderSize + content.length() * 2;
     }
 
-    public String getFullPath() {
-        ArrayDeque<String> stack = new ArrayDeque<>();
-        Directory crtDir = (Directory) this.getParentDirectory();
-        while (crtDir != null) {
-            stack.push(crtDir.getName());
-            try {
-                crtDir = (Directory) crtDir.getParentDirectory();
-            } catch (NoSuchElementException e) {
-                break;
-            }
-        }
-        StringBuilder sb = new StringBuilder(".");
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop()).append("/");
-        }
-        return sb.toString();
-    }
 
     @Override
     public String toString() {

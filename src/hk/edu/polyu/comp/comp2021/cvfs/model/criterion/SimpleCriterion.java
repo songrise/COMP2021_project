@@ -7,6 +7,9 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class for simple criterion
+ */
 public class SimpleCriterion extends ConcreteCriterion {
 
     // separation of data and logic, good design for reusability and maintenance
@@ -17,7 +20,7 @@ public class SimpleCriterion extends ConcreteCriterion {
     private String opName;
     private String val;
 
-    static {
+    static {// initialize a look-up
         attrOp = new HashMap<String, ArrayList<String>>() {
             {
                 put("name", new ArrayList<String>() {
@@ -44,10 +47,12 @@ public class SimpleCriterion extends ConcreteCriterion {
         };
     }
 
-    SimpleCriterion() {
-
-    }
-
+    /**
+     * @param criName  name of criterion, should be two english letters
+     * @param attrName name of attribute
+     * @param op       name of operator
+     * @param val      name of value
+     */
     public SimpleCriterion(String criName, String attrName, String op, String val) {
         super(criName);
         this.setAttrName(attrName);
@@ -83,14 +88,12 @@ public class SimpleCriterion extends ConcreteCriterion {
             } catch (NumberFormatException e) {
                 return false;
             }
-        }
-        else if(this.attrName.equals("type")||this.attrName.equals(("name"))){
-            if (val.length()<=1||val.charAt(0)!='"'||val.charAt((val.length()-1))!='"'){
+        } else if (this.attrName.equals("type") || this.attrName.equals(("name"))) {
+            if (val.length() <= 1 || val.charAt(0) != '"' || val.charAt((val.length() - 1)) != '"') {
                 throw new IllegalArgumentException("Illegal val operand, must be embraced in double quote!");
             }
         }
         return true;
-
 
     }
 
@@ -105,7 +108,7 @@ public class SimpleCriterion extends ConcreteCriterion {
     private void setOpName(String opStr) {
         if (isValidOp(opStr)) {
             this.opName = opStr;
-        } else if(this.attrName.equals("type")||this.attrName.equals(("name"))){
+        } else if (this.attrName.equals("type") || this.attrName.equals(("name"))) {
             throw new IllegalArgumentException("Invalid operation " + opStr + " for " + attrName + "!");
         }
     }
@@ -113,9 +116,9 @@ public class SimpleCriterion extends ConcreteCriterion {
     private void setVal(String val) {
         if (isValidVal(val)) {
             if (this.attrName.equals("size"))
-            this.val = val;
+                this.val = val;
             else
-                this.val = val.substring(1,val.length()-1);//remove double quote
+                this.val = val.substring(1, val.length() - 1);// remove double quote
         } else {
             throw new IllegalArgumentException("Invalid value " + val + " for " + attrName + "!");
         }
@@ -132,6 +135,6 @@ public class SimpleCriterion extends ConcreteCriterion {
 
     @Override
     public String toString() {
-        return attrName+" "+opName+" "+val;
+        return attrName + " " + opName + " " + val;
     }
 }

@@ -20,11 +20,17 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Objects;
 
+/**
+ * Class for CVFS, it is basically encapsulation of Disk and Criterion, it also provide utility to support undo and redo.
+ */
 public class CVFS {
     private final ArrayDeque<FileManager> sysUndoStack;
     private final ArrayDeque<FileManager> sysRedoStack;
     private FileManager fm;
 
+    /**
+     *
+     */
     public CVFS() {
         this.sysUndoStack = new ArrayDeque<>(64);
         this.sysRedoStack = new ArrayDeque<>(64);
@@ -91,9 +97,9 @@ public class CVFS {
     /**
      * create a new document in working directory, the name must be distinct
      *
-     * @param docName
-     * @param typeStr
-     * @param content
+     * @param docName name of Document
+     * @param typeStr name of type
+     * @param content content of doc
      */
     public void newDoc(String docName, String typeStr, String content) {
         pushUndoStack();
@@ -103,6 +109,7 @@ public class CVFS {
     /**
      * create a new dir in working directory, the name must be distinct
      *
+     * @param dirName name of new dir
      */
     public void newDir(String dirName) {
         pushUndoStack();
@@ -113,6 +120,7 @@ public class CVFS {
      * delete the specified file in working directory.Deletion of directory is
      * recursive.
      *
+     * @param fileName name of file to delete
      */
     public void delFile(String fileName) {
         pushUndoStack();
@@ -122,6 +130,8 @@ public class CVFS {
     /**
      * rename the specified file in working directory.
      *
+     * @param oldName name of file to rename
+     * @param newName new name of file
      */
     public void rename(String oldName, String newName) {
         pushUndoStack();
@@ -129,48 +139,77 @@ public class CVFS {
     }
 
     /**
-     * change current directory to specified dir ".." is the parent dir throw
-     * exception when null dirname, cd .. at root, dirName is not name of a
-     * directory.
+     * change current directory to specified dir .
+     * @param dirName name of dir, specifically, ".." is the parent dir
      */
     public void changeDir(String dirName) {
         pushUndoStack();
         fm.changeDir(dirName);
     }
 
+    /**
+     * @return a ArrayList of all File object contained in this Directory, the order is same as the creation order.
+     */
     // TODO incomplete method
     public ArrayList<File> list() {
         return fm.list();
     }
 
-    // TODO incomplete method, a wrapper is needed for indentation
+    /**
+     * @return A ArrayList of all File object contained in this Directory and its subDir.
+     */
     public ArrayList<File> rlist() {
 
         return fm.rlist();
     }
-
+    /**
+     * @param criName  name of criterion, should be two english letters
+     * @param attrName name of attribute
+     * @param opName   name of operator
+     * @param val      name of value
+     */
     public void newSimpleCri(String criName, String attrName, String opName, String val) {
         fm.newSimpleCri(criName, attrName, opName, val);
     }
-
+    /**
+     * @param thisCriName name of new criterion, should be two english letters
+     * @param criNameA name of first cri
+     * @param logicOp name of logic operation, including &&, ||, !
+     * @param criNameB ame of second cri
+     */
     public void newBinaryCri(String thisCriName, String criNameA, String logicOp, String criNameB) {
         fm.newBinaryCri(thisCriName, criNameA, logicOp, criNameB);
     }
-
+    /**
+     * @param thisCriName name of the new criterion
+     * @param otherCriName The name of Criterion to negate.
+     */
     public void newNegation(String thisCriName, String otherCriName) {
         fm.newNegation(thisCriName, otherCriName);
     }
 
+
+    /**
+     * @return A String of all the criteria name, one each line.
+     */
     public String printAllCriteria() {
         return fm.getAllCriteria();
     }
 
+
+    /**
+     * @param criName name of criterion
+     * @return An ArrayList of all file that satisfy the specified criterion in working dir
+     */
     public ArrayList<File> searchByCriterion(String criName) {
         return fm.searchByCriterion(criName);
     }
-
+    /**
+     * @param criName name of criterion
+     * @return An ArrayList of all file that satisfy the specified criterion in working dir and its sub dir
+     */
     public ArrayList<File> rSearchByCriterion(String criName) {
-        return fm.searchByCriterion(criName);
+        return fm.rSearchByCriterion(criName);
     }
 
     /**
@@ -203,6 +242,9 @@ public class CVFS {
         this.fm = popRedoStack();
     }
 
+    /**
+     * @return name of working dir.
+     */
     public String getPath(){
         return fm.getPath();
     }

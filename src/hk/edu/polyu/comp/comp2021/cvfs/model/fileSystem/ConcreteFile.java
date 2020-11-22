@@ -2,11 +2,18 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
 
 import java.io.Serializable;
 
+/**
+ * Implemetens File interface
+ */
 public class ConcreteFile implements File, Serializable {
     private static final long serialVersionUID = 2021L;
     private String name;
     private FileType type;
 
+    /**
+     * This is used to instantiate a root dir
+     * @param type name of type
+     */
     // -----------------Constructor----------------//
     ConcreteFile(String type){
         this.name = ".";
@@ -14,6 +21,10 @@ public class ConcreteFile implements File, Serializable {
     }
 
 
+    /**
+     * @param name name of the file
+     * @param type name of type
+     */
     ConcreteFile(String name, String type) {
         this.setName(name);
         this.setType(type);
@@ -74,7 +85,7 @@ public class ConcreteFile implements File, Serializable {
 
     /**
      * @param nameStr name Of file, excluding extension name
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if name is invalid
      */
     @Override
     public void setName(String nameStr) throws IllegalArgumentException {

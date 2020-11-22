@@ -9,7 +9,13 @@
 
 package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
 
+/**
+ *
+ */
 class LogicAndOperation extends ConcreteOperation {
+    /**
+     *
+     */
     LogicAndOperation() {
         super("&&");
     }
@@ -22,7 +28,13 @@ class LogicAndOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class LogicOrOperation extends ConcreteOperation {
+    /**
+     *
+     */
     LogicOrOperation() {
         super("||");
     }
@@ -35,7 +47,13 @@ class LogicOrOperation extends ConcreteOperation {
     }
 }
 
+/**
+ *
+ */
 class LogicNotOperation extends ConcreteOperation {
+    /**
+     *
+     */
     LogicNotOperation() {
         super("!");
     }
@@ -48,7 +66,14 @@ class LogicNotOperation extends ConcreteOperation {
     }
 }
 
+/**
+ * A simple factory class for logic operations.
+ */
 public class LogicOpsFactory {
+    /**
+     * @param opName name of the criterion
+     * @return dispathed Operation object.
+     */
     public static Operation createOperation(String opName) {
         switch (opName) {
             case "&&":

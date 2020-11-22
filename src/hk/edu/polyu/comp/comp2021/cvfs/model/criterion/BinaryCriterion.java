@@ -4,13 +4,22 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 import hk.edu.polyu.comp.comp2021.cvfs.model.operation.LogicOpsFactory;
 import hk.edu.polyu.comp.comp2021.cvfs.model.operation.Operation;
 
-public class CompositeCriterion extends ConcreteCriterion {
+/**
+ * Class for the binaryCriterion
+ */
+public class BinaryCriterion extends ConcreteCriterion {
 
     private final Criterion criterionA;
     private final Criterion criterionB;
     private final String logicOpName;
 
-    public CompositeCriterion(String criName, Criterion criterionA, String logicOp, Criterion criterionB) {
+    /**
+     * @param criName name of criterion, should be two english letters
+     * @param criterionA first Criterion object
+     * @param logicOp name of logic operation, including &&, ||, !
+     * @param criterionB second Criterion object
+     */
+    public BinaryCriterion(String criName, Criterion criterionA, String logicOp, Criterion criterionB) {
         super(criName);
         this.criterionA = criterionA;
         this.criterionB = criterionB;

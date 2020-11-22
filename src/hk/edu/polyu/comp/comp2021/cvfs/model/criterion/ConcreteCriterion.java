@@ -4,14 +4,22 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 import java.io.Serializable;
 
+/**
+ * Implements Criterion interface
+ */
 public class ConcreteCriterion implements Criterion, Serializable {
     private static final long serialVersionUID = 2021L;
-    private final String criName;
+    private String criName;
 
+    /**
+     * for temperarily unamed cri
+     */
     ConcreteCriterion() {
-        this.criName = null;
     }
 
+    /**
+     * @param name name of the criterion
+     */
     ConcreteCriterion(String name) {
         if (isValidName(name))
             this.criName = name;

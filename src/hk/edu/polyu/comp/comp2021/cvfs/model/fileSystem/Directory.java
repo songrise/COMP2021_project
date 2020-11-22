@@ -11,7 +11,10 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem;
 
 import java.util.*;
 
-public class Directory extends ConcreteFile {
+/**
+ * Class for directory
+ */
+public final class Directory extends ConcreteFile {
 
     // -----------------field ----------------//
 
@@ -22,7 +25,6 @@ public class Directory extends ConcreteFile {
     // -----------------Constructor----------------//
     private Directory() {// when this constructor is called, this dir is the root dir
         super("DIR");
-        parentDir = null;
         files = new ArrayList<>();
     }
 
@@ -36,8 +38,8 @@ public class Directory extends ConcreteFile {
     /**
      * Check if the name is already exists in this directory.
      * 
-     * @param fileName
-     * @return
+     * @param fileName name to check
+     * @return true if name already used
      */
     private boolean nameAlreadyExists(String fileName) {
         for (File f : files) {
@@ -57,17 +59,29 @@ public class Directory extends ConcreteFile {
         this.files.remove(toDel);
     }
 
-    // -----------------Protected methods----------------//
-    protected void createDocument(String fileName, String typeStr, String content) throws IllegalArgumentException {
-        if (nameAlreadyExists(fileName)) {
-            throw new IllegalArgumentException("File: " + fileName + " already exist!");
+    /**
+     * create a new document with specified name,type,content in this directory
+     * @param docName name of Document
+     * @param typeStr name of type
+     * @param content content of doc
+     * @throws IllegalArgumentException if the name is already used.
+     */
+    // -----------------Package-private methods----------------//
+    void createDocument(String docName, String typeStr, String content) throws IllegalArgumentException {
+        if (nameAlreadyExists(docName)) {
+            throw new IllegalArgumentException("File: " + docName + " already exist!");
         }
-        Document newDoc = new Document(fileName, typeStr, content, this);
+        Document newDoc = new Document(docName, typeStr, content, this);
         this.files.add(newDoc);
 
     }
 
-    protected void createDirectory(String dirName) throws IllegalArgumentException {
+    /**
+     * create a new directory with specified name in this directory
+     * @param dirName name of Dir
+     * @throws IllegalArgumentException if the name is already used.
+     */
+    void createDirectory(String dirName) throws IllegalArgumentException {
         if (nameAlreadyExists(dirName)) {
             throw new IllegalArgumentException("File: " + dirName + " already exist!");
         }
@@ -78,7 +92,8 @@ public class Directory extends ConcreteFile {
     /**
      * Factory method for creating a root dir.
      * 
-     * @return
+     * @param toDelName name of file to delete
+     * @throws NoSuchElementException if the file not found
      */
 
 
@@ -87,17 +102,27 @@ public class Directory extends ConcreteFile {
         this.deleteFile(fileToDel);
     }
 
-    Directory getParentDirectory() {
+    /**
+     * @return the parent dir of this Directory object.
+     * @throws NoSuchElementException if no parent directory (ususally at root)
+     */
+    Directory getParentDirectory() throws NoSuchElementException{
         if (this.parentDir == null) {
             throw new NoSuchElementException("Now is at root directory!");
         }
         return this.parentDir;
     }
 
+    /**
+     * @return a ArrayList of all File object contained in this Directory, the order is same as the creation order.
+     */
     ArrayList<File> list() {
         return new ArrayList<>(files);
     }
 
+    /**
+     * @return A ArrayList of all File object contained in this Directory and its subDir.
+     */
     ArrayList<File> rList() {
         ArrayList<File> result = new ArrayList<>();
         if (files.isEmpty()) {
@@ -113,6 +138,11 @@ public class Directory extends ConcreteFile {
         return result;
     }
 
+    /**
+     * @param fileName name of the File to be found
+     * @return the File object
+     * @throws NoSuchElementException if no File named fileName.
+     */
     File findFile(String fileName) throws NoSuchElementException {
         if (fileName == null) {
             throw new IllegalArgumentException("Null file name");
@@ -128,17 +158,27 @@ public class Directory extends ConcreteFile {
         throw new NoSuchElementException("No file named " + fileName + " in working directory!");
     }
 
+    /**
+     * @param oldName the name of file to be renamed
+     * @param newName new name of file
+     */
     void renameFile(String oldName, String newName) {
         File fileToRename = findFile(oldName);
         fileToRename.setName(newName);
     }
 
+    /**
+     * @return a Directory object whose parent Dir is null;
+     */
     // -----------------Public methods----------------//
     public static Directory createRoot() {
         return new Directory();
     }
 
-    public String getFullPath() {// TODO refactor to base class
+    /**
+     * @return full path of this Dir.
+     */
+    public String getFullPath() {
         ArrayDeque<String> stack = new ArrayDeque<>();
         Directory crtDir = this;
         while (crtDir != null) {
@@ -166,8 +206,5 @@ public class Directory extends ConcreteFile {
         return "Directory{"  + "name=" + this.getFullName()+"}";
     }
 
-    public static void main(String[] args) {
-        // latter put it to test folder as Unit test;
-    }
 
 }

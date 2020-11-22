@@ -1,29 +1,36 @@
 package hk.edu.polyu.comp.comp2021.cvfs.view;
 
 import hk.edu.polyu.comp.comp2021.cvfs.controller.CVFS;
-import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.Document;
-import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Command Line Interface for CVFS
+ */
 public class CLI {
-    final CVFS system;
-    final Scanner scanner;
+    private final CVFS system;
+    private final Scanner scanner;
 
+    /**
+     * constructs a CLI
+     */
     public CLI() {
         this.system = new CVFS();
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * start the CLI
+     */
     public void run() {
         boolean running = true;
         while (running) {
             String input = scanInput();
             Command command = checkInput(input);
             if (command != null) {
-                manageCommand(command.type, command.parameters);
-                if (command.type == CommandType.quit) {
+                manageCommand(command.getType(), command.getParameters());
+                if (command.getType() == CommandType.quit) {
                     running = false;
                 }
             }
@@ -44,7 +51,7 @@ public class CLI {
                 String[] parameters;
                 if (inputAfterSplit.length == type.getNumOfParameters() + 1) {
                     parameters = Arrays.copyOfRange(inputAfterSplit, 1, inputAfterSplit.length);
-                    return new Command(type, parameters);
+                    return new ConcreteCommand(type, parameters);
                 } else {
                     System.out.println("command failed because: Illegal set of parameters");
                 }
@@ -57,6 +64,8 @@ public class CLI {
 
     private void manageCommand(CommandType type, String[] parameters) {
         CommandRunner runner = CommandRunnerFactory.getRunner(type);
-        runner.execute(system,parameters);
+        if (runner != null) {
+            runner.execute(system,parameters);
+        }
     }
 }

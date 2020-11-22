@@ -11,7 +11,11 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.criterion;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
-public class IsDocumentCriterion extends ConcreteCriterion {
+/**
+ * Class for isDocument criterion, it should not be subclass of simpleCriterion by the liskov substitution principle.
+ * It use singleton pattern.
+ */
+public final class IsDocumentCriterion extends ConcreteCriterion {
     private final String name;
 
     private IsDocumentCriterion() {
@@ -30,6 +34,9 @@ public class IsDocumentCriterion extends ConcreteCriterion {
         return name;
     }
 
+    /**
+     * @return a factory method to get this
+     */
     public static Criterion getCriterion() {
         if (instanceCriterion == null) {
             instanceCriterion = new IsDocumentCriterion();
