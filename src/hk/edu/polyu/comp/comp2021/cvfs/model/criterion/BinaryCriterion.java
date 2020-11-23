@@ -8,7 +8,12 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.operation.Operation;
  * Class for the binaryCriterion
  */
 public class BinaryCriterion extends ConcreteCriterion {
+    
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2021L;
     private final Criterion criterionA;
     private final Criterion criterionB;
     private final String logicOpName;

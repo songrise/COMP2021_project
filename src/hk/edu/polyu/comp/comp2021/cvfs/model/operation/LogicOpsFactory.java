@@ -14,6 +14,10 @@ package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
  */
 class LogicAndOperation extends ConcreteOperation {
     /**
+    *
+    */
+    private static final long serialVersionUID = 2021L;
+    /**
      *
      */
     LogicAndOperation() {
@@ -33,6 +37,10 @@ class LogicAndOperation extends ConcreteOperation {
  */
 class LogicOrOperation extends ConcreteOperation {
     /**
+    *
+    */
+    private static final long serialVersionUID = 2021L;
+    /**
      *
      */
     LogicOrOperation() {
@@ -51,6 +59,10 @@ class LogicOrOperation extends ConcreteOperation {
  *
  */
 class LogicNotOperation extends ConcreteOperation {
+    /**
+    *
+    */
+    private static final long serialVersionUID = 2021L;
     /**
      *
      */

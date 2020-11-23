@@ -87,7 +87,7 @@ public class CVFSTest {
             errored = true;
         }
         assertTrue(errored);
-        assertEquals(show(t1), "TestTXT.txt,TestHtml.html");
+        assertEquals(show(t1), "TestHtml.html,TestTXT.txt");
     }
 
 
@@ -209,7 +209,7 @@ public class CVFSTest {
         t1.changeDir("Folder1");
         t1.newDoc("TestTXT", "TXT", "TESTING");
         t1.newDoc("TestTXT2", "TXT", "TESTING");
-        assertEquals(show(t1), "TestTXT.txt,TestTXT2.txt");
+        assertEquals(show(t1), "TestTXT2.txt,TestTXT.txt");
         t1.changeDir("..");
         assertNotEquals(rshow(t1), "");
         t1.delFile("Folder1");
@@ -250,7 +250,7 @@ public class CVFSTest {
         t1.redo();
         assertEquals(show(t1), "TestTXT.txt");
         t1.redo();
-        assertEquals(show(t1), "TestTXT.txt,TestHtml.html");
+        assertEquals(show(t1), "TestHtml.html,TestTXT.txt");
     }
 
     @Test
@@ -273,7 +273,7 @@ public class CVFSTest {
         t1.store();
         CVFS t2 = new CVFS();
         t2.load();
-        assertEquals(show(t2), "java.java,html.html,txt.txt,Folder1/");
+        assertEquals(show(t2), "txt.txt,html.html,java.java,Folder1/");
     }
 
 
@@ -422,14 +422,14 @@ public class CVFSTest {
         t1.newSimpleCri("AA","type","equals","\"HtMl\"");
         assertEquals(showByCriterion(t1,"AA"),"html.html");
         t1.newNegation("AB","AA");
-        assertEquals("java.java,txt.txt,Folder1/",showByCriterion(t1,"AB"));
+        assertEquals("txt.txt,java.java,Folder1/",showByCriterion(t1,"AB"));
     }
 
     @Test
     public void sizelargerEqualsCriTest(){
         init();
         t1.newSimpleCri("AA","size",">=","46");
-        assertEquals("java.java,html.html,txt.txt",showByCriterion(t1,"AA"));
+        assertEquals("txt.txt,html.html,java.java",showByCriterion(t1,"AA"));
         t1.newNegation("AB","AA");
         assertEquals("Folder1/",showByCriterion(t1,"AB"));
     }
@@ -438,7 +438,7 @@ public class CVFSTest {
     public void sizelargerCriTest(){
         init();
         t1.newSimpleCri("AA","size",">","46");
-        assertEquals("java.java,txt.txt",showByCriterion(t1,"AA"));
+        assertEquals("txt.txt,java.java",showByCriterion(t1,"AA"));
         t1.newNegation("AB","AA");
         assertEquals("html.html,Folder1/",showByCriterion(t1,"AB"));
     }
@@ -449,7 +449,7 @@ public class CVFSTest {
         t1.newSimpleCri("AA","size","==","46");
         t1.newSimpleCri("AB","size","!=","46");
         assertEquals("html.html",showByCriterion(t1,"AA"));
-        assertEquals("java.java,txt.txt,Folder1/",showByCriterion(t1,"AB"));
+        assertEquals("txt.txt,java.java,Folder1/",showByCriterion(t1,"AB"));
     }
     @Test
     public void sizeLessEqualsTest(){
@@ -481,12 +481,12 @@ public class CVFSTest {
                 "type equals HtMl\n" +
                 "name contains java\n" +
                 "(type equals HtMl) || (name contains java)\n",t1.printAllCriteria());
-        assertEquals("java.java,html.html",showByCriterion(t1,"AB"));
+        assertEquals("html.html,java.java",showByCriterion(t1,"AB"));
     }
     @Test
     public void isDocumentTest2(){
         init();
-        assertEquals("java.java,html.html,txt.txt",showByCriterion(t1,"isDocument"));
+        assertEquals("txt.txt,html.html,java.java",showByCriterion(t1,"isDocument"));
     }
 
     @Test

@@ -72,7 +72,7 @@ public final class Directory extends ConcreteFile {
             throw new IllegalArgumentException("File: " + docName + " already exist!");
         }
         Document newDoc = new Document(docName, typeStr, content, this);
-        this.files.add(newDoc);
+        this.files.add(0,newDoc);
 
     }
 
@@ -86,7 +86,7 @@ public final class Directory extends ConcreteFile {
             throw new IllegalArgumentException("File: " + dirName + " already exist!");
         }
         Directory newDir = new Directory(dirName, this);
-        this.files.add(newDir);
+        this.files.add(files.size(),newDir);
     }
 
     /**

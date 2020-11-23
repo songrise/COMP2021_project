@@ -8,6 +8,10 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
  * Class for newNegation of a existing Criterion
  */
 public class NegationCriterion extends ConcreteCriterion{
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2021L;
     private final Criterion originalCri;
 
 

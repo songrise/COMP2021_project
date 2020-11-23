@@ -31,6 +31,7 @@ class NameContainsOperation extends ConcreteOperation {
     public boolean eval(Object operand1, Object operand2) {
         File fileA = (File) operand1;
         String strB = (String) operand2;
+        strB =strB.substring(1, strB.length() - 1);
         return fileA.getName().contains(strB);
     }
 }
@@ -59,6 +60,7 @@ class TypeEqualsOperation extends ConcreteOperation {
             return false;
 
         String strB = (String) operand2;
+        strB =strB.substring(1, strB.length() - 1);
         return fileA.getType().equals(strB.toLowerCase());
     }
 }

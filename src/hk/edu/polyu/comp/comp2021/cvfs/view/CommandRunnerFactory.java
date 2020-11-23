@@ -116,7 +116,7 @@ class newDirRunner extends ConcreteCommandRunner {
             }
             try {
                 cvfs.delFile(parameters[0]);
-            } catch (IllegalArgumentException | IllegalStateException e) {
+            } catch (IllegalArgumentException | IllegalStateException|NoSuchElementException e) {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
@@ -147,7 +147,7 @@ class newDirRunner extends ConcreteCommandRunner {
             }
             try {
                 cvfs.rename(parameters[0], parameters[1]);
-            } catch (IllegalArgumentException | IllegalStateException e) {
+            } catch (IllegalArgumentException | IllegalStateException |NoSuchElementException e) {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
@@ -237,11 +237,26 @@ class newDirRunner extends ConcreteCommandRunner {
         @Override
         public boolean execute(CVFS cvfs) {
             int size = 0;
+            StringBuilder sb = new StringBuilder();
+            boolean newIndentationFlag = false;
+
             try {
+                int dirCount = 0;
+                for (File f : cvfs.list()){
+                    if (f.isDirectory()){dirCount++;}
+                }
+
                 System.out.printf("%-14s%-12s%s\n", "Name", "Type", "Size");
                 System.out.println("-------------------------------");
-                for (File f : cvfs.list()) {
-                    System.out.printf("%-14s%-12s%s\n", f.getName(), f.getType(),
+                for (File f : cvfs.rlist()) {
+                    if (f.isDirectory()){
+                        if (!newIndentationFlag){
+                            sb.append(" ");
+                            if(--dirCount==0)
+                                newIndentationFlag = true;
+                        }
+                    }
+                    System.out.printf("%s%-14s%-12s%s\n",sb.toString(), f.getName(), f.getType(),
                             f instanceof Document ? f.getSize() : "");
                     size += f.getSize();
                 }
@@ -249,7 +264,7 @@ class newDirRunner extends ConcreteCommandRunner {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
-            System.out.println(cvfs.list().size() + " files, total size = "+size);
+            System.out.println(cvfs.rlist().size() + " files, total size = "+size);
             return true;
         }
     }
@@ -386,11 +401,11 @@ class newDirRunner extends ConcreteCommandRunner {
                 for (File f : cvfs.searchByCriterion(parameters[0])) {
                     System.out.println(f.getFullName());
                 }
-            } catch (IllegalArgumentException | IllegalStateException e) {
+            } catch (IllegalArgumentException | IllegalStateException|NoSuchElementException e) {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
-            System.out.println(cvfs.searchByCriterion(parameters[0] + " files found."));
+            System.out.println(cvfs.searchByCriterion(parameters[0]).size() + " files found.");
             return true;
         }
     }
@@ -411,11 +426,11 @@ class newDirRunner extends ConcreteCommandRunner {
                 for (File f : cvfs.rSearchByCriterion(parameters[0])) {
                     System.out.println(f.getFullName());
                 }
-            } catch (IllegalArgumentException | IllegalStateException e) {
+            } catch (IllegalArgumentException | IllegalStateException|NoSuchElementException e) {
                 System.out.println("Command failed because of: " + e.getMessage());
                 return false;
             }
-            System.out.println(cvfs.rSearchByCriterion(parameters[0] + " files found."));
+            System.out.println(cvfs.rSearchByCriterion(parameters[0]).size() + " files found.");
             return true;
         }
     }

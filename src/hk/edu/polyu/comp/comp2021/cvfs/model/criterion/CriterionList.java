@@ -49,7 +49,7 @@ public class CriterionList implements Serializable {
                 return cri;
             }
         }
-        throw new NoSuchElementException("No criterion named "+name);
+        throw new NoSuchElementException("No criterion named ["+name+"]");
     }
 
     /**

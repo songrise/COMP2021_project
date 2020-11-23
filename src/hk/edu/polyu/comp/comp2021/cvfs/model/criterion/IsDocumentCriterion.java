@@ -16,6 +16,10 @@ import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
  * It use singleton pattern.
  */
 public final class IsDocumentCriterion extends ConcreteCriterion {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2021L;
     private final String name;
 
     private IsDocumentCriterion() {

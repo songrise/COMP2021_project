@@ -11,7 +11,10 @@ import java.util.HashMap;
  * Class for simple criterion
  */
 public class SimpleCriterion extends ConcreteCriterion {
-
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2021L;
     // separation of data and logic, good design for reusability and maintenance
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final HashMap<String, ArrayList<String>> attrOp;// attribute and their corresponding operations
@@ -22,18 +25,35 @@ public class SimpleCriterion extends ConcreteCriterion {
 
     static {// initialize a look-up
         attrOp = new HashMap<String, ArrayList<String>>() {
+            /**
+            *
+            */
+            private static final long serialVersionUID = 2021L;
             {
                 put("name", new ArrayList<String>() {
+                    /**
+                     *
+                     */
+                    private static final long serialVersionUID = 2021L;
+
                     {
                         add("contains");
                     }
                 });
                 put("type", new ArrayList<String>() {
+                    /**
+                    *
+                    */
+                    private static final long serialVersionUID = 2021L;
                     {
                         add("equals");
                     }
                 });
                 put("size", new ArrayList<String>() {
+                    /**
+                    *
+                    */
+                    private static final long serialVersionUID = 2021L;
                     {
                         add(">");
                         add("<");
@@ -115,10 +135,8 @@ public class SimpleCriterion extends ConcreteCriterion {
 
     private void setVal(String val) {
         if (isValidVal(val)) {
-            if (this.attrName.equals("size"))
                 this.val = val;
-            else
-                this.val = val.substring(1, val.length() - 1);// remove double quote
+
         } else {
             throw new IllegalArgumentException("Invalid value " + val + " for " + attrName + "!");
         }
