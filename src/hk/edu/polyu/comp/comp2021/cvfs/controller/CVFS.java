@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Class for CVFS, it is basically encapsulation of Disk and Criterion, it also provide utility to support undo and redo.
+ * Class for CVFS,namly (Polyu) COMP VFS, it implementes VFS interface.
+ * it is basically an encapsulation of Disk and Criterion.
  */
-public class CVFS {
+public class CVFS implements VFS {
     private final ArrayDeque<FileManager> sysUndoStack;
     private final ArrayDeque<FileManager> sysRedoStack;
     private FileManager fm;
@@ -84,170 +85,109 @@ public class CVFS {
     }
 
     // public
-    /**
-     * create a new disk of specified size, and change current disk to it
-     *
-     * @param size: size of disk
-     */
+
+    @Override
     public void newDisk(int size) {
         this.fm.newDisk(size);
     }
 
-    /**
-     * create a new document in working directory, the name must be distinct
-     *
-     * @param docName name of Document
-     * @param typeStr name of type
-     * @param content content of doc
-     */
+    @Override
     public void newDoc(String docName, String typeStr, String content) {
         pushUndoStack();
         this.fm.newDoc(docName, typeStr, content);
     }
 
-    /**
-     * create a new dir in working directory, the name must be distinct
-     *
-     * @param dirName name of new dir
-     */
+    @Override
     public void newDir(String dirName) {
         pushUndoStack();
         this.fm.newDir(dirName);
     }
 
-    /**
-     * delete the specified file in working directory.Deletion of directory is
-     * recursive.
-     *
-     * @param fileName name of file to delete
-     */
+    @Override
     public void delFile(String fileName) {
         pushUndoStack();
         fm.delFile(fileName);
     }
 
-    /**
-     * rename the specified file in working directory.
-     *
-     * @param oldName name of file to rename
-     * @param newName new name of file
-     */
+    @Override
     public void rename(String oldName, String newName) {
         pushUndoStack();
         fm.rename(oldName, newName);
     }
 
-    /**
-     * change current directory to specified dir .
-     * @param dirName name of dir, specifically, ".." is the parent dir
-     */
+    @Override
     public void changeDir(String dirName) {
         pushUndoStack();
         fm.changeDir(dirName);
     }
 
-    /**
-     * @return a ArrayList of all File object contained in this Directory, the order is same as the creation order.
-     */
-    // TODO incomplete method
+    @Override
     public ArrayList<File> list() {
         return fm.list();
     }
 
-    /**
-     * @return A ArrayList of all File object contained in this Directory and its subDir.
-     */
+    @Override
     public ArrayList<File> rlist() {
 
         return fm.rlist();
     }
-    /**
-     * @param criName  name of criterion, should be two english letters
-     * @param attrName name of attribute
-     * @param opName   name of operator
-     * @param val      name of value
-     */
+
+    @Override
     public void newSimpleCri(String criName, String attrName, String opName, String val) {
         pushUndoStack();
         fm.newSimpleCri(criName, attrName, opName, val);
     }
-    /**
-     * @param thisCriName name of new criterion, should be two english letters
-     * @param criNameA name of first cri
-     * @param logicOp name of logic operation, including &&, ||, !
-     * @param criNameB ame of second cri
-     */
+
+    @Override
     public void newBinaryCri(String thisCriName, String criNameA, String logicOp, String criNameB) {
         pushUndoStack();
         fm.newBinaryCri(thisCriName, criNameA, logicOp, criNameB);
     }
-    /**
-     * @param thisCriName name of the new criterion
-     * @param otherCriName The name of Criterion to negate.
-     */
+
+    @Override
     public void newNegation(String thisCriName, String otherCriName) {
         pushUndoStack();
         fm.newNegation(thisCriName, otherCriName);
     }
 
-
-    /**
-     * @return A String of all the criteria name, one each line.
-     */
+    @Override
     public String printAllCriteria() {
         return fm.getAllCriteria();
     }
 
-
-    /**
-     * @param criName name of criterion
-     * @return An ArrayList of all file that satisfy the specified criterion in working dir
-     */
+    @Override
     public ArrayList<File> searchByCriterion(String criName) {
         return fm.searchByCriterion(criName);
     }
-    /**
-     * @param criName name of criterion
-     * @return An ArrayList of all file that satisfy the specified criterion in working dir and its sub dir
-     */
+
+    @Override
     public ArrayList<File> rSearchByCriterion(String criName) {
         return fm.rSearchByCriterion(criName);
     }
 
-    /**
-     * Store the disk to local file system, the output is binary encoded.
-     */
+    @Override
     public void store() {
         this.fm.store();
     }
 
-    /**
-     * Load the disk from local file system, the output is binary encoded.
-     */
-
+    @Override
     public void load() {
         pushUndoStack();
         this.fm.load();
     }
 
-    /**
-     * undo previous operation
-     */
+    @Override
     public void undo() {
         this.fm = popUndoStack();
     }
 
-    /**
-     * redo previous operation
-     */
+    @Override
     public void redo() {
         this.fm = popRedoStack();
     }
 
-    /**
-     * @return name of working dir.
-     */
-    public String getPath(){
+    @Override
+    public String getPath() {
         return fm.getPath();
     }
 }
