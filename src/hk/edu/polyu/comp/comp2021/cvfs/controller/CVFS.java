@@ -17,7 +17,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.Objects;
 
 /**
@@ -63,7 +62,7 @@ public class CVFS {
 
     private FileManager popUndoStack() {
         if (sysUndoStack.isEmpty()) {
-            throw new EmptyStackException();
+            throw new IllegalStateException("No operation to undo!");
         } else {
             pushRedoStack();
             return sysUndoStack.pop();
@@ -77,7 +76,7 @@ public class CVFS {
 
     private FileManager popRedoStack() {
         if (sysRedoStack.isEmpty()) {
-            throw new EmptyStackException(); // nothing to redo
+            throw new IllegalStateException("No operation to redo!"); // nothing to redo
         } else {
             sysUndoStack.push((FileManager) Objects.requireNonNull(deepCopy()));
             return sysRedoStack.pop();
@@ -169,6 +168,7 @@ public class CVFS {
      * @param val      name of value
      */
     public void newSimpleCri(String criName, String attrName, String opName, String val) {
+        pushUndoStack();
         fm.newSimpleCri(criName, attrName, opName, val);
     }
     /**
@@ -178,6 +178,7 @@ public class CVFS {
      * @param criNameB ame of second cri
      */
     public void newBinaryCri(String thisCriName, String criNameA, String logicOp, String criNameB) {
+        pushUndoStack();
         fm.newBinaryCri(thisCriName, criNameA, logicOp, criNameB);
     }
     /**
@@ -185,6 +186,7 @@ public class CVFS {
      * @param otherCriName The name of Criterion to negate.
      */
     public void newNegation(String thisCriName, String otherCriName) {
+        pushUndoStack();
         fm.newNegation(thisCriName, otherCriName);
     }
 

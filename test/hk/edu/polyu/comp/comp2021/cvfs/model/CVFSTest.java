@@ -235,7 +235,7 @@ public class CVFSTest {
         boolean errored = false;
         try {
             t1.undo();
-        } catch (EmptyStackException e) {
+        } catch (Exception e) {
            errored = true;
         }
         assertTrue(errored);
@@ -465,9 +465,9 @@ public class CVFSTest {
         t1.newSimpleCri("BB","name","contains","\"ml\"");
         t1.newBinaryCri("AB","AA", "&&", "BB");
         assertEquals("isDocument\n" +
-                "type equals HtMl\n" +
-                "name contains ml\n" +
-                "(type equals HtMl) && (name contains ml)\n",t1.printAllCriteria());
+                "type equals \"HtMl\"\n" +
+                "name contains \"ml\"\n" +
+                "(type equals \"HtMl\") && (name contains \"ml\")\n",t1.printAllCriteria());
         assertEquals("html.html",showByCriterion(t1,"AB"));
 
     }
@@ -478,9 +478,9 @@ public class CVFSTest {
         t1.newSimpleCri("BB","name","contains","\"java\"");
         t1.newBinaryCri("AB","AA", "||", "BB");
         assertEquals("isDocument\n" +
-                "type equals HtMl\n" +
-                "name contains java\n" +
-                "(type equals HtMl) || (name contains java)\n",t1.printAllCriteria());
+                "type equals \"HtMl\"\n" +
+                "name contains \"java\"\n" +
+                "(type equals \"HtMl\") || (name contains \"java\")\n",t1.printAllCriteria());
         assertEquals("html.html,java.java",showByCriterion(t1,"AB"));
     }
     @Test
