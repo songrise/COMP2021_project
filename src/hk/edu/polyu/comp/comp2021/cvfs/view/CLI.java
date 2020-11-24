@@ -11,6 +11,8 @@ import java.util.Scanner;
 public class CLI {
     private final CVFS system;
     private final Scanner scanner;
+    private Command crtCommand;
+
 
     /**
      * constructs a CLI
@@ -27,10 +29,10 @@ public class CLI {
         boolean running = true;
         while (running) {
             String input = scanInput();
-            Command command = checkInput(input);
-            if (command != null) {
-                manageCommand(command.getType(), command.getParameters());
-                if (command.getType() == CommandType.quit) {
+            crtCommand = setCommand(input);
+            if (crtCommand != null) {
+                executeCommand(crtCommand, crtCommand.getParameters());
+                if (crtCommand.getType() == CommandType.quit) {
                     running = false;
                 }
             }
@@ -43,7 +45,7 @@ public class CLI {
         return input.trim();
     }
 
-    private Command checkInput(String input) {
+    private Command setCommand(String input) {
         if (input.length() != 0) {
             try {
                 String[] inputAfterSplit = input.split(" ");
@@ -62,8 +64,8 @@ public class CLI {
         return null;
     }
 
-    private void manageCommand(CommandType type, String[] parameters) {
-        CommandRunner runner = CommandRunnerFactory.getRunner(type);
+    private void executeCommand(Command cmd, String[] parameters) {
+        CommandRunner runner = CommandRunnerFactory.getRunner(cmd);
         if (runner != null) {
             runner.execute(system,parameters);
         }

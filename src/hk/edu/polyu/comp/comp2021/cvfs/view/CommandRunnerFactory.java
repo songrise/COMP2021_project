@@ -594,11 +594,11 @@ class quitRunner extends ConcreteCommandRunner {
 public class CommandRunnerFactory {
 
     /**
-     * @param t type of command
+     * @param cmd command to execute
      * @return a dispatched command runner object.
      */
-    public static CommandRunner getRunner(CommandType t) {
-        switch (t) {
+    public static CommandRunner getRunner(Command cmd) {
+        switch (cmd.getType()) {
             case newDisk:
                 return new newDiskRunner();
             case newDoc:
