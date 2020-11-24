@@ -1,7 +1,7 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model.criterion;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.operation.Operation;
-import hk.edu.polyu.comp.comp2021.cvfs.model.operation.SimpleCriOpsFactory;
+import hk.edu.polyu.comp.comp2021.cvfs.model.operator.Operator;
+import hk.edu.polyu.comp.comp2021.cvfs.model.operator.SimpleCriOpsFactory;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 import java.util.ArrayList;
@@ -147,7 +147,7 @@ public class SimpleCriterion extends ConcreteCriterion {
     @Override
     public boolean eval(File f) {
         // Strategy design pattern
-        Operation op = SimpleCriOpsFactory.createOperation(opName);
+        Operator op = SimpleCriOpsFactory.createOperation(opName);
         return op.eval(f, val);
     }
 

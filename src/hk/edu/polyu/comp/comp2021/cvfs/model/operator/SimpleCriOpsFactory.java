@@ -7,19 +7,19 @@
 * @Descriptions: Strategy pattern for operations
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operator;
 
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 /**
  *
  */
-class NameContainsOperation extends ConcreteOperation {
+class NameContainsOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    NameContainsOperation() {
+    NameContainsOperator() {
         super("contains");
     }
 
@@ -39,12 +39,12 @@ class NameContainsOperation extends ConcreteOperation {
 /**
  *
  */
-class TypeEqualsOperation extends ConcreteOperation {
+class TypeEqualsOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    TypeEqualsOperation() {
+    TypeEqualsOperator() {
         super("equals");
     }
 
@@ -68,12 +68,12 @@ class TypeEqualsOperation extends ConcreteOperation {
 /**
  *
  */
-class SizeLargerOperation extends ConcreteOperation {
+class SizeLargerOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    SizeLargerOperation() {
+    SizeLargerOperator() {
         super(">");
     }
 
@@ -89,12 +89,12 @@ class SizeLargerOperation extends ConcreteOperation {
  *
  *
  */
-class SizeLessOperation extends ConcreteOperation {
+class SizeLessOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    SizeLessOperation() {
+    SizeLessOperator() {
         super("<");
     }
 
@@ -109,12 +109,12 @@ class SizeLessOperation extends ConcreteOperation {
 /**
  *
  */
-class SizeLargerEqualOperation extends ConcreteOperation {
+class SizeLargerEqualOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    SizeLargerEqualOperation() {
+    SizeLargerEqualOperator() {
         super(">=");
     }
 
@@ -129,12 +129,12 @@ class SizeLargerEqualOperation extends ConcreteOperation {
 /**
  *
  */
-class SizeLessEqualOperation extends ConcreteOperation {
+class SizeLessEqualOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    SizeLessEqualOperation() {
+    SizeLessEqualOperator() {
         super("<=");
     }
 
@@ -149,12 +149,12 @@ class SizeLessEqualOperation extends ConcreteOperation {
 /**
  *
  */
-class SizeNotEqualOperation extends ConcreteOperation {
+class SizeNotEqualOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    SizeNotEqualOperation() {
+    SizeNotEqualOperator() {
         super("!=");
     }
 
@@ -169,12 +169,12 @@ class SizeNotEqualOperation extends ConcreteOperation {
 /**
  *
  */
-class SizeEqualOperation extends ConcreteOperation {
+class SizeEqualOperator extends ConcreteOperator {
     private static final long serialVersionUID = 2021L;
     /**
      *
      */
-    SizeEqualOperation() {
+    SizeEqualOperator() {
         super("!=");
     }
 
@@ -196,24 +196,24 @@ public class SimpleCriOpsFactory {
      * @param opName name of the criterion
      * @return dispathed Operation object.
      */
-    public static Operation createOperation(String opName) {
+    public static Operator createOperation(String opName) {
         switch (opName) {
             case "contains":
-                return new NameContainsOperation();
+                return new NameContainsOperator();
             case "equals":
-                return new TypeEqualsOperation();
+                return new TypeEqualsOperator();
             case ">":
-                return new SizeLargerOperation();
+                return new SizeLargerOperator();
             case "<":
-                return new SizeLessOperation();
+                return new SizeLessOperator();
             case ">=":
-                return new SizeLargerEqualOperation();
+                return new SizeLargerEqualOperator();
             case "<=":
-                return new SizeLessEqualOperation();
+                return new SizeLessEqualOperator();
             case "==":
-                return new SizeEqualOperation();
+                return new SizeEqualOperator();
             case "!=":
-                return new SizeNotEqualOperation();
+                return new SizeNotEqualOperator();
         }
 
         throw new UnsupportedOperationException("Invalid Operation name: " + opName);

@@ -7,12 +7,12 @@
 * @Descriptions: Logic operations and their simple factory. https://medium.com/nestedif/java-simple-factory-pattern-9c2538dd0265
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operator;
 
 /**
  *
  */
-class LogicAndOperation extends ConcreteOperation {
+class LogicAndOperator extends ConcreteOperator {
     /**
     *
     */
@@ -20,7 +20,7 @@ class LogicAndOperation extends ConcreteOperation {
     /**
      *
      */
-    LogicAndOperation() {
+    LogicAndOperator() {
         super("&&");
     }
 
@@ -35,7 +35,7 @@ class LogicAndOperation extends ConcreteOperation {
 /**
  *
  */
-class LogicOrOperation extends ConcreteOperation {
+class LogicOrOperator extends ConcreteOperator {
     /**
     *
     */
@@ -43,7 +43,7 @@ class LogicOrOperation extends ConcreteOperation {
     /**
      *
      */
-    LogicOrOperation() {
+    LogicOrOperator() {
         super("||");
     }
 
@@ -58,7 +58,7 @@ class LogicOrOperation extends ConcreteOperation {
 /**
  *
  */
-class LogicNotOperation extends ConcreteOperation {
+class LogicNotOperator extends ConcreteOperator {
     /**
     *
     */
@@ -66,7 +66,7 @@ class LogicNotOperation extends ConcreteOperation {
     /**
      *
      */
-    LogicNotOperation() {
+    LogicNotOperator() {
         super("!");
     }
 
@@ -86,14 +86,14 @@ public class LogicOpsFactory {
      * @param opName name of the criterion
      * @return dispathed Operation object.
      */
-    public static Operation createOperation(String opName) {
+    public static Operator createOperation(String opName) {
         switch (opName) {
             case "&&":
-                return new LogicAndOperation();
+                return new LogicAndOperator();
             case "||":
-                return new LogicOrOperation();
+                return new LogicOrOperator();
             case "!":
-                return new LogicNotOperation();
+                return new LogicNotOperator();
         }
         throw new UnsupportedOperationException("Invalid Operation name: " + opName);
     }

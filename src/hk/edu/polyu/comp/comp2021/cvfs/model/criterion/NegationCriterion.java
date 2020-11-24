@@ -1,7 +1,7 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model.criterion;
 
-import hk.edu.polyu.comp.comp2021.cvfs.model.operation.LogicOpsFactory;
-import hk.edu.polyu.comp.comp2021.cvfs.model.operation.Operation;
+import hk.edu.polyu.comp.comp2021.cvfs.model.operator.LogicOpsFactory;
+import hk.edu.polyu.comp.comp2021.cvfs.model.operator.Operator;
 import hk.edu.polyu.comp.comp2021.cvfs.model.fileSystem.File;
 
 /**
@@ -27,7 +27,7 @@ public class NegationCriterion extends ConcreteCriterion{
 
     @Override
     public boolean eval(File f) {
-        Operation op = LogicOpsFactory.createOperation("!");
+        Operator op = LogicOpsFactory.createOperation("!");
         return op.eval(originalCri.eval(f),null);
     }
 

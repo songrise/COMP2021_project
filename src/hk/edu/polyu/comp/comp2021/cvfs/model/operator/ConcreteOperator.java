@@ -8,21 +8,21 @@
 referring to strategy pattern https://en.wikipedia.org/wiki/Strategy_pattern and simple factory methods.
 **/
 
-package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operator;
 
 import java.io.Serializable;
 
 /**
  * This class implementes Operation.
  */
-public class ConcreteOperation implements Operation, Serializable {
+public class ConcreteOperator implements Operator, Serializable {
     private static final long serialVersionUID = 2021L;
     private final String name;
 
     /**
      * @param name name of the operation
      */
-    ConcreteOperation(String name) {
+    ConcreteOperator(String name) {
         this.name = name;
     }
 

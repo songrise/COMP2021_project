@@ -1,9 +1,9 @@
-package hk.edu.polyu.comp.comp2021.cvfs.model.operation;
+package hk.edu.polyu.comp.comp2021.cvfs.model.operator;
 
 /**
  * Interface for the operation, both unary and binary.
  */
-public interface Operation {
+public interface Operator {
     /**
      * @return name of this.
      */
