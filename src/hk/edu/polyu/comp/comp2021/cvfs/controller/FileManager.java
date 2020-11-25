@@ -36,7 +36,6 @@ public class FileManager implements Serializable {
 
     }
 
-
     // -----------------Private methods----------------//
     private void writeSerializable() {// for store propose
         try {
@@ -45,6 +44,7 @@ public class FileManager implements Serializable {
             oos.close();
         } catch (IOException e) {
             e.printStackTrace();
+            throw new IllegalStateException("Cannot store, application aborted!");
         }
     }
 
@@ -55,9 +55,9 @@ public class FileManager implements Serializable {
             ois.close();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
+            throw new IllegalStateException("Cannot load!, application aborted!");
         }
     }
-
 
     // -----------------Public methods----------------//
 
@@ -115,6 +115,7 @@ public class FileManager implements Serializable {
 
     /**
      * change current directory to specified dir .
+     * 
      * @param dirName name of dir, specifically, ".." is the parent dir
      */
     public void changeDir(String dirName) {
@@ -123,14 +124,16 @@ public class FileManager implements Serializable {
     }
 
     /**
-     * @return a ArrayList of all File object contained in this Directory, the order is same as the creation order.
+     * @return a ArrayList of all File object contained in this Directory, the order
+     *         is same as the creation order.
      */
     public ArrayList<File> list() {
         return crtDisk.list();
     }
 
     /**
-     * @return A ArrayList of all File object contained in this Directory and its subDir.
+     * @return A ArrayList of all File object contained in this Directory and its
+     *         subDir.
      */
     public ArrayList<File> rlist() {
 
@@ -152,6 +155,7 @@ public class FileManager implements Serializable {
 
         readSerializable();
     }
+
     /**
      * @param criName  name of criterion, should be two english letters
      * @param attrName name of attribute
@@ -162,11 +166,12 @@ public class FileManager implements Serializable {
         Criterion cri = new SimpleCriterion(criName, attrName, opName, val);
         criteria.addCriterion(cri);
     }
+
     /**
      * @param thisCriName name of new criterion, should be two english letters
-     * @param criNameA name of first cri
-     * @param logicOp name of logic operation, including &&, ||, !
-     * @param criNameB ame of second cri
+     * @param criNameA    name of first cri
+     * @param logicOp     name of logic operation, including &&, ||, !
+     * @param criNameB    ame of second cri
      */
     public void newBinaryCri(String thisCriName, String criNameA, String logicOp, String criNameB) {
         Criterion criA = criteria.findCriterion(criNameA);
@@ -174,8 +179,9 @@ public class FileManager implements Serializable {
         Criterion newCri = new BinaryCriterion(thisCriName, criA, logicOp, criB);
         this.criteria.addCriterion(newCri);
     }
+
     /**
-     * @param thisCriName name of the new criterion
+     * @param thisCriName  name of the new criterion
      * @param otherCriName The name of Criterion to negate.
      */
     public void newNegation(String thisCriName, String otherCriName) {
@@ -183,6 +189,7 @@ public class FileManager implements Serializable {
         Criterion negate = new NegationCriterion(thisCriName, cri);
         criteria.addCriterion(negate);
     }
+
     /**
      * @return A String of all the criteria name, one each line.
      */
@@ -192,7 +199,8 @@ public class FileManager implements Serializable {
 
     /**
      * @param criName name of criterion
-     * @return An ArrayList of all file that satisfy the specified criterion in working dir
+     * @return An ArrayList of all file that satisfy the specified criterion in
+     *         working dir
      */
     public ArrayList<File> searchByCriterion(String criName) {
         Criterion cri = criteria.findCriterion(criName);
@@ -204,9 +212,11 @@ public class FileManager implements Serializable {
         }
         return matched;
     }
+
     /**
      * @param criName name of criterion
-     * @return An ArrayList of all file that satisfy the specified criterion in working dir and its sub dir
+     * @return An ArrayList of all file that satisfy the specified criterion in
+     *         working dir and its sub dir
      */
     public ArrayList<File> rSearchByCriterion(String criName) {
         Criterion cri = criteria.findCriterion(criName);
@@ -223,7 +233,7 @@ public class FileManager implements Serializable {
      * @return full path of working dir
      */
     // -----------------Auxiliary Public methods----------------//
-    public String getPath(){
+    public String getPath() {
         return crtDisk.getWorkingDir().getFullPath();
     }
 

@@ -466,12 +466,9 @@ class storeRunner extends ConcreteCommandRunner {
 
     @Override
     public boolean execute(CVFS cvfs) {
-        try {
-            cvfs.store();
-        } catch (Exception e) {
-            System.out.println("Command failed because of: " + e.getMessage());
-            return false;
-        }
+
+        cvfs.store();
+
         echo(null);
         return true;
     }
@@ -495,12 +492,8 @@ class loadRunner extends ConcreteCommandRunner {
 
     @Override
     public boolean execute(CVFS cvfs) {
-        try {
-            cvfs.load();
-        } catch (Exception e) {
-            System.out.println("Command failed because of an exception " + e.getCause());
-            return false;
-        }
+
+        cvfs.load();
         echo(null);
         return true;
     }
