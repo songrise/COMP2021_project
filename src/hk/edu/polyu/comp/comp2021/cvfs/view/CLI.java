@@ -13,7 +13,6 @@ public class CLI {
     private final Scanner scanner;
     private Command crtCommand;
 
-
     /**
      * constructs a CLI
      */
@@ -26,21 +25,21 @@ public class CLI {
      * start the CLI
      */
     public void run() {
-        boolean running = true;
-        while (running) {
+        System.out.println("***Welcome to CVFS!***");
+        while (true) {
             String input = scanInput();
             crtCommand = setCommand(input);
             if (crtCommand != null) {
                 executeCommand(crtCommand, crtCommand.getParameters());
                 if (crtCommand.getType() == CommandType.quit) {
-                    running = false;
+                    break;
                 }
             }
         }
     }
 
     private String scanInput() {
-        System.out.print(system.getPath());
+        System.out.print(system.getPath()+">");
         String input = scanner.nextLine();
         return input.trim();
     }
@@ -67,7 +66,7 @@ public class CLI {
     private void executeCommand(Command cmd, String[] parameters) {
         CommandRunner runner = CommandRunnerFactory.getRunner(cmd);
         if (runner != null) {
-            runner.execute(system,parameters);
+            runner.execute(system, parameters);
         }
     }
 }

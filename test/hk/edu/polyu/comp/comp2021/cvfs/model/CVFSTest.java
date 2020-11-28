@@ -63,11 +63,11 @@ public class CVFSTest {
         t1.newDisk(2048);
         Disk d = new ConcreteDisk(2048);
         assertEquals(2048,d.getCapacity());
-        assertEquals(".",d.getWorkingDirName());
+        assertEquals("",d.getWorkingDirName());
         d.makeDir("Folder1");
         d.changeDir("Folder1");
         assertEquals(d.getWorkingDirName(),"Folder1");
-        assertEquals(d.toString(),"Disk{capacity=2048, root=Directory{name=./}, workingDir=Directory{name=Folder1/}}");
+        assertEquals(d.toString(),"Disk{capacity=2048, root=Directory{name=/}, workingDir=Directory{name=Folder1/}}");
     }
 
 
@@ -174,9 +174,9 @@ public class CVFSTest {
     @Test
     public void cdTest(){
         init();
-        assertEquals(t1.getPath(),"./");
+        assertEquals(t1.getPath(),"/");
         t1.changeDir("Folder1");
-        assertEquals(t1.getPath(),"./Folder1/");
+        assertEquals(t1.getPath(),"/Folder1/");
         boolean errored = false;
         try {
             t1.changeDir("dsaf");
@@ -501,9 +501,9 @@ public class CVFSTest {
     @Test
     public void pathTest(){
         init();
-        assertEquals("./",t1.getPath());
+        assertEquals("/",t1.getPath());
         t1.changeDir("Folder1");
-        assertEquals("./Folder1/",t1.getPath());
+        assertEquals("/Folder1/",t1.getPath());
     }
 
 }

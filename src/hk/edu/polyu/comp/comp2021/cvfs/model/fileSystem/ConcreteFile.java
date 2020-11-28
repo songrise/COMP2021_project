@@ -16,7 +16,7 @@ public class ConcreteFile implements File, Serializable {
      */
     // -----------------Constructor----------------//
     ConcreteFile(String type){
-        this.name = ".";
+        this.name = "";
         this.setType(type);
     }
 
